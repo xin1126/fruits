@@ -1,59 +1,69 @@
 <template>
-  <section class="container mt-5">
-    <div class="text-right my-3">
-      <button
-        class="btn btn-primary btn-sm"
-        data-bs-toggle="modal"
-        data-bs-target="#productModal"
-        @click="statusModal('post', '')"
-      >
-        建立新的產品
-      </button>
+  <section class="bg-gradual vh-100">
+    <div class="container pt-5">
+      <div class="text-right">
+        <button
+          class="btn btn-info text-white btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#productModal"
+          @click="statusModal('post', '')"
+        >
+          建立新的產品
+        </button>
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col" width="10%">縮圖</th>
+            <th scope="col">分類</th>
+            <th scope="col">產品名稱</th>
+            <th scope="col">原價</th>
+            <th scope="col">售價</th>
+            <th scope="col">是否啟用</th>
+            <th scope="col" class="">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in products" :key="item.id" class="border-white">
+            <th scope="row" class="p-0">
+              <img
+                :src="item.imgUrl"
+                alt=""
+                class="img-transparent w-50 ps-2"
+              />
+            </th>
+            <th scope="row">{{ item.category }}</th>
+            <td>{{ item.title }}</td>
+            <td>{{ item.origin_price }}</td>
+            <td>{{ item.price }}</td>
+            <td :class="{ 'text-success': item.is_enabled }">
+              {{ item.is_enabled ? '啟用' : '未啟用' }}
+            </td>
+            <td>
+              <div class="btn-group">
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#productModal"
+                  @click="statusModal('put', item)"
+                >
+                  編輯
+                </button>
+                <button
+                  class="btn btn-outline-danger btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"
+                  @click="statusModal('delete', item)"
+                >
+                  刪除
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <loading v-model:active="isLoading"></loading>
     </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">分類</th>
-          <th scope="col">產品名稱</th>
-          <th scope="col">原價</th>
-          <th scope="col">售價</th>
-          <th scope="col">是否啟用</th>
-          <th scope="col">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in products" :key="item.id">
-          <th scope="row">{{ item.category }}</th>
-          <td>{{ item.title }}</td>
-          <td>{{ item.origin_price }}</td>
-          <td>{{ item.price }}</td>
-          <td :class="{ 'text-success': item.is_enabled }">
-            {{ item.is_enabled ? '啟用' : '未啟用' }}
-          </td>
-          <td>
-            <div class="btn-group">
-              <button
-                class="btn btn-outline-secondary btn-sm"
-                data-bs-toggle="modal"
-                data-bs-target="#productModal"
-                @click="statusModal('put', item)"
-              >
-                編輯
-              </button>
-              <button
-                class="btn btn-outline-danger btn-sm"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-                @click="statusModal('delete', item)"
-              >
-                刪除
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <loading v-model:active="isLoading"></loading>
   </section>
   <!-- Modal -->
   <!-- 新增、編輯 -->
@@ -296,7 +306,7 @@ export default {
       tempProduct: {},
       products: [],
       apiUrl: 'https://vue3-course-api.hexschool.io/api',
-      apiPath: 'testt',
+      apiPath: 'aquarium-supplies',
       isLoading: false,
       verificationStart: false,
     };
@@ -369,3 +379,12 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.bg-gradual {
+  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+}
+.img-transparent {
+  mix-blend-mode: multiply;
+}
+</style>

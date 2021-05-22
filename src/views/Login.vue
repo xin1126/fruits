@@ -1,49 +1,49 @@
 <template>
-  <section class="container">
-    <div class="row vh-100 justify-content-center align-content-center">
-      <div class="col-12 col-md-5 col-xl-3">
-        <div class="rounded shadow p-3">
-          <h3 class="mb-3 text-center fw-bold">
-            <i class="bi bi-person-fill me-1"></i>登入後台
-          </h3>
-          <form id="form" class="form-signin" @submit.prevent="login">
-            <div class="form-floating mb-3">
-              <input
-                type="email"
-                class="form-control mb-2"
-                id="username"
-                placeholder="name@example.com"
-                v-model="user.username"
-                required
-              />
-              <label for="username">請輸入信箱</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input
-                :type="passwordStatus"
-                class="form-control mb-2 position-relative"
-                id="password"
-                placeholder="Password"
-                v-model="user.password"
-                required
-              />
-              <label for="password">請輸入密碼</label>
-              <a href="#" @click.prevent="eyeChange">
-                <h3
-                  class="position-absolute link-secondary top-0 end-0 mt-3 me-3"
-                >
-                  <i class="bi bi-eye-slash-fill" id="eye"></i>
-                </h3>
-              </a>
-            </div>
-            <button
-              class="btn btn-secondary fw-bold w-100"
-              id="signin"
-              type="submit"
-            >
-              登入
-            </button>
-          </form>
+  <section class="backstage-bg w-100 vh-100">
+    <div class="container">
+      <div class="row vh-100 justify-content-end align-content-center">
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="rounded shadow-lg bg-translucent p-3">
+            <h3 class="mb-3 text-center text-white fw-bold">
+              <i class="bi bi-person-fill me-1"></i>登入後台
+            </h3>
+            <form id="form" class="form-signin" @submit.prevent="login">
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control mb-2"
+                  id="username"
+                  placeholder="name@example.com"
+                  v-model="user.username"
+                  required
+                />
+                <label for="username">請輸入帳號</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  :type="passwordStatus"
+                  class="form-control mb-2 position-relative"
+                  id="password"
+                  placeholder="Password"
+                  v-model="user.password"
+                  required
+                />
+                <label for="password">請輸入密碼</label>
+                <a href="#" @click.prevent="eyeChange">
+                  <h3 class="position-absolute link-dark top-0 end-0 mt-3 me-3">
+                    <i class="bi bi-eye-slash-fill" id="eye"></i>
+                  </h3>
+                </a>
+              </div>
+              <button
+                class="btn btn-dark fw-bold w-100"
+                id="signin"
+                type="submit"
+              >
+                登入
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -95,3 +95,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.backstage-bg {
+  background-image: url('~@/assets/images/backstage-bg.jpg');
+  background-position: center center;
+  background-size: cover;
+}
+.bg-translucent {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+</style>
