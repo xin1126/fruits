@@ -104,7 +104,7 @@
           </h5>
           <button
             type="button"
-            class="btn-close"
+            class="btn-close btn-close-white"
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
@@ -225,12 +225,10 @@
             </div>
             <div class="col-4">
               <div class="d-flex align-items-center justify-content-between">
-                <label for="imgUrl" class="col-form-label mb-2">主要圖檔</label
-                ><small>
-                  <button class="btn btn-sm btn-secondary" @click="addImg">
-                    多圖新增
-                  </button>
-                </small>
+                <label for="imgUrl" class="col-form-label mb-2">主要圖檔</label>
+                <button class="btn btn-sm btn-secondary" @click="addImg">
+                  多圖新增
+                </button>
               </div>
               <input
                 type="url"
@@ -253,6 +251,10 @@
                 <label for="imgUrl" class="col-form-label mb-2"
                   >多圖檔({{ key + 1 }})</label
                 >
+                <button
+                  class="btn-close"
+                  @click="tempProduct.imagesUrl.splice(key, 1)"
+                ></button>
               </div>
               <input
                 type="text"
@@ -305,7 +307,7 @@
           </h5>
           <button
             type="button"
-            class="btn-close"
+            class="btn-close btn-close-white"
             data-bs-dismiss="modal"
             aria-label="Close"
           ></button>
@@ -435,11 +437,17 @@ export default {
     },
     signout() {
       const url = `${this.apiUrl}/logout`;
+      this.isLoading = true;
       this.axios.post(url)
         .then((res) => {
           if (res.data.success) {
             document.cookie = 'hexToken=; expires=; path=/';
+            this.isLoading = false;
+            this.$swal({ title: res.data.message, icon: 'success' });
             this.$router.push('/');
+          } else {
+            this.isLoading = false;
+            this.$swal({ title: res.data.message, icon: 'error' });
           }
         })
         .catch((error) => {
@@ -448,8 +456,10 @@ export default {
         });
     },
     addImg() {
-      const arrLength = this.tempProduct.imagesUrl.length;
-      if (arrLength > 0 && this.tempProduct.imagesUrl[arrLength - 1].indexOf('https://')) {
+      const arrLength = this.tempProduct.imagesUrl?.length;
+      if (arrLength === undefined) {
+        this.tempProduct.imagesUrl = [''];
+      } else if (arrLength > 0 && this.tempProduct.imagesUrl[arrLength - 1].indexOf('https://')) {
         this.$swal({ title: `多圖檔(${arrLength})尚未輸入圖片網址`, icon: 'error' });
       } else {
         this.tempProduct.imagesUrl.push('');
