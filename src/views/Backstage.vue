@@ -46,7 +46,7 @@
             :key="item.id"
             class="border-white"
           >
-            <th scope="row" class="p-0">
+            <th scope="row">
               <img
                 :src="item.imgUrl"
                 alt=""
@@ -232,7 +232,7 @@
               </div>
               <input
                 type="url"
-                class="form-control"
+                class="form-control mb-3"
                 id="imgUrl"
                 placeholder="請輸入圖片網址"
                 v-model="tempProduct.imgUrl"
@@ -258,7 +258,7 @@
               </div>
               <input
                 type="text"
-                class="form-control"
+                class="form-control mb-3"
                 id="imgUrl"
                 placeholder="請輸入圖片網址"
                 v-model="tempProduct.imagesUrl[key]"
