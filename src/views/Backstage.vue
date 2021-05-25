@@ -4,7 +4,7 @@
       class="container py-5"
       :class="{ 'vh-100': categoryProducts.length < 12 }"
     >
-      <button class="btn btn-info d-block ms-auto" @click="signout">
+      <button class="btn btn-info text-white d-block ms-auto" @click="signout">
         登出
       </button>
       <div class="d-flex">
@@ -28,7 +28,7 @@
           </option>
         </select>
       </div>
-      <table class="table table-hover">
+      <table class="table table-hover mb-4">
         <thead>
           <tr>
             <th scope="col" width="10%">縮圖</th>
@@ -83,6 +83,61 @@
           </tr>
         </tbody>
       </table>
+      <nav
+        aria-label="Page navigation example"
+        class="d-flex justify-content-center"
+        v-if="categoryValue === 'total'"
+      >
+        <ul class="d-flex fs-4">
+          <li class="">
+            <a
+              class="pe-1 py-1"
+              :class="{
+                'pointer-none': pagination.current_page === 1,
+                'text-secondary': pagination.current_page === 1,
+                'text-white': pagination.current_page > 1,
+              }"
+              href="#"
+              @click.prevent="getProducts(pagination.current_page - 1)"
+              aria-label="Previous"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li
+            :class="{
+              'bg-info': pagination.current_page === item,
+              'rounded-circle': pagination.current_page === item,
+            }"
+            v-for="item in pagination.total_pages"
+            :key="item"
+          >
+            <a
+              class="text-white px-3 py-1"
+              href="#"
+              @click.prevent="getProducts(item)"
+              >{{ item }}</a
+            >
+          </li>
+          <li>
+            <a
+              class="ps-1 py-1"
+              :class="{
+                'pointer-none':
+                  pagination.current_page === pagination.total_pages,
+                'text-secondary':
+                  pagination.current_page === pagination.total_pages,
+                'text-white': pagination.current_page < pagination.total_pages,
+              }"
+              href="#"
+              @click.prevent="getProducts(pagination.current_page + 1)"
+              aria-label="Next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
       <loading v-model:active="isLoading"></loading>
     </div>
   </section>
@@ -366,8 +421,9 @@ export default {
       tempProduct: {
         imagesUrl: [],
       },
+      pagination: {},
       products: [],
-      totalProducts: [],
+      allProducts: [],
       category: [],
       apiUrl: 'https://vue3-course-api.hexschool.io',
       apiPath: 'aquarium-supplies',
@@ -376,13 +432,14 @@ export default {
     };
   },
   methods: {
-    getProducts() {
+    getProducts(num = 1) {
       this.isLoading = true;
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products?page=1`;
+      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products?page=${num}`;
       this.axios.get(url)
         .then((res) => {
           if (res.data.success) {
             this.products = res.data.products;
+            this.pagination = res.data.pagination;
             this.isLoading = false;
           } else {
             this.isLoading = false;
@@ -395,13 +452,13 @@ export default {
           this.$swal({ title: error.data.message, icon: 'error' });
         });
     },
-    getTotal() {
+    getAllProducts() {
       this.isLoading = true;
       const url = `${this.apiUrl}/api/${this.apiPath}/admin/products/all`;
       this.axios.get(url)
         .then((res) => {
           if (res.data.success) {
-            this.totalProducts = Object.values(res.data.products);
+            this.allProducts = Object.values(res.data.products);
             this.category = new Set(Object.values(res.data.products).map((item) => item.category));
           } else {
             this.isLoading = false;
@@ -416,11 +473,7 @@ export default {
     statusModal(status, data) {
       this.verificationStart = false;
       this.status = status;
-      if (status === 'post') {
-        this.tempProduct = { imagesUrl: [] };
-      } else {
-        this.tempProduct = JSON.parse(JSON.stringify(data));
-      }
+      this.tempProduct = status === 'post' ? { imagesUrl: [] } : JSON.parse(JSON.stringify(data));
     },
     handlingProduct() {
       const api = `${this.apiUrl}/api/${this.apiPath}/admin/product`;
@@ -431,7 +484,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.getProducts();
-            this.getTotal();
+            this.getAllProducts();
             this.modal.hide();
             this.$swal({ title: res.data.message, icon: 'success' });
           } else if (this.status === 'delete') {
@@ -483,12 +536,7 @@ export default {
   },
   computed: {
     categoryProducts() {
-      let newArr;
-      if (this.categoryValue === 'total') {
-        newArr = this.products;
-      } else {
-        newArr = this.totalProducts.filter((item) => item.category === this.categoryValue);
-      }
+      const newArr = this.categoryValue === 'total' ? this.products : this.allProducts.filter((item) => item.category === this.categoryValue);
       return newArr;
     },
   },
@@ -501,7 +549,7 @@ export default {
     } else {
       this.axios.defaults.headers.common.Authorization = token;
       this.getProducts();
-      this.getTotal();
+      this.getAllProducts();
     }
   },
 };
@@ -516,5 +564,8 @@ export default {
 }
 textarea {
   height: 150px;
+}
+.pointer-none {
+  pointer-events: none;
 }
 </style>
