@@ -86,7 +86,7 @@
       <nav
         aria-label="Page navigation example"
         class="d-flex justify-content-center"
-        v-if="categoryValue === 'total'"
+        v-if="categoryValue === 'total' && pagination.total_pages > 1"
       >
         <ul class="d-flex fs-4">
           <li class="">
@@ -441,6 +441,7 @@ export default {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
             this.isLoading = false;
+            console.log(this.pagination);
           } else {
             this.isLoading = false;
             this.$swal({ title: res.data.message, icon: 'error' });
