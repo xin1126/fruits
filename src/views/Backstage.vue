@@ -55,8 +55,8 @@
             </th>
             <th scope="row">{{ item.category }}</th>
             <td>{{ item.title }}</td>
-            <td>{{ item.origin_price }}</td>
-            <td>{{ item.price }}</td>
+            <td>${{ item.origin_price.toLocaleString() }}</td>
+            <td>${{ item.price.toLocaleString() }}</td>
             <td :class="{ 'text-success': item.is_enabled }">
               {{ item.is_enabled ? '啟用' : '未啟用' }}
             </td>
@@ -100,7 +100,7 @@
       <div class="modal-content">
         <div class="modal-header bg-dark text-white">
           <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
-            {{ !tempProduct.title ? '新建產品' : '編輯產品' }}
+            {{ status === 'post' ? '新建產品' : '編輯產品' }}
           </h5>
           <button
             type="button"
@@ -226,7 +226,11 @@
             <div class="col-4">
               <div class="d-flex align-items-center justify-content-between">
                 <label for="imgUrl" class="col-form-label mb-2">主要圖檔</label>
-                <button class="btn btn-sm btn-secondary" @click="addImg">
+                <button
+                  class="btn btn-sm btn-secondary"
+                  @click="addImg"
+                  v-if="tempProduct.imagesUrl.length === 0"
+                >
                   多圖新增
                 </button>
               </div>
@@ -248,9 +252,18 @@
               class="col-4"
             >
               <div class="d-flex align-items-center justify-content-between">
-                <label for="imgUrl" class="col-form-label mb-2"
-                  >多圖檔({{ key + 1 }})</label
-                >
+                <div>
+                  <label for="imgUrl" class="col-form-label mb-2 me-2"
+                    >多圖檔({{ key + 1 }})</label
+                  >
+                  <button
+                    class="btn btn-sm btn-secondary"
+                    @click="addImg"
+                    v-if="tempProduct.imagesUrl.length - 1 === key"
+                  >
+                    多圖新增
+                  </button>
+                </div>
                 <button
                   class="btn-close"
                   @click="tempProduct.imagesUrl.splice(key, 1)"
@@ -456,11 +469,13 @@ export default {
         });
     },
     addImg() {
-      const arrLength = this.tempProduct.imagesUrl?.length;
-      if (arrLength === undefined) {
+      const verification = this.tempProduct.imagesUrl.map((item) => item.indexOf('https://'));
+      if (!this.tempProduct.imagesUrl.length) {
         this.tempProduct.imagesUrl = [''];
-      } else if (arrLength > 0 && this.tempProduct.imagesUrl[arrLength - 1].indexOf('https://')) {
-        this.$swal({ title: `多圖檔(${arrLength})尚未輸入圖片網址`, icon: 'error' });
+      } else if (verification.some((key) => key === -1)) {
+        const key = verification.map((item, i) => (item !== 0 ? `(${i + 1})` : ''));
+        const error = key.filter((item) => item !== '');
+        this.$swal({ title: `多圖檔${error}尚未輸入圖片網址`, icon: 'error' });
       } else {
         this.tempProduct.imagesUrl.push('');
       }
