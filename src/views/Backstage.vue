@@ -284,7 +284,7 @@
                 <button
                   class="btn btn-sm btn-secondary"
                   @click="addImg"
-                  v-if="tempProduct.imagesUrl.length === 0"
+                  v-if="tempProduct.imagesUrl?.length === 0"
                 >
                   多圖新增
                 </button>
@@ -314,7 +314,7 @@
                   <button
                     class="btn btn-sm btn-secondary"
                     @click="addImg"
-                    v-if="tempProduct.imagesUrl.length - 1 === key"
+                    v-if="tempProduct.imagesUrl?.length - 1 === key"
                   >
                     多圖新增
                   </button>
@@ -441,7 +441,6 @@ export default {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
             this.isLoading = false;
-            console.log(this.pagination);
           } else {
             this.isLoading = false;
             this.$swal({ title: res.data.message, icon: 'error' });
