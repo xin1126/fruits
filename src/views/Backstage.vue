@@ -162,18 +162,6 @@ export default {
           this.$swal({ title: error.data.message, icon: 'error' });
         });
     },
-    addImg() {
-      const verification = this.tempProduct.imagesUrl.map((item) => item.indexOf('https://'));
-      if (!this.tempProduct.imagesUrl.length) {
-        this.tempProduct.imagesUrl = [''];
-      } else if (verification.some((key) => key === -1)) {
-        const key = verification.map((item, i) => (item !== 0 ? `(${i + 1})` : ''));
-        const error = key.filter((item) => item !== '');
-        this.$swal({ title: `多圖檔${error}尚未輸入圖片網址`, icon: 'error' });
-      } else {
-        this.tempProduct.imagesUrl.push('');
-      }
-    },
     loading(boolean) {
       this.isLoading = boolean;
     },

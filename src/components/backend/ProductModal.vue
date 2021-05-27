@@ -175,7 +175,9 @@
               >
                 <div class="d-flex align-items-center justify-content-between">
                   <div>
-                    <label for="imgUrl" class="col-form-label mb-2 me-2"
+                    <label
+                      :for="'imgUrl' + (key + 1)"
+                      class="col-form-label mb-2 me-2"
                       >多圖檔({{ key + 1 }})</label
                     >
                     <button
@@ -194,7 +196,7 @@
                 <input
                   type="text"
                   class="form-control mb-3"
-                  id="imgUrl"
+                  :id="'imgUrl' + (key + 1)"
                   placeholder="請輸入圖片網址"
                   v-model="tempProduct.imagesUrl[key]"
                 />
@@ -321,6 +323,18 @@ export default {
           this.$swal({ title: error.data.message, icon: 'error' });
           this.$emit('is-loading', false);
         });
+    },
+    addImg() {
+      const verification = this.tempProduct.imagesUrl.map((item) => item.indexOf('https://'));
+      if (!this.tempProduct.imagesUrl.length) {
+        this.tempProduct.imagesUrl = [''];
+      } else if (verification.some((key) => key === -1)) {
+        const key = verification.map((item, i) => (item !== 0 ? `(${i + 1})` : ''));
+        const error = key.filter((item) => item !== '');
+        this.$swal({ title: `多圖檔${error}尚未輸入圖片網址`, icon: 'error' });
+      } else {
+        this.tempProduct.imagesUrl.push('');
+      }
     },
   },
   mounted() {
