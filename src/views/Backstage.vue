@@ -16,17 +16,7 @@
         >
           建立新的產品
         </button>
-        <select
-          class="form-select w-25 ms-3 bg-transparent"
-          aria-label="Default select example"
-          v-model="categoryValue"
-        >
-          <option selected disabled value="">搜尋產品類別</option>
-          <option value="total">全部商品</option>
-          <option v-for="item in category" :key="item" :value="item">
-            {{ item }}
-          </option>
-        </select>
+        <ProductsCategory @value="categoryValue" ref="category" />
       </div>
       <table class="table table-hover mb-4">
         <thead>
@@ -83,353 +73,48 @@
           </tr>
         </tbody>
       </table>
-      <nav
-        aria-label="Page navigation example"
-        class="d-flex justify-content-center"
-        v-if="categoryValue === 'total' && pagination.total_pages > 1"
-      >
-        <ul class="d-flex fs-4">
-          <li class="">
-            <a
-              class="pe-1 py-1"
-              :class="{
-                'pointer-none': pagination.current_page === 1,
-                'text-secondary': pagination.current_page === 1,
-                'text-white': pagination.current_page > 1,
-              }"
-              href="#"
-              @click.prevent="getProducts(pagination.current_page - 1)"
-              aria-label="Previous"
-            >
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li
-            :class="{
-              'bg-info': pagination.current_page === item,
-              'rounded-circle': pagination.current_page === item,
-            }"
-            v-for="item in pagination.total_pages"
-            :key="item"
-          >
-            <a
-              class="text-white px-3 py-1"
-              href="#"
-              @click.prevent="getProducts(item)"
-              >{{ item }}</a
-            >
-          </li>
-          <li>
-            <a
-              class="ps-1 py-1"
-              :class="{
-                'pointer-none':
-                  pagination.current_page === pagination.total_pages,
-                'text-secondary':
-                  pagination.current_page === pagination.total_pages,
-                'text-white': pagination.current_page < pagination.total_pages,
-              }"
-              href="#"
-              @click.prevent="getProducts(pagination.current_page + 1)"
-              aria-label="Next"
-            >
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
       <loading v-model:active="isLoading"></loading>
     </div>
+    <Pagination
+      :category="category"
+      :pagination="pagination"
+      @page="getProducts"
+    />
+    <ProductModal
+      ref="modal"
+      :status="status"
+      :tempProduct="tempProduct"
+      @render-all="getAllProducts"
+      @render-products="getProducts"
+      @is-loading="loading"
+    />
   </section>
-  <!-- Modal -->
-  <!-- 新增、編輯 -->
-  <div
-    class="modal fade"
-    id="productModal"
-    ref="modal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
-            {{ status === 'post' ? '新建產品' : '編輯產品' }}
-          </h5>
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <form class="row">
-            <div class="form-group col-xl-3">
-              <label for="title" class="col-form-label">標題</label
-              ><span
-                class="ms-2 text-danger"
-                v-if="!tempProduct.title && verificationStart"
-                ><i class="bi bi-exclamation-triangle-fill me-1"></i>必填</span
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="title"
-                placeholder="請輸入標題"
-                v-model="tempProduct.title"
-              />
-            </div>
-            <div class="form-group col-xl-2">
-              <label for="category" class="col-form-label">分類</label
-              ><span
-                class="ms-2 text-danger"
-                v-if="!tempProduct.category && verificationStart"
-                ><i class="bi bi-exclamation-triangle-fill me-1"></i>必填</span
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="category"
-                placeholder="請輸入分類"
-                v-model="tempProduct.category"
-              />
-            </div>
-            <div class="form-group col-xl-2">
-              <label for="unit" class="col-form-label">單位</label
-              ><span
-                class="ms-2 text-danger"
-                v-if="!tempProduct.unit && verificationStart"
-                ><i class="bi bi-exclamation-triangle-fill me-1"></i>必填</span
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="unit"
-                placeholder="請輸入單位"
-                v-model="tempProduct.unit"
-              />
-            </div>
-            <div class="form-group col-xl-2">
-              <label for="origin-price" class="col-form-label">原價</label
-              ><span
-                class="ms-2 text-danger"
-                v-if="!tempProduct.origin_price && verificationStart"
-                ><i class="bi bi-exclamation-triangle-fill me-1"></i>必填</span
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="origin-price"
-                min="0"
-                max="1000000"
-                placeholder="請輸入原價"
-                v-model.number="tempProduct.origin_price"
-              />
-            </div>
-            <div class="form-group col-xl-2">
-              <label for="price" class="col-form-label">售價</label
-              ><span
-                class="ms-2 text-danger"
-                v-if="!tempProduct.price && verificationStart"
-                ><i class="bi bi-exclamation-triangle-fill me-1"></i>必填</span
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="price"
-                min="0"
-                max="1000000"
-                placeholder="請輸入售價"
-                v-model.number="tempProduct.price"
-              />
-            </div>
-            <div
-              class="custom-control custom-checkbox d-flex align-items-center mr-sm-2 col-xl-1"
-            >
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                id="customControlAutosizing"
-                v-model="tempProduct.is_enabled"
-                :true-value="1"
-                :false-value="0"
-              />
-              <label class="custom-control-label" for="customControlAutosizing"
-                >啟用</label
-              >
-            </div>
-            <div class="form-group col-xl-6">
-              <label for="description" class="col-form-label">產品描述</label>
-              <textarea
-                class="form-control"
-                id="description"
-                placeholder="請輸入產品描述"
-                v-model="tempProduct.description"
-              ></textarea>
-            </div>
-            <div class="form-group mb-2 col-xl-6">
-              <label for="content" class="col-form-label">補充說明</label>
-              <textarea
-                class="form-control"
-                id="content"
-                placeholder="請輸入補充說明"
-                v-model="tempProduct.content"
-              ></textarea>
-            </div>
-            <div class="col-4">
-              <div class="d-flex align-items-center justify-content-between">
-                <label for="imgUrl" class="col-form-label mb-2">主要圖檔</label>
-                <button
-                  class="btn btn-sm btn-secondary"
-                  @click="addImg"
-                  v-if="tempProduct.imagesUrl?.length === 0"
-                >
-                  多圖新增
-                </button>
-              </div>
-              <input
-                type="url"
-                class="form-control mb-3"
-                id="imgUrl"
-                placeholder="請輸入圖片網址"
-                v-model="tempProduct.imgUrl"
-              />
-              <img
-                :src="tempProduct.imgUrl"
-                class="img-fluid rounded mx-auto w-50"
-              />
-            </div>
-            <div
-              v-for="(item, key) in tempProduct.imagesUrl"
-              :key="item"
-              class="col-4"
-            >
-              <div class="d-flex align-items-center justify-content-between">
-                <div>
-                  <label for="imgUrl" class="col-form-label mb-2 me-2"
-                    >多圖檔({{ key + 1 }})</label
-                  >
-                  <button
-                    class="btn btn-sm btn-secondary"
-                    @click="addImg"
-                    v-if="tempProduct.imagesUrl?.length - 1 === key"
-                  >
-                    多圖新增
-                  </button>
-                </div>
-                <button
-                  class="btn-close"
-                  @click="tempProduct.imagesUrl.splice(key, 1)"
-                ></button>
-              </div>
-              <input
-                type="text"
-                class="form-control mb-3"
-                id="imgUrl"
-                placeholder="請輸入圖片網址"
-                v-model="tempProduct.imagesUrl[key]"
-              />
-              <img
-                :src="tempProduct.imagesUrl[key]"
-                class="img-fluid rounded mx-auto w-50"
-              />
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            取消
-          </button>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            @click="handlingProduct"
-          >
-            確認
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal -->
-  <!-- 刪除 -->
-  <div
-    class="modal fade"
-    id="deleteModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
-            刪除商品
-          </h5>
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          確定要刪除
-          <span class="text-danger font-weight-bold">{{
-            tempProduct.title
-          }}</span>
-          商品嗎？（刪除後將無法恢復）
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            data-bs-dismiss="modal"
-          >
-            取消
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="handlingProduct"
-            data-bs-dismiss="modal"
-          >
-            確定刪除
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
+import ProductModal from '@/components/backend/ProductModal.vue';
+import ProductsCategory from '@/components/backend/ProductsCategory.vue';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   data() {
     return {
-      modal: '',
       status: '',
-      categoryValue: 'total',
+      category: 'total',
       tempProduct: {
         imagesUrl: [],
       },
       pagination: {},
       products: [],
-      allProducts: [],
-      category: [],
       apiUrl: 'https://vue3-course-api.hexschool.io',
       apiPath: 'aquarium-supplies',
       isLoading: false,
-      verificationStart: false,
     };
+  },
+  components: {
+    ProductModal,
+    ProductsCategory,
+    Pagination,
   },
   methods: {
     getProducts(num = 1) {
@@ -452,54 +137,10 @@ export default {
           this.$swal({ title: error.data.message, icon: 'error' });
         });
     },
-    getAllProducts() {
-      this.isLoading = true;
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products/all`;
-      this.axios.get(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.allProducts = Object.values(res.data.products);
-            this.category = new Set(Object.values(res.data.products).map((item) => item.category));
-          } else {
-            this.isLoading = false;
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.$swal({ title: error.data.message, icon: 'error' });
-        });
-    },
     statusModal(status, data) {
       this.verificationStart = false;
       this.status = status;
-      this.tempProduct = status === 'post' ? { imagesUrl: [] } : JSON.parse(JSON.stringify(data));
-    },
-    handlingProduct() {
-      const api = `${this.apiUrl}/api/${this.apiPath}/admin/product`;
-      const url = this.status !== 'post' ? `${api}/${this.tempProduct.id}` : api;
-      const data = this.status !== 'delete' ? { data: { ...this.tempProduct } } : '';
-      this.isLoading = true;
-      this.axios[this.status](url, data)
-        .then((res) => {
-          if (res.data.success) {
-            this.getProducts();
-            this.getAllProducts();
-            this.modal.hide();
-            this.$swal({ title: res.data.message, icon: 'success' });
-          } else if (this.status === 'delete') {
-            this.$swal({ title: res.data.message, icon: 'error' });
-            this.isLoading = false;
-          } else {
-            this.verificationStart = true;
-            this.$swal({ title: '請填寫必填欄位', icon: 'error' });
-            this.isLoading = false;
-          }
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.$swal({ title: error.data.message, icon: 'error' });
-        });
+      this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [] } : JSON.parse(JSON.stringify(data));
     },
     signout() {
       const url = `${this.apiUrl}/logout`;
@@ -533,23 +174,31 @@ export default {
         this.tempProduct.imagesUrl.push('');
       }
     },
+    loading(boolean) {
+      this.isLoading = boolean;
+    },
+    categoryValue(value) {
+      this.category = value;
+    },
+    getAllProducts() {
+      this.$refs.category.getAllProducts();
+    },
   },
   computed: {
     categoryProducts() {
-      const newArr = this.categoryValue === 'total' ? this.products : this.allProducts.filter((item) => item.category === this.categoryValue);
+      const newArr = this.category === 'total' ? this.products : this.$refs.category.allProducts.filter((item) => item.category === this.category);
       return newArr;
     },
   },
   mounted() {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    this.modal = new Modal(this.$refs.modal);
     if (!token) {
       this.$swal({ title: '尚未登入', icon: 'error' });
       this.$router.push('/');
     } else {
       this.axios.defaults.headers.common.Authorization = token;
       this.getProducts();
-      this.getAllProducts();
+      this.$refs.category.getAllProducts();
     }
   },
 };
@@ -564,8 +213,5 @@ export default {
 }
 textarea {
   height: 150px;
-}
-.pointer-none {
-  pointer-events: none;
 }
 </style>

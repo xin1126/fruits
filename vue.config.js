@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/Vue-week3/'
-}
+  publicPath: '/aquarium/',
+};
