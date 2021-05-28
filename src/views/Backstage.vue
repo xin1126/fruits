@@ -83,7 +83,6 @@
     <ProductModal
       ref="modal"
       :status="status"
-      :tempProduct="tempProduct"
       @render-all="getAllProducts"
       @render-products="getProducts"
       @is-loading="loading"
@@ -119,7 +118,7 @@ export default {
   methods: {
     getProducts(num = 1) {
       this.isLoading = true;
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products?page=${num}`;
+      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/products?page=${num}`;
       this.axios.get(url)
         .then((res) => {
           if (res.data.success) {
@@ -143,7 +142,7 @@ export default {
       this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [] } : JSON.parse(JSON.stringify(data));
     },
     signout() {
-      const url = `${this.apiUrl}/logout`;
+      const url = `${process.env.VUE_APP_APIURL}/logout`;
       this.isLoading = true;
       this.axios.post(url)
         .then((res) => {

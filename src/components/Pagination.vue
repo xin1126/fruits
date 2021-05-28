@@ -8,11 +8,11 @@
       <li class="">
         <a
           class="pe-1 py-1"
-          :class="{
-            'pointer-none': pagination.current_page === 1,
-            'text-secondary': pagination.current_page === 1,
-            'text-white': pagination.current_page > 1,
-          }"
+          :class="[
+            pagination.current_page !== 1
+              ? 'text-white'
+              : ['text-secondary', 'pointer-none'],
+          ]"
           href="#"
           @click.prevent="paginationNum(pagination.current_page - 1)"
           aria-label="Previous"
@@ -21,10 +21,9 @@
         </a>
       </li>
       <li
-        :class="{
-          'bg-info': pagination.current_page === item,
-          'rounded-circle': pagination.current_page === item,
-        }"
+        :class="[
+          pagination.current_page === item ? ['bg-info', 'rounded-circle'] : '',
+        ]"
         v-for="item in pagination.total_pages"
         :key="item"
       >
@@ -38,12 +37,11 @@
       <li>
         <a
           class="ps-1 py-1"
-          :class="{
-            'pointer-none': pagination.current_page === pagination.total_pages,
-            'text-secondary':
-              pagination.current_page === pagination.total_pages,
-            'text-white': pagination.current_page < pagination.total_pages,
-          }"
+          :class="[
+            pagination.current_page < pagination.total_pages
+              ? 'text-white'
+              : ['pointer-none', 'text-secondary'],
+          ]"
           href="#"
           @click.prevent="paginationNum(pagination.current_page + 1)"
           aria-label="Next"
@@ -60,8 +58,19 @@ export default {
   data() {
     return {};
   },
-  props: ['category', 'pagination'],
-  emits: ['page'],
+  props: {
+    category: {
+      typeof: String,
+      default: 'total',
+    },
+    pagination: {
+      typeof: Object,
+      require: true,
+    },
+  },
+  emits: {
+    page: (num) => typeof num === 'number',
+  },
   methods: {
     paginationNum(num) {
       this.$emit('page', num);

@@ -295,11 +295,20 @@ export default {
       verificationStart: false,
     };
   },
-  props: ['status'],
-  emits: ['render-all', 'render-products', 'is-loading'],
+  props: {
+    status: {
+      typeof: String,
+      require: true,
+    },
+  },
+  emits: {
+    'render-all': () => true,
+    'render-products': () => true,
+    'is-loading': (bool) => typeof bool === 'boolean',
+  },
   methods: {
     handlingProduct() {
-      const api = `${this.apiUrl}/api/${this.apiPath}/admin/product`;
+      const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/product`;
       const url = this.status !== 'post' ? `${api}/${this.tempProduct.id}` : api;
       const data = this.status !== 'delete' ? { data: { ...this.tempProduct } } : '';
       this.$emit('is-loading', true);

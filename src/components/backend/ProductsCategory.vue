@@ -24,14 +24,16 @@ export default {
       category: [],
     };
   },
-  emits: ['value'],
+  emits: {
+    value: (categoryValue) => typeof categoryValue === 'string',
+  },
   methods: {
     categoryEmit(categoryValue) {
       this.$emit('value', categoryValue);
     },
     getAllProducts() {
       this.isLoading = true;
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products/all`;
+      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/products/all`;
       this.axios.get(url)
         .then((res) => {
           if (res.data.success) {
