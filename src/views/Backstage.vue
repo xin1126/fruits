@@ -87,8 +87,7 @@
     <ProductModal
       ref="modal"
       :status="status"
-      @render-all="getAllProducts"
-      @render-products="getProducts"
+      @get-data="getAllProducts"
       @is-loading="loading"
     />
   </section>
@@ -136,8 +135,8 @@ export default {
         });
     },
     statusModal(status, data) {
-      this.verificationStart = false;
       this.status = status;
+      this.$refs.modal.verificationStart = false;
       this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { stock: '', rating: '' } } : JSON.parse(JSON.stringify(data));
     },
     signout() {
@@ -167,6 +166,7 @@ export default {
       this.category = value;
     },
     getAllProducts() {
+      this.getProducts();
       this.$refs.category.getAllProducts();
     },
   },
