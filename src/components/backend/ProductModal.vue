@@ -170,7 +170,7 @@
                 <button
                   type="button"
                   class="btn btn-sm btn-secondary ms-2"
-                  @click="addImg"
+                  @click="addImg(0)"
                   v-if="tempProduct.imagesUrl?.length === 0"
                 >
                   多圖新增
@@ -178,8 +178,7 @@
                 <button
                   type="button"
                   class="btn btn-sm btn-secondary ms-2"
-                  @click="changeInput"
-                  v-if="tempProduct.imagesUrl?.length === 0"
+                  @click="displayInput = !displayInput"
                 >
                   切換上傳圖片方式
                 </button>
@@ -219,10 +218,17 @@
                     <button
                       type="button"
                       class="btn btn-sm btn-secondary"
-                      @click="addImg"
+                      @click="addImg(key + 1)"
                       v-if="tempProduct.imagesUrl?.length - 1 === key"
                     >
                       多圖新增
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-secondary ms-2"
+                      @click="displayInputs[key] = !displayInputs[key]"
+                    >
+                      切換上傳圖片方式
                     </button>
                   </div>
                   <button
@@ -232,11 +238,20 @@
                   ></button>
                 </div>
                 <input
+                  v-if="!displayInputs[key]"
                   type="text"
                   class="form-control mb-3"
                   :id="'imgUrl' + (key + 1)"
                   placeholder="請輸入圖片網址"
                   v-model="tempProduct.imagesUrl[key]"
+                />
+                <input
+                  v-if="displayInputs[key]"
+                  id="customFile"
+                  ref="file"
+                  type="file"
+                  class="form-control mb-3"
+                  @change="uploadFile(key)"
                 />
                 <img
                   :src="tempProduct.imagesUrl[key]"
@@ -334,6 +349,7 @@ export default {
       },
       verificationStart: false,
       displayInput: false,
+      displayInputs: {},
     };
   },
   props: {
@@ -348,7 +364,7 @@ export default {
   },
   methods: {
     handlingProduct() {
-      const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/produc`;
+      const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/product`;
       const url = this.status !== 'post' ? `${api}/${this.tempProduct.id}` : api;
       const data = this.status !== 'delete' ? { data: { ...this.tempProduct } } : '';
       this.$emit('is-loading', true);
@@ -372,19 +388,21 @@ export default {
           this.$emit('is-loading', false);
         });
     },
-    addImg() {
+    addImg(index) {
       const verification = this.tempProduct.imagesUrl.map((item) => item.indexOf('https://'));
       if (!this.tempProduct.imagesUrl.length) {
         this.tempProduct.imagesUrl = [''];
+        this.displayInputs[index] = false;
       } else if (verification.some((key) => key === -1)) {
         const key = verification.map((item, i) => (item !== 0 ? `(${i + 1})` : ''));
         const error = key.filter((item) => item !== '');
         this.$swal({ title: `多圖檔${error}尚未輸入圖片網址`, icon: 'error' });
       } else {
         this.tempProduct.imagesUrl.push('');
+        this.displayInputs[index] = false;
       }
     },
-    uploadFile() {
+    uploadFile(key) {
       const uploadedFile = this.$refs.file.files[0];
       const formData = new FormData();
       formData.append('file', uploadedFile);
@@ -393,7 +411,11 @@ export default {
       this.axios.post(url, formData)
         .then((res) => {
           if (res.data.success) {
-            this.tempProduct.imgUrl = res.data.imageUrl;
+            if (!this.tempProduct.imagesUrl.length) {
+              this.tempProduct.imgUrl = res.data.imageUrl;
+            } else {
+              this.tempProduct.imagesUrl[key] = res.data.imageUrl;
+            }
             this.$swal({ title: '上傳成功', icon: 'success' });
             this.$emit('is-loading', false);
           } else {
@@ -404,9 +426,6 @@ export default {
           this.$swal({ title: error.data.message, icon: 'error' });
           this.$emit('is-loading', false);
         });
-    },
-    changeInput() {
-      this.displayInput = !this.displayInput;
     },
   },
   mounted() {
