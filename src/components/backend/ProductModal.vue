@@ -125,7 +125,29 @@
                   >啟用</label
                 >
               </div>
-              <div class="form-group col-xl-6">
+              <div class="form-group col-xl-2">
+                <label for="rating" class="col-form-label">星級</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="rating"
+                  min="1"
+                  max="5"
+                  placeholder="請輸入星級"
+                  v-model="tempProduct.options.rating"
+                />
+                <label for="stock" class="col-form-label">庫存</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="stock"
+                  min="1"
+                  max="10000"
+                  placeholder="請輸入庫存"
+                  v-model="tempProduct.options.stock"
+                />
+              </div>
+              <div class="form-group col-xl-5">
                 <label for="description" class="col-form-label">產品描述</label>
                 <textarea
                   class="form-control"
@@ -134,7 +156,7 @@
                   v-model="tempProduct.description"
                 ></textarea>
               </div>
-              <div class="form-group mb-2 col-xl-6">
+              <div class="form-group mb-2 col-xl-5">
                 <label for="content" class="col-form-label">補充說明</label>
                 <textarea
                   class="form-control"
@@ -287,10 +309,12 @@ export default {
   data() {
     return {
       modal: '',
-      apiUrl: 'https://vue3-course-api.hexschool.io',
-      apiPath: 'aquarium-supplies',
       tempProduct: {
         imageUrl: [],
+        options: {
+          stock: '',
+          rating: '',
+        },
       },
       verificationStart: false,
     };

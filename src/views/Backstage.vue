@@ -21,13 +21,15 @@
       <table class="table table-hover mb-4">
         <thead>
           <tr>
-            <th scope="col" width="10%">縮圖</th>
+            <th scope="col" class="ps-3" width="10%">縮圖</th>
             <th scope="col">分類</th>
             <th scope="col">產品名稱</th>
             <th scope="col">原價</th>
             <th scope="col">售價</th>
-            <th scope="col">是否啟用</th>
-            <th scope="col" class="">操作</th>
+            <th scope="col">星級</th>
+            <th scope="col">庫存</th>
+            <th scope="col" width="10%">是否啟用</th>
+            <th scope="col" class="text-center" width="10%">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -47,10 +49,12 @@
             <td>{{ item.title }}</td>
             <td>${{ item.origin_price.toLocaleString() }}</td>
             <td>${{ item.price.toLocaleString() }}</td>
+            <td>{{ item.options.rating }}</td>
+            <td>{{ item.options.stock }}</td>
             <td :class="{ 'text-success': item.is_enabled }">
               {{ item.is_enabled ? '啟用' : '未啟用' }}
             </td>
-            <td>
+            <td align="right">
               <div class="btn-group">
                 <button
                   class="btn btn-outline-secondary btn-sm"
@@ -100,13 +104,8 @@ export default {
     return {
       status: '',
       category: 'total',
-      tempProduct: {
-        imagesUrl: [],
-      },
       pagination: {},
       products: [],
-      apiUrl: 'https://vue3-course-api.hexschool.io',
-      apiPath: 'aquarium-supplies',
       isLoading: false,
     };
   },
@@ -139,7 +138,7 @@ export default {
     statusModal(status, data) {
       this.verificationStart = false;
       this.status = status;
-      this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [] } : JSON.parse(JSON.stringify(data));
+      this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { stock: '', rating: '' } } : JSON.parse(JSON.stringify(data));
     },
     signout() {
       const url = `${process.env.VUE_APP_APIURL}/logout`;

@@ -17,8 +17,6 @@
 export default {
   data() {
     return {
-      apiUrl: 'https://vue3-course-api.hexschool.io',
-      apiPath: 'aquarium-supplies',
       categoryValue: '',
       allProducts: [],
       category: [],
