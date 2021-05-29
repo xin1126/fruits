@@ -1,6 +1,6 @@
 <template>
   <section class="row">
-    <div class="col-4">
+    <div class="col-xl-4">
       <label for="imgUrl" class="col-form-label mb-2">主要圖檔</label>
       <button
         type="button"
@@ -35,7 +35,11 @@
       />
       <img :src="tempProduct.imgUrl" class="img-fluid rounded mx-auto w-50" />
     </div>
-    <div v-for="(item, key) in tempProduct.imagesUrl" :key="item" class="col-4">
+    <div
+      v-for="(item, key) in tempProduct.imagesUrl"
+      :key="item"
+      class="col-xl-4"
+    >
       <div class="d-flex align-items-center justify-content-between">
         <div>
           <label :for="'imgUrl' + (key + 1)" class="col-form-label mb-2 me-2"
@@ -129,11 +133,10 @@ export default {
               this.tempProduct.imagesUrl[key] = res.data.imageUrl;
             }
             this.$swal({ title: '上傳成功', icon: 'success' });
-            this.$bus.emit('loading', false);
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
-            this.$bus.emit('loading', false);
           }
+          this.$bus.emit('loading', false);
         }).catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
           this.$bus.emit('loading', false);

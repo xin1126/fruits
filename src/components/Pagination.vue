@@ -4,7 +4,7 @@
     class="d-flex justify-content-center"
     v-if="category === 'total' && pagination.total_pages > 1"
   >
-    <ul class="d-flex fs-4">
+    <ul class="d-flex fs-4 m-0 p-0">
       <li class="">
         <a
           class="pe-1 py-1"

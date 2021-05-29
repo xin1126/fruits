@@ -55,7 +55,6 @@
 export default {
   data() {
     return {
-      apiUrl: 'https://vue3-course-api.hexschool.io',
       user: {
         username: '',
         password: '',
@@ -66,21 +65,20 @@ export default {
   },
   methods: {
     login() {
-      const api = `${this.apiUrl}/admin/signin`;
+      const api = `${process.env.VUE_APP_APIURL}/admin/signin`;
       this.isLoading = true;
       this.axios.post(api, this.user).then((res) => {
         if (res.data.success) {
           const { token, expired } = res.data;
           document.cookie = `hexToken=${token};expires=${new Date(expired)}; path=/`;
-          this.isLoading = false;
           this.$router.push('/backstage');
         } else {
-          this.isLoading = false;
           this.$swal({ title: res.data.message, icon: 'error' });
         }
-      }).catch((error) => {
         this.isLoading = false;
+      }).catch((error) => {
         this.$swal({ title: error.data.message, icon: 'error' });
+        this.isLoading = false;
       });
     },
     eyeChange(e) {

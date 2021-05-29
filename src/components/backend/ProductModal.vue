@@ -289,11 +289,10 @@ export default {
           } else if (res.data.message.length > 0) {
             this.verificationStart = true;
             this.$swal({ title: '請填寫必填欄位', icon: 'error' });
-            this.$emit('is-loading', false);
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
-            this.$emit('is-loading', false);
           }
+          this.$emit('is-loading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });

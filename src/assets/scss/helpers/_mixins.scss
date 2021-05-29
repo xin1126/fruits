@@ -1,0 +1,29 @@
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    .w#{$infix}-100 {
+      width: 100%;
+    }
+    .w#{$infix}-75 {
+      width: 75%;
+    }
+    .w#{$infix}-50 {
+      width: 50%;
+    }
+    .w#{$infix}-25 {
+      width: 25%;
+    }
+    .h#{$infix}-100 {
+      height: 100%;
+    }
+    .h#{$infix}-75 {
+      height: 75%;
+    }
+    .h#{$infix}-50 {
+      height: 50%;
+    }
+    .h#{$infix}-25 {
+      height: 25%;
+    }
+  }
+}

@@ -1,8 +1,10 @@
 .swal2-container{
   position: absolute;
   z-index: 9999;
-  width: auto !important;
   height: auto !important;
+  @include media-breakpoint-up(lg){
+    width: auto !important;
+  }
 }
 
 .swal2-popup{

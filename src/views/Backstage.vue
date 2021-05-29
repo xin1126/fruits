@@ -1,12 +1,15 @@
 <template>
   <section class="bg-gradual h-auto">
     <div
-      class="container pt-5"
+      class="container py-5"
       :class="{
         'vh-100': categoryProducts.length < 12,
       }"
     >
-      <button class="btn btn-info text-white d-block ms-auto" @click="signout">
+      <button
+        class="btn btn-info text-white d-block ms-auto mb-3 mb-sm-0"
+        @click="signout"
+      >
         登出
       </button>
       <div class="d-flex">
@@ -20,72 +23,74 @@
         </button>
         <ProductsCategory @value="categoryValue" ref="category" />
       </div>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col" class="ps-3" width="10%">縮圖</th>
-            <th scope="col">分類</th>
-            <th scope="col">產品名稱</th>
-            <th scope="col">原價</th>
-            <th scope="col">售價</th>
-            <th scope="col">星級</th>
-            <th scope="col">庫存</th>
-            <th scope="col" width="10%">是否啟用</th>
-            <th scope="col" class="text-center" width="10%">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="item in categoryProducts"
-            :key="item.id"
-            class="border-white"
-          >
-            <th scope="row">
-              <img
-                :src="item.imgUrl"
-                alt=""
-                class="img-transparent w-50 ps-2"
-              />
-            </th>
-            <th scope="row">{{ item.category }}</th>
-            <td>{{ item.title }}</td>
-            <td>${{ item.origin_price.toLocaleString() }}</td>
-            <td>${{ item.price.toLocaleString() }}</td>
-            <td>{{ item.options.rating }}</td>
-            <td>{{ item.options.stock }}</td>
-            <td :class="{ 'text-success': item.is_enabled }">
-              {{ item.is_enabled ? '啟用' : '未啟用' }}
-            </td>
-            <td align="right">
-              <div class="btn-group">
-                <button
-                  class="btn btn-outline-secondary btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#productModal"
-                  @click="statusModal('put', item)"
-                >
-                  編輯
-                </button>
-                <button
-                  class="btn btn-outline-danger btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deleteModal"
-                  @click="statusModal('delete', item)"
-                >
-                  刪除
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-hover table-responsive">
+          <thead>
+            <tr>
+              <th scope="col" class="ps-3" width="10%">縮圖</th>
+              <th scope="col">分類</th>
+              <th scope="col">產品名稱</th>
+              <th scope="col">原價</th>
+              <th scope="col">售價</th>
+              <th scope="col">星級</th>
+              <th scope="col">庫存</th>
+              <th scope="col" width="10%">是否啟用</th>
+              <th scope="col" class="text-center" width="10%">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="item in categoryProducts"
+              :key="item.id"
+              class="border-white"
+            >
+              <th scope="row">
+                <img
+                  :src="item.imgUrl"
+                  :alt="item.title"
+                  class="img-transparent w-lg-50 w-md-75 ps-2"
+                />
+              </th>
+              <th scope="row">{{ item.category }}</th>
+              <td>{{ item.title }}</td>
+              <td>${{ item.origin_price.toLocaleString() }}</td>
+              <td>${{ item.price.toLocaleString() }}</td>
+              <td>{{ item.options.rating }}</td>
+              <td>{{ item.options.stock }}</td>
+              <td :class="{ 'text-success': item.is_enabled }">
+                {{ item.is_enabled ? '啟用' : '未啟用' }}
+              </td>
+              <td align="right">
+                <div class="btn-group">
+                  <button
+                    class="btn btn-outline-secondary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#productModal"
+                    @click="statusModal('put', item)"
+                  >
+                    編輯
+                  </button>
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                    @click="statusModal('delete', item)"
+                  >
+                    刪除
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <loading v-model:active="isLoading"></loading>
+      <Pagination
+        :category="category"
+        :pagination="pagination"
+        @page="getProducts"
+      />
     </div>
-    <Pagination
-      :category="category"
-      :pagination="pagination"
-      @page="getProducts"
-    />
     <ProductModal
       ref="modal"
       :status="status"
@@ -124,16 +129,15 @@ export default {
           if (res.data.success) {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
-            this.isLoading = false;
           } else {
-            this.isLoading = false;
             this.$swal({ title: res.data.message, icon: 'error' });
             this.$router.push('/');
           }
+          this.isLoading = false;
         })
         .catch((error) => {
-          this.isLoading = false;
           this.$swal({ title: error.data.message, icon: 'error' });
+          this.isLoading = false;
         });
     },
     statusModal(status, data) {
@@ -149,17 +153,16 @@ export default {
         .then((res) => {
           if (res.data.success) {
             document.cookie = 'hexToken=; expires=; path=/';
-            this.isLoading = false;
             this.$swal({ title: res.data.message, icon: 'success' });
             this.$router.push('/');
           } else {
-            this.isLoading = false;
             this.$swal({ title: res.data.message, icon: 'error' });
           }
+          this.isLoading = false;
         })
         .catch((error) => {
-          this.isLoading = false;
           this.$swal({ title: error.data.message, icon: 'error' });
+          this.isLoading = false;
         });
     },
     loading(boolean) {
@@ -199,6 +202,9 @@ export default {
 </script>
 
 <style lang="scss">
+.table-responsive th {
+  word-break: keep-all;
+}
 .bg-gradual {
   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
 }

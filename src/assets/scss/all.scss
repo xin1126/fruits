@@ -1,4 +1,5 @@
+@import '~bootstrap/scss/bootstrap';
+
 @import'./base/reset';
 @import './helpers/swal';
-
-@import '~bootstrap/scss/bootstrap';
+@import './helpers/_mixins';
