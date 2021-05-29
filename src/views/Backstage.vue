@@ -1,8 +1,10 @@
 <template>
   <section class="bg-gradual h-auto">
     <div
-      class="container py-5"
-      :class="{ 'vh-100': categoryProducts.length < 12 }"
+      class="container pt-5"
+      :class="{
+        'vh-100': categoryProducts.length < 12,
+      }"
     >
       <button class="btn btn-info text-white d-block ms-auto" @click="signout">
         登出
@@ -18,7 +20,7 @@
         </button>
         <ProductsCategory @value="categoryValue" ref="category" />
       </div>
-      <table class="table table-hover mb-4">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col" class="ps-3" width="10%">縮圖</th>
@@ -138,6 +140,7 @@ export default {
       this.status = status;
       this.$refs.modal.verificationStart = false;
       this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { stock: '', rating: '' } } : JSON.parse(JSON.stringify(data));
+      this.$bus.emit('tempProduct', this.$refs.modal.tempProduct);
     },
     signout() {
       const url = `${process.env.VUE_APP_APIURL}/logout`;
@@ -175,6 +178,11 @@ export default {
       const newArr = this.category === 'total' ? this.products : this.$refs.category.allProducts.filter((item) => item.category === this.category);
       return newArr;
     },
+  },
+  created() {
+    this.$bus.on('loading', (boolean) => {
+      this.loading(boolean);
+    });
   },
   mounted() {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
