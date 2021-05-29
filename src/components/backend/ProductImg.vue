@@ -12,7 +12,7 @@
       </button>
       <button
         type="button"
-        class="btn btn-sm btn-secondary ms-2"
+        class="btn btn-sm btn-secondary ms-2 mb-2 mb-sm-0"
         @click="displayInput = !displayInput"
       >
         切換上傳圖片方式

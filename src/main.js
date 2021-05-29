@@ -13,7 +13,7 @@ const options = {
   toast: true,
   position: 'top',
   showConfirmButton: false,
-  // timer: 2000,
+  timer: 2000,
 };
 const app = createApp(App);
 app.config.globalProperties.$bus = bus;

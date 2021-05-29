@@ -1,10 +1,14 @@
 <template>
-  <section class="bg-gradual h-auto">
+  <section class="bg-gradual">
     <div
       class="container py-5"
-      :class="{
-        'vh-100': categoryProducts.length < 12,
-      }"
+      :class="[
+        !pagination.has_next && category === 'total'
+          ? 'vh-xl-100'
+          : categoryProducts.length < 12 && category !== 'total'
+          ? 'vh-100'
+          : 'h-auto',
+      ]"
     >
       <button
         class="btn btn-info text-white d-block ms-auto mb-3 mb-sm-0"

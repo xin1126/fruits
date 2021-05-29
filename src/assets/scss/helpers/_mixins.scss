@@ -2,28 +2,31 @@
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
     .w#{$infix}-100 {
-      width: 100%;
+      width: 100% !important; 
     }
     .w#{$infix}-75 {
-      width: 75%;
+      width: 75% !important;
     }
     .w#{$infix}-50 {
-      width: 50%;
+      width: 50% !important;
     }
     .w#{$infix}-25 {
-      width: 25%;
+      width: 25% !important;
     }
     .h#{$infix}-100 {
-      height: 100%;
+      height: 100% !important;
     }
     .h#{$infix}-75 {
-      height: 75%;
+      height: 75% !important;
     }
     .h#{$infix}-50 {
-      height: 50%;
+      height: 50% !important;
     }
     .h#{$infix}-25 {
-      height: 25%;
+      height: 25% !important;
+    }
+    .vh#{$infix}-100 {
+      height: 100vh !important;
     }
   }
 }

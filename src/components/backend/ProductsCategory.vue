@@ -1,6 +1,6 @@
 <template>
   <select
-    class="form-select w-md-25 w-50 ms-3 bg-transparent"
+    class="form-select w-50 w-md-25 ms-3 bg-transparent"
     aria-label="Default select example"
     v-model="categoryValue"
     @change="categoryEmit(categoryValue)"
