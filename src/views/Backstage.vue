@@ -1,15 +1,6 @@
 <template>
-  <section class="bg-gradual">
-    <div
-      class="container py-5"
-      :class="[
-        !pagination.has_next && category === 'total'
-          ? 'vh-xl-100'
-          : categoryProducts.length < 12 && category !== 'total'
-          ? 'vh-100'
-          : 'h-auto',
-      ]"
-    >
+  <section>
+    <div class="container py-5">
       <button
         class="btn btn-info text-white d-block ms-auto mb-3 mb-sm-0"
         @click="signout"
@@ -51,7 +42,6 @@
               <th scope="row">
                 <img
                   :src="item.imgUrl"
-                  :alt="item.title"
                   class="img-transparent w-lg-50 w-md-75 ps-2"
                 />
               </th>
@@ -194,9 +184,7 @@ export default {
     },
   },
   created() {
-    this.$bus.on('loading', (boolean) => {
-      this.loading(boolean);
-    });
+    this.$bus.on('loading', (boolean) => this.loading(boolean));
   },
   mounted() {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
@@ -211,18 +199,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.table-responsive th {
-  word-break: keep-all;
-}
-.bg-gradual {
-  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
-}
-.img-transparent {
-  mix-blend-mode: multiply;
-}
-textarea {
-  height: 150px;
-}
-</style>

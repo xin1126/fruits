@@ -3,6 +3,10 @@ th {
   vertical-align: middle;
 }
 
+.table-responsive th {
+  word-break: keep-all;
+}
+
 a {
   text-decoration: none !important;
   display: block;

@@ -248,6 +248,7 @@ export default {
     return {
       modal: '',
       tempProduct: {
+        imgUrl: '',
         imagesUrl: [],
         options: {
           stock: '',
@@ -272,8 +273,8 @@ export default {
   },
   methods: {
     handlingProduct() {
-      const img = JSON.parse(JSON.stringify(this.$refs.img.tempProduct));
-      this.tempProduct = { ...this.tempProduct, ...img };
+      this.tempProduct.imgUrl = this.$refs.img.tempProduct.imgUrl;
+      this.tempProduct.imagesUrl = this.$refs.img.tempProduct.imagesUrl;
       const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/product`;
       const url = this.status !== 'post' ? `${api}/${this.tempProduct.id}` : api;
       const data = this.status !== 'delete' ? { data: { ...this.tempProduct } } : '';
@@ -303,3 +304,9 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+textarea {
+  height: 150px;
+}
+</style>

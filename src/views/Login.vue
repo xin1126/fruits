@@ -1,5 +1,5 @@
 <template>
-  <section class="backstage-bg w-100 vh-100">
+  <section class="bg-backstage w-100 vh-100">
     <div class="container">
       <div class="row vh-100 justify-content-end align-content-center">
         <div class="col-12 col-md-6 col-xl-4">
@@ -47,7 +47,14 @@
         </div>
       </div>
     </div>
-    <loading v-model:active="isLoading"></loading>
+    <loading v-model:active="isLoading">
+      <div class="loadingio-spinner-ripple-s9x0fb0v5xl">
+        <div class="ldio-85i9asunyhd">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </loading>
   </section>
 </template>
 
@@ -94,8 +101,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.backstage-bg {
+<style scoped lang="scss">
+.bg-backstage {
   background-image: url('~@/assets/images/backstage-bg.jpg');
   background-position: center center;
   background-size: cover;

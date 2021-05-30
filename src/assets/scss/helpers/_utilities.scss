@@ -25,8 +25,16 @@
     .h#{$infix}-25 {
       height: 25% !important;
     }
-    .vh#{$infix}-100 {
-      height: 100vh !important;
-    }
   }
 }
+.img-transparent {
+  mix-blend-mode: multiply;
+}
+
+.bg {
+  margin: 0px;
+  padding: 0px;
+  background: linear-gradient(to top, #accbee 0%, #e7f0fd 100%) center center
+    fixed no-repeat;
+  background-size: cover;
+} 

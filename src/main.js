@@ -19,15 +19,7 @@ const app = createApp(App);
 app.config.globalProperties.$bus = bus;
 app.use(router);
 app.use(VueAxios, axios);
-app.use(VueLoading, {
-  color: '#D3AC2B',
-  loader: 'bars',
-  width: 64,
-  height: 64,
-  backgroundColor: '#fff',
-  opacity: 1,
-  zIndex: 9999,
-});
+app.use(VueLoading);
 app.use(VueSweetalert2, options);
 app.component('loading', VueLoading);
 app.mount('#app');
