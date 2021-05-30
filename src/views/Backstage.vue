@@ -88,7 +88,14 @@
           </tbody>
         </table>
       </div>
-      <loading v-model:active="isLoading"></loading>
+      <loading v-model:active="isLoading">
+        <div class="loadingio-spinner-ripple-s9x0fb0v5xl">
+          <div class="ldio-85i9asunyhd">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </loading>
       <Pagination
         :category="category"
         :pagination="pagination"

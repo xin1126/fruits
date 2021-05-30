@@ -237,8 +237,6 @@
       </div>
     </div>
   </section>
-  <!-- Modal -->
-  <!-- 刪除 -->
 </template>
 
 <script>
