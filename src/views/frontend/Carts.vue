@@ -92,7 +92,6 @@
               ></Field>
               <Message name="email" class="invalid-feedback"></Message>
             </div>
-
             <div class="mb-3">
               <label for="name" class="form-label">收件人姓名</label>
               <Field
@@ -107,7 +106,6 @@
               ></Field>
               <Message name="姓名" class="invalid-feedback"></Message>
             </div>
-
             <div class="mb-3">
               <label for="tel" class="form-label">收件人電話</label>
               <Field
@@ -122,7 +120,6 @@
               ></Field>
               <Message name="電話" class="invalid-feedback"></Message>
             </div>
-
             <div class="mb-3">
               <label for="address" class="form-label">收件人地址</label>
               <Field
@@ -155,9 +152,7 @@
         </div>
       </div>
       <div v-else class="d-flex justify-content-center">
-        <router-link to="/"
-          ><img src="@/assets/images/buy.jpg" alt=""
-        /></router-link>
+        <router-link to="/"><img :src="img" alt="" /></router-link>
       </div>
     </div>
   </section>
@@ -191,6 +186,7 @@ export default {
         message: '',
       },
       cart: {},
+      img: '',
       isLoading: false,
     };
   },
@@ -207,6 +203,7 @@ export default {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
           this.isLoading = false;
+          this.img = !this.cart.carts.length ? 'https://i.imgur.com/JWtbdcf.jpg' : '';
         })
         .catch((error) => {
           this.$swal({ title: error.data?.message, icon: 'error' });
