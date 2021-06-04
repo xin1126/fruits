@@ -136,15 +136,12 @@
                   placeholder="請輸入星級"
                   v-model="tempProduct.options.rating"
                 />
-                <label for="stock" class="col-form-label">庫存</label>
+                <label for="date" class="col-form-label">建立時間</label>
                 <input
-                  type="number"
+                  type="text"
                   class="form-control"
-                  id="stock"
-                  min="1"
-                  max="10000"
-                  placeholder="請輸入庫存"
-                  v-model="tempProduct.options.stock"
+                  id="date"
+                  v-model="tempProduct.options.date"
                 />
               </div>
               <div class="form-group col-xl-5">
@@ -251,7 +248,7 @@ export default {
         imgUrl: '',
         imagesUrl: [],
         options: {
-          stock: '',
+          date: '',
           rating: '',
         },
       },

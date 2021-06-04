@@ -2,14 +2,14 @@
   <section>
     <div class="container py-5">
       <button
-        class="btn btn-info text-white d-block ms-auto mb-3 mb-sm-0"
+        class="btn btn-success text-white d-block ms-auto mb-3 mb-sm-0"
         @click="signout"
       >
         登出
       </button>
       <div class="d-flex">
         <button
-          class="btn btn-info text-white btn-sm"
+          class="btn btn-success text-white btn-sm"
           data-bs-toggle="modal"
           data-bs-target="#productModal"
           @click="statusModal('post', '')"
@@ -28,7 +28,7 @@
               <th scope="col">原價</th>
               <th scope="col">售價</th>
               <th scope="col">星級</th>
-              <th scope="col">庫存</th>
+              <th scope="col">建立時間</th>
               <th scope="col" width="10%">是否啟用</th>
               <th scope="col" class="text-center" width="10%">操作</th>
             </tr>
@@ -50,7 +50,7 @@
               <td>${{ item.origin_price.toLocaleString() }}</td>
               <td>${{ item.price.toLocaleString() }}</td>
               <td>{{ item.options.rating }}</td>
-              <td>{{ item.options.stock }}</td>
+              <td>{{ item.options.date }}</td>
               <td :class="{ 'text-success': item.is_enabled }">
                 {{ item.is_enabled ? '啟用' : '未啟用' }}
               </td>
@@ -79,10 +79,16 @@
         </table>
       </div>
       <loading v-model:active="isLoading">
-        <div class="loadingio-spinner-ripple-s9x0fb0v5xl">
-          <div class="ldio-85i9asunyhd">
-            <div></div>
-            <div></div>
+        <div class="loadingio-spinner-spin-3mx4cy187my">
+          <div class="ldio-vvip0fav2if">
+            <div><div></div></div>
+            <div><div></div></div>
+            <div><div></div></div>
+            <div><div></div></div>
+            <div><div></div></div>
+            <div><div></div></div>
+            <div><div></div></div>
+            <div><div></div></div>
           </div>
         </div>
       </loading>
@@ -142,9 +148,10 @@ export default {
         });
     },
     statusModal(status, data) {
+      const date = new Date().toISOString().split('T')[0];
       this.status = status;
       this.$refs.modal.verificationStart = false;
-      this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { stock: '', rating: '' } } : JSON.parse(JSON.stringify(data));
+      this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { rating: '', date } } : JSON.parse(JSON.stringify(data));
       this.$bus.emit('tempProduct', this.$refs.modal.tempProduct);
     },
     signout() {

@@ -1,7 +1,7 @@
 <template>
   <section class="bg-backstage w-100 vh-100">
     <div class="container">
-      <div class="row vh-100 justify-content-end align-content-center">
+      <div class="row vh-100 justify-content-center align-content-center">
         <div class="col-12 col-md-6 col-xl-4">
           <div class="rounded shadow-lg bg-translucent p-3">
             <h3 class="mb-3 text-center text-white fw-bold">
@@ -48,10 +48,16 @@
       </div>
     </div>
     <loading v-model:active="isLoading">
-      <div class="loadingio-spinner-ripple-s9x0fb0v5xl">
-        <div class="ldio-85i9asunyhd">
-          <div></div>
-          <div></div>
+      <div class="loadingio-spinner-spin-3mx4cy187my">
+        <div class="ldio-vvip0fav2if">
+          <div><div></div></div>
+          <div><div></div></div>
+          <div><div></div></div>
+          <div><div></div></div>
+          <div><div></div></div>
+          <div><div></div></div>
+          <div><div></div></div>
+          <div><div></div></div>
         </div>
       </div>
     </loading>
@@ -106,8 +112,5 @@ export default {
   background-image: url('~@/assets/images/backstage-bg.jpg');
   background-position: center center;
   background-size: cover;
-}
-.bg-translucent {
-  background-color: rgba(0, 0, 0, 0.2);
 }
 </style>

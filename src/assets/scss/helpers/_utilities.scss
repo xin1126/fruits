@@ -27,14 +27,38 @@
     }
   }
 }
+.z-index{
+  z-index: 1;
+}
+
+.cursor-pointer{ 
+  cursor: pointer; 
+}
+
+.content {
+  min-height: calc(100vh - 63px);
+}
+
 .img-transparent {
   mix-blend-mode: multiply;
 }
 
+.bg-translucent {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.text-align-justfy{
+  text-align:justify;
+}
 .bg {
   margin: 0px;
   padding: 0px;
-  background: linear-gradient(to top, #accbee 0%, #e7f0fd 100%) center center
+  background: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%) center center
     fixed no-repeat;
   background-size: cover;
-} 
+}
+
+.d-flex-center{
+  display: flex;
+  justify-content: center;
+  align-items:center
+}

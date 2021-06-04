@@ -22,7 +22,9 @@
       </li>
       <li
         :class="[
-          pagination.current_page === item ? ['bg-info', 'rounded-circle'] : '',
+          pagination.current_page === item
+            ? ['bg-success', 'rounded-circle']
+            : '',
         ]"
         v-for="item in pagination.total_pages"
         :key="item"
