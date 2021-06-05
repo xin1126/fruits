@@ -3,7 +3,7 @@
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-          <router-link class="navbar-brand text-white logo" to="/home"
+          <router-link class="navbar-brand text-white logo" to="/frontend/home"
             >Fresh Fruits</router-link
           >
           <div>
@@ -21,27 +21,37 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav align-items-center">
                 <li class="nav-item pe-2">
-                  <router-link class="nav-link text-white fw-bold" to="/home"
+                  <router-link
+                    class="nav-link text-white fw-bold"
+                    to="/frontend/home"
                     >首頁</router-link
                   >
                 </li>
                 <li class="nav-item pe-2">
-                  <router-link class="nav-link text-white fw-bold" to="/about"
+                  <router-link
+                    class="nav-link text-white fw-bold"
+                    to="/frontend/about"
                     >關於我們</router-link
                   >
                 </li>
                 <li class="nav-item pe-2">
-                  <router-link class="nav-link text-white fw-bold" to="/"
+                  <router-link
+                    class="nav-link text-white fw-bold"
+                    to="/frontend/products"
                     >商品列表</router-link
                   >
                 </li>
                 <li class="nav-item">
-                  <router-link class="nav-link text-white fw-bold" to="/faq"
+                  <router-link
+                    class="nav-link text-white fw-bold"
+                    to="/frontend/faq"
                     >常見問題</router-link
                   >
                 </li>
                 <li class="nav-item position-relative">
-                  <router-link class="nav-link text-white fw-bold" to="/carts"
+                  <router-link
+                    class="nav-link text-white fw-bold"
+                    to="/frontend/carts"
                     ><span
                       class="badge rounded-circle bg-danger position-absolute"
                       >{{ cartsQuantity }}</span

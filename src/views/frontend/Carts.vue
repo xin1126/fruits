@@ -18,24 +18,17 @@
           <table class="table align-middle">
             <thead>
               <tr>
-                <th width="10%">刪除</th>
                 <th width="10%">縮圖</th>
-                <th>品名</th>
-                <th style="width: 150px">數量/單位</th>
-                <th class="text-end">單價</th>
+                <th width="10%">品名</th>
+                <th width="10%">單價</th>
+                <th width="35%" class="text-center">數量</th>
+                <th width="10%">單位</th>
+                <th width="10%" class="text-end">金額</th>
+                <th width="10%" class="text-end">刪除</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in cart.carts" :key="item.id">
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger btn-sm"
-                    @click="removeCartItem(item.id)"
-                  >
-                    x
-                  </button>
-                </td>
                 <td>
                   <img
                     :src="item.product.imgUrl"
@@ -46,29 +39,45 @@
                 <td>
                   {{ item.product.title }}
                 </td>
-                <td>
-                  <div class="input-group input-group-sm">
-                    <div class="input-group mb-3">
-                      <input
-                        v-model.number="item.qty"
-                        @blur="updateCart(item)"
-                        min="1"
-                        type="number"
-                        class="form-control"
-                      />
-                      <span class="input-group-text" id="basic-addon2">{{
-                        item.product.unit
-                      }}</span>
-                    </div>
+                <td>{{ item.product.price }}</td>
+                <td class="px-lg-5">
+                  <div class="input-group">
+                    <button
+                      type="button"
+                      class="input-group-text"
+                      :disabled="item.qty === 1"
+                      @click="updateCart(item.id, item.qty - 1)"
+                    >
+                      <i class="bi bi-dash-lg"></i>
+                    </button>
+                    <p class="form-control text-center m-0">{{ item.qty }}</p>
+                    <button
+                      type="button"
+                      class="input-group-text"
+                      @click="updateCart(item.id, item.qty + 1)"
+                    >
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
                   </div>
                 </td>
+                <td>{{ item.product.unit }}</td>
                 <td class="text-end">
                   {{ item.final_total.toLocaleString() }}
                 </td>
+                <td class="text-end">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm"
+                    @click="removeCartItem(item.id)"
+                  >
+                    x
+                  </button>
+                </td>
               </tr>
             </tbody>
-            <tfoot class="">
+            <tfoot class="border-bottom">
               <tr>
+                <td></td>
                 <td></td>
                 <td colspan="3" class="text-end">總計</td>
                 <td class="text-end">{{ cart.total?.toLocaleString() }}</td>
@@ -152,7 +161,9 @@
         </div>
       </div>
       <div v-else class="d-flex justify-content-center">
-        <router-link to="/"><img :src="img" alt="" /></router-link>
+        <router-link to="/frontend/products"
+          ><img :src="img" alt=""
+        /></router-link>
       </div>
     </div>
   </section>
@@ -199,6 +210,7 @@ export default {
           if (res.data.success) {
             this.cart = res.data.data;
             this.$bus.emit('cartsQuantity', this.cart.carts.length);
+            console.log(this.cart);
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
@@ -247,6 +259,26 @@ export default {
           this.isLoading = false;
         });
     },
+    updateCart(id, qty) {
+      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart/${id}`;
+      this.isLoading = true;
+      const cart = {
+        product_id: id,
+        qty,
+      };
+      console.log(cart);
+      this.axios.put(url, { data: cart }).then((res) => {
+        if (res.data.success) {
+          this.$swal({ title: res.data.message, icon: 'success' });
+          this.isLoading = false;
+          this.getCart();
+        } else {
+          this.$swal({ title: res.data.message, icon: 'error' });
+          this.isLoading = false;
+        }
+        console.log(res);
+      });
+    },
     createOrder() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/order`;
       const order = this.form;
@@ -281,7 +313,6 @@ export default {
   background-image: url('~@/assets/images/banner2.jpg');
   background-position: center;
   background-size: cover;
-  padding-top: 70px;
   height: 300px;
 }
 </style>
