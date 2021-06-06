@@ -161,9 +161,7 @@
         </div>
       </div>
       <div v-else class="d-flex justify-content-center">
-        <router-link to="/frontend/products"
-          ><img :src="img" alt=""
-        /></router-link>
+        <router-link to="/"><img :src="img" alt="" /></router-link>
       </div>
     </div>
   </section>
@@ -210,7 +208,6 @@ export default {
           if (res.data.success) {
             this.cart = res.data.data;
             this.$bus.emit('cartsQuantity', this.cart.carts.length);
-            console.log(this.cart);
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
@@ -266,7 +263,6 @@ export default {
         product_id: id,
         qty,
       };
-      console.log(cart);
       this.axios.put(url, { data: cart }).then((res) => {
         if (res.data.success) {
           this.$swal({ title: res.data.message, icon: 'success' });
@@ -276,7 +272,6 @@ export default {
           this.$swal({ title: res.data.message, icon: 'error' });
           this.isLoading = false;
         }
-        console.log(res);
       });
     },
     createOrder() {

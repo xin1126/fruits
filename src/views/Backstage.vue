@@ -162,7 +162,7 @@ export default {
           if (res.data.success) {
             document.cookie = 'hexToken=; expires=; path=/';
             this.$swal({ title: res.data.message, icon: 'success' });
-            this.$router.push('/');
+            this.$router.push('/login');
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }

@@ -28,7 +28,7 @@
   }
 }
 .z-index{
-  z-index: 1;
+  z-index: 999;
 }
 
 .cursor-pointer{ 
@@ -54,7 +54,7 @@
   margin: 0px;
   padding: 0px;
   background: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%) center center
-    fixed no-repeat;
+  fixed no-repeat;
   background-size: cover;
 }
 
@@ -62,4 +62,12 @@
   display: flex;
   justify-content: center;
   align-items:center
+}
+
+.bi-bookmark-heart, .bi-bookmark-heart-fill{
+  &:hover{
+    transition: 0.5s;
+    color: #198754 !important;
+    font-size: 35px !important;
+  }
 }

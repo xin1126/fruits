@@ -11,6 +11,9 @@ import {
 import AllRules from '@vee-validate/rules';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import SwiperCore, { Autoplay } from 'swiper';
+import 'swiper/swiper.scss';
 import bus from './bus';
 import App from './App.vue';
 import router from './router';
@@ -31,10 +34,13 @@ configure({
 setLocale('zh_TW');
 const app = createApp(App);
 app.config.globalProperties.$bus = bus;
+SwiperCore.use(Autoplay);
 app.use(router);
 app.use(VueAxios, axios);
 app.use(VueLoading);
 app.use(VueSweetalert2, options);
+app.component('Swiper', Swiper);
+app.component('SwiperSlide', SwiperSlide);
 app.component('Field', Field);
 app.component('Form', Form);
 app.component('Message', ErrorMessage);

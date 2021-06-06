@@ -37,25 +37,54 @@
       <ul class="row row-cols-1 row-cols-md-4 g-4 p-0">
         <li class="col" v-for="item in categoryProducts" :key="item.id">
           <div class="card h-100 border-0">
-            <div
-              class="
-                img-content
-                position-relative
-                d-flex-center
-                bg-light
-                cursor-pointer
-                w-100
-                py-4
-              "
-              @click="$router.push(`/frontend/detailed/${item.id}`)"
-            >
-              <img
-                :src="item.imgUrl"
-                class="img-transparent"
-                :alt="item.title"
-              />
-              <p class="position-absolute text-white fw-bold fs-4">查看更多</p>
+            <div @click="detailed(item.id)">
+              <div
+                class="
+                  img-content
+                  position-relative
+                  d-flex-center
+                  bg-light
+                  cursor-pointer
+                  w-100
+                  py-4
+                "
+              >
+                <img
+                  :src="item.imgUrl"
+                  class="img-transparent"
+                  :alt="item.title"
+                />
+                <p class="position-absolute text-white fw-bold fs-4">
+                  查看更多
+                </p>
+                <div
+                  class="position-absolute text-warning top-0 mt-1 ms-3 w-100"
+                >
+                  <i
+                    class="bi"
+                    :class="[
+                      item.options.rating >= num ? 'bi-star-fill' : 'bi-star',
+                    ]"
+                    v-for="num in 5"
+                    :key="num"
+                  ></i>
+                </div>
+              </div>
             </div>
+            <a
+              href="#"
+              class="position-absolute top-0 end-0 mt-1 me-2"
+              @click.prevent="item.bookmark = !item.bookmark"
+            >
+              <i
+                class="bi fs-3"
+                :class="[
+                  item.bookmark
+                    ? ['text-success', 'bi-bookmark-heart-fill']
+                    : ['text-secondary', 'bi-bookmark-heart'],
+                ]"
+              ></i>
+            </a>
             <div class="card-body">
               <h5 class="card-title text-center fw-bold">{{ item.title }}</h5>
               <div class="d-flex justify-content-center">
@@ -108,6 +137,76 @@
           </div>
         </li>
       </ul>
+      <hr class="border border-success border-3" />
+      <h3 class="text-center fw-bold mb-3">五星好評熱門商品</h3>
+      <Swiper
+        :slides-per-view="4"
+        :space-between="50"
+        :loop="true"
+        :loopFillGroupWithBlank="true"
+        :autoplay="autoplay"
+      >
+        <SwiperSlide v-for="item in FiveStarsProducts" :key="item.id">
+          <div @click="$router.push(`/detailed/${item.id}`)">
+            <div
+              class="
+                img-content
+                position-relative
+                d-flex-center
+                bg-light
+                cursor-pointer
+                w-100
+                py-4
+              "
+            >
+              <img
+                :src="item.imgUrl"
+                class="img-transparent"
+                :alt="item.title"
+              />
+              <p class="position-absolute text-white fw-bold fs-4">查看更多</p>
+              <div class="position-absolute text-warning top-0 mt-1 ms-3 w-100">
+                <i
+                  class="bi"
+                  :class="[
+                    item.options.rating >= num ? 'bi-star-fill' : 'bi-star',
+                  ]"
+                  v-for="num in 5"
+                  :key="num"
+                ></i>
+              </div>
+            </div>
+          </div>
+          <a
+            href="#"
+            class="position-absolute top-0 end-0 mt-1 me-2"
+            @click.prevent="item.bookmark = !item.bookmark"
+          >
+            <i
+              class="bi fs-3"
+              :class="[
+                item.bookmark
+                  ? ['text-success', 'bi-bookmark-heart-fill']
+                  : ['text-secondary', 'bi-bookmark-heart'],
+              ]"
+            ></i>
+          </a>
+          <h5 class="card-title text-center fw-bold mt-3">{{ item.title }}</h5>
+          <div class="d-flex justify-content-center">
+            <small
+              class="
+                card-text
+                text-decoration-line-through text-secondary
+                mt-1
+                me-2
+              "
+            >
+              原價:NT${{ item.origin_price }}
+            </small>
+            <p class="fw-bold">售價:NT${{ item.price }}</p>
+          </div>
+        </SwiperSlide>
+      </Swiper>
     </div>
     <loading v-model:active="isLoading">
       <div class="loadingio-spinner-spin-3mx4cy187my">
@@ -135,16 +234,23 @@ export default {
       allProducts: [],
       category: [],
       isLoading: false,
+      autoplay: {
+        delay: 2000,
+        disableOnInteraction: false,
+      },
     };
   },
   methods: {
     getAllProducts() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/products/all`;
+      this.isLoading = true;
       this.axios.get(url)
         .then((res) => {
           if (res.data.success) {
             this.allProducts = Object.values(res.data.products);
-            this.allProducts = this.allProducts.map((item) => ({ ...item, num: 1, joined: false }));
+            this.allProducts = this.allProducts.map((item) => ({
+              ...item, num: 1, joined: false, bookmark: false,
+            }));
             this.category = new Set(Object.values(res.data.products).map((item) => item.category));
             this.getCart();
           } else {
@@ -185,7 +291,6 @@ export default {
     },
     getCart() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
-      this.isLoading = true;
       this.axios.get(url)
         .then((res) => {
           if (res.data.success) {
@@ -208,10 +313,18 @@ export default {
           this.isLoading = false;
         });
     },
+    detailed(id) {
+      this.$router.push(`/detailed/${id}`);
+      this.$bus.emit('products', this.allProducts);
+    },
   },
   computed: {
     categoryProducts() {
       const newArr = this.categoryValue === 'total' ? this.allProducts : this.allProducts.filter((item) => item.category === this.categoryValue);
+      return newArr;
+    },
+    FiveStarsProducts() {
+      const newArr = this.allProducts.filter((item) => item.options.rating === '5');
       return newArr;
     },
   },
@@ -222,6 +335,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.swiper-slide img {
+  width: 150px;
+  height: 150px;
+}
 .border-none > li:last-child {
   border: none !important;
 }
@@ -238,6 +355,11 @@ export default {
     background-color: rgba(0, 0, 0, 0.4) !important;
     p {
       display: block;
+    }
+    img {
+      transition: 0.5s;
+      filter: grayscale(50%);
+      transform: scale(1.2, 1.2);
     }
   }
   img {

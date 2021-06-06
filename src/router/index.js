@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
   {
-    path: '/frontend',
+    path: '/',
     component: () => import('../views/frontend/Layout.vue'),
     children: [
       {
@@ -10,7 +10,7 @@ const routes = [
         component: () => import('../views/frontend/Home.vue'),
       },
       {
-        path: 'products',
+        path: '',
         component: () => import('../views/frontend/Products.vue'),
       },
       {
@@ -24,6 +24,10 @@ const routes = [
       {
         path: 'carts',
         component: () => import('../views/frontend/Carts.vue'),
+      },
+      {
+        path: 'favorites',
+        component: () => import('../views/frontend/Favorites.vue'),
       },
       {
         path: 'detailed/:id',
