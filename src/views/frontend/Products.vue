@@ -3,7 +3,6 @@
     <div class="banner d-flex-center text-white fs-2 mb-4">
       <p class="bg-translucent fw-bolder px-5 py-3">商品列表</p>
     </div>
-    <button type="button" @click="fn">測試</button>
     <div class="container">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -53,24 +52,13 @@
         :autoplay="autoplay"
       >
         <SwiperSlide v-for="item in fiveStarsProducts" :key="item.id">
-          <ProductImg :item="item" />
+          <ProductImg :item="item" @bookmark-data="bookmark" />
         </SwiperSlide>
       </Swiper>
     </div>
-    <loading v-model:active="isLoading">
-      <div class="loadingio-spinner-spin-3mx4cy187my">
-        <div class="ldio-vvip0fav2if">
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-        </div>
-      </div>
-    </loading>
+    <Loading :active="isLoading">
+      <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
+    </Loading>
   </section>
 </template>
 
@@ -99,8 +87,13 @@ export default {
     AddToCart,
   },
   methods: {
-    getAllProducts() { },
-    tempCart() { },
+    getAllProducts() {
+      this.getAllProducts = getAllProducts;
+      this.getAllProducts();
+    },
+    tempCart() {
+      this.tempCart = getCart;
+    },
     getCart() {
       this.tempCart();
     },
@@ -127,11 +120,8 @@ export default {
       return newArr;
     },
   },
-  created() {
-    this.tempCart = getCart;
-    this.getAllProducts = getAllProducts;
-  },
   mounted() {
+    this.tempCart();
     this.getAllProducts();
   },
 };

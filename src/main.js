@@ -44,5 +44,5 @@ app.component('SwiperSlide', SwiperSlide);
 app.component('Field', Field);
 app.component('Form', Form);
 app.component('Message', ErrorMessage);
-app.component('loading', VueLoading);
+app.component('Loading', VueLoading);
 app.mount('#app');

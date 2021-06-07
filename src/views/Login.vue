@@ -47,20 +47,9 @@
         </div>
       </div>
     </div>
-    <loading v-model:active="isLoading">
-      <div class="loadingio-spinner-spin-3mx4cy187my">
-        <div class="ldio-vvip0fav2if">
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-          <div><div></div></div>
-        </div>
-      </div>
-    </loading>
+    <Loading :active="isLoading">
+      <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
+    </Loading>
   </section>
 </template>
 

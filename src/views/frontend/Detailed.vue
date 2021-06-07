@@ -61,25 +61,14 @@
         :autoplay="autoplay"
       >
         <SwiperSlide v-for="item in relatedProducts" :key="item.id">
-          <ProductImg :item="item" @bookmark-data="bookmark" ref="productImg" />
+          <ProductImg :item="item" @bookmark-data="bookmark" />
         </SwiperSlide>
       </Swiper>
     </div>
   </div>
-  <loading v-model:active="isLoading">
-    <div class="loadingio-spinner-spin-3mx4cy187my">
-      <div class="ldio-vvip0fav2if">
-        <div><div></div></div>
-        <div><div></div></div>
-        <div><div></div></div>
-        <div><div></div></div>
-        <div><div></div></div>
-        <div><div></div></div>
-        <div><div></div></div>
-        <div><div></div></div>
-      </div>
-    </div>
-  </loading>
+  <Loading :active="isLoading">
+    <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
+  </Loading>
 </template>
 <script>
 import ProductImg from '@/components/frontend/ProductImg.vue';
@@ -116,14 +105,24 @@ export default {
         this.isLoading = false;
       });
     },
-    getAllProducts() { },
-    tempCart() { },
+    getAllProducts() {
+      this.getAllProducts = getAllProducts;
+      this.getAllProducts();
+    },
+    tempCart() {
+      this.tempCart = getCart;
+    },
     getCart() {
       this.tempCart();
     },
     cutoverBookmark(id) {
-      this.$refs.productImg.bookmark(id);
       this.singleBookmark = !this.singleBookmark;
+      this.relatedProducts.forEach((item, index) => {
+        if (item.id === id) {
+          this.relatedProducts[index].bookmark = this.singleBookmark;
+        }
+      });
+      this.bookmark(this.singleBookmark, id);
     },
     bookmark(bool, id) {
       if (bool) {
@@ -153,13 +152,14 @@ export default {
     singleProduct() {
       this.singleBookmark = this.singleProduct.bookmark;
     },
-  },
-  created() {
-    this.tempCart = getCart;
-    this.getAllProducts = getAllProducts;
+    $route() {
+      this.id = this.$route.params.id;
+      this.getProduct();
+    },
   },
   mounted() {
     this.id = this.$route.params.id;
+    this.tempCart();
     this.getAllProducts();
     this.getProduct();
   },
