@@ -197,6 +197,7 @@ export default {
       cart: {},
       img: '',
       isLoading: false,
+      test: '',
     };
   },
   methods: {

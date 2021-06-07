@@ -3,6 +3,7 @@
     <div class="banner d-flex-center text-white fs-2 mb-4">
       <p class="bg-translucent fw-bolder px-5 py-3">商品列表</p>
     </div>
+    <button type="button" @click="fn">測試</button>
     <div class="container">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -37,103 +38,8 @@
       <ul class="row row-cols-1 row-cols-md-4 g-4 p-0">
         <li class="col" v-for="item in categoryProducts" :key="item.id">
           <div class="card h-100 border-0">
-            <div @click="detailed(item.id)">
-              <div
-                class="
-                  img-content
-                  position-relative
-                  d-flex-center
-                  bg-light
-                  cursor-pointer
-                  w-100
-                  py-4
-                "
-              >
-                <img
-                  :src="item.imgUrl"
-                  class="img-transparent"
-                  :alt="item.title"
-                />
-                <p class="position-absolute text-white fw-bold fs-4">
-                  查看更多
-                </p>
-                <div
-                  class="position-absolute text-warning top-0 mt-1 ms-3 w-100"
-                >
-                  <i
-                    class="bi"
-                    :class="[
-                      item.options.rating >= num ? 'bi-star-fill' : 'bi-star',
-                    ]"
-                    v-for="num in 5"
-                    :key="num"
-                  ></i>
-                </div>
-              </div>
-            </div>
-            <a
-              href="#"
-              class="position-absolute top-0 end-0 mt-1 me-2"
-              @click.prevent="item.bookmark = !item.bookmark"
-            >
-              <i
-                class="bi fs-3"
-                :class="[
-                  item.bookmark
-                    ? ['text-success', 'bi-bookmark-heart-fill']
-                    : ['text-secondary', 'bi-bookmark-heart'],
-                ]"
-              ></i>
-            </a>
-            <div class="card-body">
-              <h5 class="card-title text-center fw-bold">{{ item.title }}</h5>
-              <div class="d-flex justify-content-center">
-                <small
-                  class="
-                    card-text
-                    text-decoration-line-through text-secondary
-                    mt-1
-                    me-2
-                  "
-                >
-                  原價:NT${{ item.origin_price }}
-                </small>
-                <p class="fw-bold">售價:NT${{ item.price }}</p>
-              </div>
-              <div class="input-group mb-3 mx-auto text-center w-75">
-                <button
-                  type="button"
-                  class="input-group-text"
-                  :disabled="item.joined || item.num === 1"
-                  @click="item.num--"
-                >
-                  <i class="bi bi-dash-lg"></i>
-                </button>
-                <p class="form-control m-0">{{ item.num }}</p>
-                <button
-                  type="button"
-                  class="input-group-text"
-                  :disabled="item.joined"
-                  @click="item.num++"
-                >
-                  <i class="bi bi-plus-lg"></i>
-                </button>
-              </div>
-              <button
-                type="button"
-                class="btn rounded-0 d-block mx-auto fw-bold"
-                :class="[
-                  !item.joined
-                    ? 'btn-outline-success'
-                    : ['btn-outline-secondary'],
-                ]"
-                :disabled="item.joined"
-                @click="addToCart(item.id, item.num)"
-              >
-                <i class="bi bi-cart-plus-fill me-1" v-show="!item.joined"></i
-                >{{ !item.joined ? '加入購物車' : '已加入購物車' }}
-              </button>
-            </div>
+            <ProductImg :item="item" />
+            <AddToCart :item="item" @get-data="getCart" @is-loading="loading" />
           </div>
         </li>
       </ul>
@@ -146,65 +52,8 @@
         :loopFillGroupWithBlank="true"
         :autoplay="autoplay"
       >
-        <SwiperSlide v-for="item in FiveStarsProducts" :key="item.id">
-          <div @click="$router.push(`/detailed/${item.id}`)">
-            <div
-              class="
-                img-content
-                position-relative
-                d-flex-center
-                bg-light
-                cursor-pointer
-                w-100
-                py-4
-              "
-            >
-              <img
-                :src="item.imgUrl"
-                class="img-transparent"
-                :alt="item.title"
-              />
-              <p class="position-absolute text-white fw-bold fs-4">查看更多</p>
-              <div class="position-absolute text-warning top-0 mt-1 ms-3 w-100">
-                <i
-                  class="bi"
-                  :class="[
-                    item.options.rating >= num ? 'bi-star-fill' : 'bi-star',
-                  ]"
-                  v-for="num in 5"
-                  :key="num"
-                ></i>
-              </div>
-            </div>
-          </div>
-          <a
-            href="#"
-            class="position-absolute top-0 end-0 mt-1 me-2"
-            @click.prevent="item.bookmark = !item.bookmark"
-          >
-            <i
-              class="bi fs-3"
-              :class="[
-                item.bookmark
-                  ? ['text-success', 'bi-bookmark-heart-fill']
-                  : ['text-secondary', 'bi-bookmark-heart'],
-              ]"
-            ></i>
-          </a>
-          <h5 class="card-title text-center fw-bold mt-3">{{ item.title }}</h5>
-          <div class="d-flex justify-content-center">
-            <small
-              class="
-                card-text
-                text-decoration-line-through text-secondary
-                mt-1
-                me-2
-              "
-            >
-              原價:NT${{ item.origin_price }}
-            </small>
-            <p class="fw-bold">售價:NT${{ item.price }}</p>
-          </div>
+        <SwiperSlide v-for="item in fiveStarsProducts" :key="item.id">
+          <ProductImg :item="item" />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -226,6 +75,10 @@
 </template>
 
 <script>
+import ProductImg from '@/components/frontend/ProductImg.vue';
+import AddToCart from '@/components/frontend/AddToCart.vue';
+import { getAllProducts, getCart } from '@/components/frontend/getData';
+
 export default {
   data() {
     return {
@@ -240,82 +93,18 @@ export default {
       },
     };
   },
+  components: {
+    ProductImg,
+    AddToCart,
+  },
   methods: {
-    getAllProducts() {
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/products/all`;
-      this.isLoading = true;
-      this.axios.get(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.allProducts = Object.values(res.data.products);
-            this.allProducts = this.allProducts.map((item) => ({
-              ...item, num: 1, joined: false, bookmark: false,
-            }));
-            this.category = new Set(Object.values(res.data.products).map((item) => item.category));
-            this.getCart();
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-        })
-        .catch((error) => {
-          this.$swal({ title: error.data.message, icon: 'error' });
-        });
-    },
-    addToCart(id, qty) {
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
-      this.isLoading = true;
-      const cart = {
-        product_id: id,
-        qty,
-      };
-      this.axios.post(url, { data: cart })
-        .then((res) => {
-          if (res.data.success) {
-            this.$swal({ title: `${res.data.data.product.title}加入購物車`, icon: 'success' });
-            this.allProducts.forEach((item, index) => {
-              if (item.id === id) {
-                this.allProducts[index].num = 1;
-              }
-            });
-            this.isLoading = false;
-            this.getCart();
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-            this.isLoading = false;
-          }
-        })
-        .catch((error) => {
-          this.$swal({ title: error.data.message, icon: 'error' });
-          this.isLoading = false;
-        });
-    },
+    getAllProducts() { },
+    tempCart() { },
     getCart() {
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
-      this.axios.get(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.cart = res.data.data;
-            this.$bus.emit('cartsQuantity', this.cart.carts.length);
-            this.cart.carts.forEach((cartsItem) => {
-              this.allProducts.forEach((productsItem, index) => {
-                if (cartsItem.product.id === productsItem.id) {
-                  this.allProducts[index].joined = true;
-                }
-              });
-            });
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.$swal({ title: error.data?.message, icon: 'error' });
-          this.isLoading = false;
-        });
+      this.tempCart();
     },
-    detailed(id) {
-      this.$router.push(`/detailed/${id}`);
-      this.$bus.emit('products', this.allProducts);
+    loading(boolean) {
+      this.isLoading = boolean;
     },
   },
   computed: {
@@ -323,10 +112,14 @@ export default {
       const newArr = this.categoryValue === 'total' ? this.allProducts : this.allProducts.filter((item) => item.category === this.categoryValue);
       return newArr;
     },
-    FiveStarsProducts() {
+    fiveStarsProducts() {
       const newArr = this.allProducts.filter((item) => item.options.rating === '5');
       return newArr;
     },
+  },
+  created() {
+    this.tempCart = getCart;
+    this.getAllProducts = getAllProducts;
   },
   mounted() {
     this.getAllProducts();
@@ -348,26 +141,5 @@ export default {
   background-size: cover;
   padding-top: 70px;
   height: 300px;
-}
-.img-content {
-  &:hover {
-    transition: 0.5s;
-    background-color: rgba(0, 0, 0, 0.4) !important;
-    p {
-      display: block;
-    }
-    img {
-      transition: 0.5s;
-      filter: grayscale(50%);
-      transform: scale(1.2, 1.2);
-    }
-  }
-  img {
-    width: 150px;
-    height: 150px;
-  }
-  p {
-    display: none;
-  }
 }
 </style>
