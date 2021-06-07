@@ -27,7 +27,16 @@
         <div class="col-5">
           <div class="d-flex justify-content-between">
             <h4 class="fw-bold">{{ singleProduct.title }}</h4>
-            <i class="bi bi-bookmark-heart fs-4"></i>
+            <a href="#" @click.prevent="cutoverBookmark(singleProduct.id)"
+              ><i
+                class="bi fs-3"
+                :class="[
+                  singleBookmark
+                    ? ['text-success', 'bi-bookmark-heart-fill']
+                    : ['text-secondary', 'bi-bookmark-heart'],
+                ]"
+              ></i>
+            </a>
           </div>
           <hr />
           <p>{{ singleProduct.description }}</p>
@@ -52,7 +61,7 @@
         :autoplay="autoplay"
       >
         <SwiperSlide v-for="item in relatedProducts" :key="item.id">
-          <ProductImg :item="item" />
+          <ProductImg :item="item" @bookmark-data="bookmark" ref="productImg" />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -86,7 +95,9 @@ export default {
         disableOnInteraction: false,
       },
       allProducts: [],
+      collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       id: '',
+      singleBookmark: '',
       isLoading: false,
     };
   },
@@ -110,6 +121,19 @@ export default {
     getCart() {
       this.tempCart();
     },
+    cutoverBookmark(id) {
+      this.$refs.productImg.bookmark(id);
+      this.singleBookmark = !this.singleBookmark;
+    },
+    bookmark(bool, id) {
+      if (bool) {
+        const newArr = this.allProducts.filter((item) => item.id === id);
+        this.collectionData.push(newArr[0]);
+      } else {
+        this.collectionData = this.collectionData.filter((item) => item.id !== id);
+      }
+      localStorage.setItem('listData', JSON.stringify(this.collectionData));
+    },
     loading(boolean) {
       this.isLoading = boolean;
     },
@@ -123,6 +147,11 @@ export default {
       const newArr = this.allProducts.filter((item) => item.title === this.product.title);
       const data = newArr[0] ?? {};
       return data;
+    },
+  },
+  watch: {
+    singleProduct() {
+      this.singleBookmark = this.singleProduct.bookmark;
     },
   },
   created() {

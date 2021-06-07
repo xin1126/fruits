@@ -38,7 +38,7 @@
       <ul class="row row-cols-1 row-cols-md-4 g-4 p-0">
         <li class="col" v-for="item in categoryProducts" :key="item.id">
           <div class="card h-100 border-0">
-            <ProductImg :item="item" />
+            <ProductImg :item="item" @bookmark-data="bookmark" />
             <AddToCart :item="item" @get-data="getCart" @is-loading="loading" />
           </div>
         </li>
@@ -86,6 +86,7 @@ export default {
       cart: {},
       allProducts: [],
       category: [],
+      collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       isLoading: false,
       autoplay: {
         delay: 2000,
@@ -105,6 +106,15 @@ export default {
     },
     loading(boolean) {
       this.isLoading = boolean;
+    },
+    bookmark(bool, id) {
+      if (bool) {
+        const newArr = this.allProducts.filter((item) => item.id === id);
+        this.collectionData.push(newArr[0]);
+      } else {
+        this.collectionData = this.collectionData.filter((item) => item.id !== id);
+      }
+      localStorage.setItem('listData', JSON.stringify(this.collectionData));
     },
   },
   computed: {

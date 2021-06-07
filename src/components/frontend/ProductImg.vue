@@ -30,7 +30,7 @@
   <a
     href="#"
     class="position-absolute top-0 end-0 mt-1 me-2"
-    @click.prevent="products.bookmark = !products.bookmark"
+    @click.prevent="bookmark(products.id)"
   >
     <i
       class="bi fs-3"
@@ -63,6 +63,18 @@ export default {
     item: {
       typeof: Object,
       require: true,
+    },
+  },
+  emits: {
+    'bookmark-data': {
+      typeof: Boolean,
+      require: true,
+    },
+  },
+  methods: {
+    bookmark(id) {
+      this.products.bookmark = !this.products.bookmark;
+      this.$emit('bookmark-data', this.products.bookmark, id);
     },
   },
 };
