@@ -8,13 +8,6 @@ export function getAllProducts() {
         this.allProducts = this.allProducts.map((item) => ({
           ...item, num: 1, joined: false, bookmark: false,
         }));
-        this.collectionData.forEach((collectionItem) => {
-          this.allProducts.forEach((productsItem, index) => {
-            if (collectionItem.id === productsItem.id) {
-              this.allProducts[index].bookmark = true;
-            }
-          });
-        });
         this.category = new Set(Object.values(res.data.products).map((item) => item.category));
         this.getCart();
       } else {

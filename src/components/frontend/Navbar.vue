@@ -66,7 +66,7 @@
                     >常見問題</router-link
                   >
                 </li>
-                <li class="nav-item">
+                <li class="nav-item position-relative pe-1">
                   <router-link
                     class="favorites nav-link fw-bold"
                     :class="[
@@ -75,6 +75,14 @@
                         : 'text-white',
                     ]"
                     to="/favorites"
+                    ><span
+                      class="
+                        badge
+                        rounded-circle
+                        bg-secondary
+                        position-absolute
+                      "
+                      >{{ collectionData }}</span
                     ><i class="bi bi-suit-heart-fill fs-4"></i
                   ></router-link>
                 </li>
@@ -106,17 +114,16 @@
 export default {
   data() {
     return {
+      collectionData: JSON.parse(localStorage.getItem('listData')).length || [],
       cartsQuantity: '',
     };
-  },
-  watch: {
-    $route() {
-      console.log(this.$route.fullPath);
-    },
   },
   created() {
     this.$bus.on('cartsQuantity', (num) => {
       this.cartsQuantity = num;
+    });
+    this.$bus.on('collection', () => {
+      this.collectionData = JSON.parse(localStorage.getItem('listData')).length;
     });
   },
 };
@@ -136,7 +143,7 @@ a:hover {
 }
 .badge {
   top: 3%;
-  right: -10%;
+  right: -5%;
   padding: 4px 5px !important;
 }
 </style>

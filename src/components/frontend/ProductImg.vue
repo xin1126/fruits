@@ -57,6 +57,7 @@
 export default {
   data() {
     return {
+      collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       products: this.item,
     };
   },
@@ -76,7 +77,15 @@ export default {
     bookmark(id) {
       this.products.bookmark = !this.products.bookmark;
       this.$emit('bookmark-data', this.products.bookmark, id);
+      this.$bus.emit('collection');
     },
+  },
+  created() {
+    this.collectionData.forEach((item) => {
+      if (this.products.id === item.id) {
+        this.products.bookmark = true;
+      }
+    });
   },
 };
 </script>

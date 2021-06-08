@@ -117,14 +117,13 @@ export default {
     },
     cutoverBookmark(id) {
       this.singleBookmark = !this.singleBookmark;
-      this.relatedProducts.forEach((item, index) => {
-        if (item.id === id) {
-          this.relatedProducts[index].bookmark = this.singleBookmark;
-        }
-      });
+      this.singleProduct.bookmark = this.singleBookmark;
       this.bookmark(this.singleBookmark, id);
     },
     bookmark(bool, id) {
+      if (this.product.id === id) {
+        this.singleBookmark = bool;
+      }
       if (bool) {
         const newArr = this.allProducts.filter((item) => item.id === id);
         this.collectionData.push(newArr[0]);
@@ -132,6 +131,7 @@ export default {
         this.collectionData = this.collectionData.filter((item) => item.id !== id);
       }
       localStorage.setItem('listData', JSON.stringify(this.collectionData));
+      this.$bus.emit('collection');
     },
     loading(boolean) {
       this.isLoading = boolean;
@@ -150,7 +150,11 @@ export default {
   },
   watch: {
     singleProduct() {
-      this.singleBookmark = this.singleProduct.bookmark;
+      this.collectionData.forEach((item) => {
+        if (this.product.id === item.id) {
+          this.singleBookmark = true;
+        }
+      });
     },
     $route() {
       this.id = this.$route.params.id;

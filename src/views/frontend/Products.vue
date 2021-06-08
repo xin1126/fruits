@@ -163,6 +163,8 @@ export default {
     this.tempCart();
     this.getAllProducts();
     this.getProducts();
+    // this.collectionData = [];
+    // localStorage.setItem('listData', JSON.stringify(this.collectionData));
   },
 };
 </script>
