@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-success position-fixed z-index w-100">
+  <section class="bg-primary position-fixed z-index w-100">
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
@@ -21,34 +21,72 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav align-items-center">
                 <li class="nav-item pe-2">
-                  <router-link class="nav-link text-white fw-bold" to="/home"
+                  <router-link
+                    class="nav-link fw-bold"
+                    :class="[
+                      $route.fullPath === '/home'
+                        ? 'text-secondary'
+                        : 'text-white',
+                    ]"
+                    to="/home"
                     >首頁</router-link
                   >
                 </li>
                 <li class="nav-item pe-2">
-                  <router-link class="nav-link text-white fw-bold" to="/about"
+                  <router-link
+                    class="nav-link fw-bold"
+                    :class="[
+                      $route.fullPath === '/about'
+                        ? 'text-secondary'
+                        : 'text-white',
+                    ]"
+                    to="/about"
                     >關於我們</router-link
                   >
                 </li>
                 <li class="nav-item pe-2">
-                  <router-link class="nav-link text-white fw-bold" to="/"
+                  <router-link
+                    class="nav-link fw-bold"
+                    :class="[
+                      $route.fullPath === '/' ? 'text-secondary' : 'text-white',
+                    ]"
+                    to="/"
                     >商品列表</router-link
                   >
                 </li>
                 <li class="nav-item">
-                  <router-link class="nav-link text-white fw-bold" to="/faq"
+                  <router-link
+                    class="nav-link fw-bold"
+                    :class="[
+                      $route.fullPath === '/faq'
+                        ? 'text-secondary'
+                        : 'text-white',
+                    ]"
+                    to="/faq"
                     >常見問題</router-link
                   >
                 </li>
                 <li class="nav-item">
                   <router-link
-                    class="nav-link text-white fw-bold"
+                    class="favorites nav-link fw-bold"
+                    :class="[
+                      $route.fullPath === '/favorites'
+                        ? 'text-danger'
+                        : 'text-white',
+                    ]"
                     to="/favorites"
                     ><i class="bi bi-suit-heart-fill fs-4"></i
                   ></router-link>
                 </li>
                 <li class="nav-item position-relative">
-                  <router-link class="nav-link text-white fw-bold" to="/carts"
+                  <router-link
+                    class="nav-link fw-bold"
+                    :class="[
+                      $route.fullPath === '/carts'
+                        ? 'text-secondary'
+                        : 'text-white',
+                    ]"
+                    to="/carts"
                     ><span
                       class="badge rounded-circle bg-danger position-absolute"
                       >{{ cartsQuantity }}</span
@@ -71,6 +109,11 @@ export default {
       cartsQuantity: '',
     };
   },
+  watch: {
+    $route() {
+      console.log(this.$route.fullPath);
+    },
+  },
   created() {
     this.$bus.on('cartsQuantity', (num) => {
       this.cartsQuantity = num;
@@ -79,7 +122,15 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+a:hover {
+  color: #b05b0a !important;
+}
+
+.favorites:hover {
+  color: #dc3545 !important;
+}
+
 .logo {
   font-family: 'Sigmar One', cursive;
 }
@@ -87,6 +138,5 @@ export default {
   top: 3%;
   right: -10%;
   padding: 4px 5px !important;
-  // z-index: -1;
 }
 </style>

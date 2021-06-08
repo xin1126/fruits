@@ -6,12 +6,12 @@
     <div class="container">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item text-secondary">首頁</li>
-          <li class="breadcrumb-item text-secondary">商品列表</li>
-          <li class="breadcrumb-item text-secondary">
+          <li class="breadcrumb-item text-gray">首頁</li>
+          <li class="breadcrumb-item text-gray">商品列表</li>
+          <li class="breadcrumb-item text-gray">
             {{ singleProduct.category }}
           </li>
-          <li class="breadcrumb-item text-success" aria-current="page">
+          <li class="breadcrumb-item text-secondary" aria-current="page">
             {{ singleProduct.title }}
           </li>
         </ol>
@@ -32,8 +32,8 @@
                 class="bi fs-3"
                 :class="[
                   singleBookmark
-                    ? ['text-success', 'bi-bookmark-heart-fill']
-                    : ['text-secondary', 'bi-bookmark-heart'],
+                    ? ['text-primary', 'bi-bookmark-heart-fill']
+                    : ['text-gray', 'bi-bookmark-heart'],
                 ]"
               ></i>
             </a>
@@ -51,8 +51,8 @@
           </div>
         </div>
       </div>
-      <hr class="border border-success border-3" />
-      <h2 class="fw-bold mt-4 text-center mb-3">相關商品</h2>
+      <hr class="border border-primary border-3" />
+      <h2 class="fw-bold mt-4 text-center text-secondary mb-3">相關商品</h2>
       <Swiper
         :slides-per-view="4"
         :space-between="50"

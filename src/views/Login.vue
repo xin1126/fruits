@@ -35,13 +35,23 @@
                   </h3>
                 </a>
               </div>
-              <button
-                class="btn btn-dark fw-bold w-100"
-                id="signin"
-                type="submit"
-              >
-                登入
-              </button>
+              <div class="d-flex">
+                <button
+                  class="btn btn-dark fw-bold w-100 me-3"
+                  id="signin"
+                  type="submit"
+                  @click="$router.push('/')"
+                >
+                  回到前台
+                </button>
+                <button
+                  class="btn btn-dark fw-bold w-100"
+                  id="signin"
+                  type="submit"
+                >
+                  登入
+                </button>
+              </div>
             </form>
           </div>
         </div>

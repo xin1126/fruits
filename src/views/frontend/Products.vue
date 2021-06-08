@@ -4,24 +4,26 @@
       <p class="bg-translucent fw-bolder px-5 py-3">商品列表</p>
     </div>
     <div class="container">
-      <nav aria-label="breadcrumb">
+      <nav aria-label="breadcrumb" id="topProduct">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item text-secondary">首頁</li>
-          <li class="breadcrumb-item text-secondary">商品列表</li>
-          <li class="breadcrumb-item text-success">全部商品</li>
+          <li class="breadcrumb-item text-gray">首頁</li>
+          <li class="breadcrumb-item text-gray">商品列表</li>
+          <li class="breadcrumb-item text-secondary">全部商品</li>
         </ol>
       </nav>
       <ul class="d-flex-center fw-bold fs-5 border-none border-wave">
-        <li class="pe-3 border-end border-secondary border-4">
+        <li class="pe-3 border-end border-gray border-4">
           <a
             href="#"
             @click.prevent="categoryValue = 'total'"
-            :class="[categoryValue === 'total' ? 'text-success' : 'text-dark']"
+            :class="[
+              categoryValue === 'total' ? 'text-secondary' : 'text-dark',
+            ]"
             >全部商品</a
           >
         </li>
         <li
-          class="px-3 border-end border-secondary border-4"
+          class="px-3 border-end border-gray border-4"
           v-for="item in category"
           :key="item"
           :data-title="item"
@@ -29,7 +31,7 @@
           <a
             href="#"
             @click.prevent="categoryValue = item"
-            :class="[categoryValue === item ? 'text-success' : 'text-dark']"
+            :class="[categoryValue === item ? 'text-secondary' : 'text-dark']"
             >{{ item }}</a
           >
         </li>
@@ -42,8 +44,20 @@
           </div>
         </li>
       </ul>
-      <hr class="border border-success border-3" />
-      <h3 class="text-center fw-bold mb-3">五星好評熱門商品</h3>
+      <div
+        v-scroll-to="{
+          el: '#topProduct',
+          offset: -50,
+        }"
+      >
+        <Pagination
+          :category="categoryValue"
+          :pagination="pagination"
+          @page="getProducts"
+        />
+      </div>
+      <hr class="border border-primary border-3" />
+      <h3 class="text-center text-secondary fw-bold mb-3">熱門商品</h3>
       <Swiper
         :slides-per-view="4"
         :space-between="50"
@@ -65,6 +79,7 @@
 <script>
 import ProductImg from '@/components/frontend/ProductImg.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
+import Pagination from '@/components/Pagination.vue';
 import { getAllProducts, getCart } from '@/components/frontend/getData';
 
 export default {
@@ -74,6 +89,8 @@ export default {
       cart: {},
       allProducts: [],
       category: [],
+      products: [],
+      pagination: {},
       collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       isLoading: false,
       autoplay: {
@@ -85,8 +102,30 @@ export default {
   components: {
     ProductImg,
     AddToCart,
+    Pagination,
   },
   methods: {
+    getProducts(num = 1) {
+      this.isLoading = true;
+      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/products?page=${num}`;
+      this.axios.get(url)
+        .then((res) => {
+          if (res.data.success) {
+            this.products = res.data.products;
+            this.products = this.products.map((item) => ({
+              ...item, num: 1, joined: false, bookmark: false,
+            }));
+            this.pagination = res.data.pagination;
+          } else {
+            this.$swal({ title: res.data.message, icon: 'error' });
+          }
+          this.isLoading = false;
+        })
+        .catch((error) => {
+          this.$swal({ title: error.data.message, icon: 'error' });
+          this.isLoading = false;
+        });
+    },
     getAllProducts() {
       this.getAllProducts = getAllProducts;
       this.getAllProducts();
@@ -112,7 +151,7 @@ export default {
   },
   computed: {
     categoryProducts() {
-      const newArr = this.categoryValue === 'total' ? this.allProducts : this.allProducts.filter((item) => item.category === this.categoryValue);
+      const newArr = this.categoryValue === 'total' ? this.products : this.allProducts.filter((item) => item.category === this.categoryValue);
       return newArr;
     },
     fiveStarsProducts() {
@@ -123,11 +162,16 @@ export default {
   mounted() {
     this.tempCart();
     this.getAllProducts();
+    this.getProducts();
   },
 };
 </script>
 
 <style scoped lang="scss">
+a:hover {
+  color: #b05b0a !important;
+}
+
 .swiper-slide img {
   width: 150px;
   height: 150px;

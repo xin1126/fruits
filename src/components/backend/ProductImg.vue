@@ -4,7 +4,7 @@
       <label for="imgUrl" class="col-form-label mb-2">主要圖檔</label>
       <button
         type="button"
-        class="btn btn-sm btn-secondary ms-2"
+        class="btn btn-sm btn-gray ms-2"
         @click="addImg(0)"
         v-if="tempProduct.imagesUrl.length === 0"
       >
@@ -12,7 +12,7 @@
       </button>
       <button
         type="button"
-        class="btn btn-sm btn-secondary ms-2 mb-2 mb-sm-0"
+        class="btn btn-sm btn-gray ms-2 mb-2 mb-sm-0"
         @click="displayInput = !displayInput"
       >
         切換上傳圖片方式
@@ -47,7 +47,7 @@
           >
           <button
             type="button"
-            class="btn btn-sm btn-secondary"
+            class="btn btn-sm btn-gray"
             @click="addImg(key + 1)"
             v-if="tempProduct.imagesUrl.length - 1 === key"
           >
@@ -55,7 +55,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-sm btn-secondary ms-2"
+            class="btn btn-sm btn-gray ms-2"
             @click="displayInputs[key] = !displayInputs[key]"
           >
             切換上傳圖片方式

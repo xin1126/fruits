@@ -24,9 +24,7 @@
   <button
     type="button"
     class="btn rounded-0 d-block mx-auto fw-bold"
-    :class="[
-      !products.joined ? 'btn-outline-success' : ['btn-outline-secondary'],
-    ]"
+    :class="[!products.joined ? 'btn-outline-primary' : ['btn-outline-gray']]"
     :disabled="products.joined"
     @click="addToCart(products.id, products.num)"
   >
@@ -88,3 +86,9 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.btn-outline-primary:hover {
+  color: white !important;
+}
+</style>

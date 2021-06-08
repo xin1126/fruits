@@ -5,32 +5,29 @@
     v-if="category === 'total' && pagination.total_pages > 1"
   >
     <ul class="d-flex fs-4 m-0 p-0">
-      <li class="">
+      <li>
         <a
-          class="pe-1 py-1"
+          class="px-2 py-1"
           :class="[
             pagination.current_page !== 1
-              ? 'text-white'
-              : ['text-secondary', 'pointer-none'],
+              ? 'text-dark'
+              : ['text-gray', 'pointer-none'],
           ]"
           href="#"
           @click.prevent="paginationNum(pagination.current_page - 1)"
           aria-label="Previous"
         >
-          <span aria-hidden="true">&laquo;</span>
+          <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
         </a>
       </li>
-      <li
-        :class="[
-          pagination.current_page === item
-            ? ['bg-success', 'rounded-circle']
-            : '',
-        ]"
-        v-for="item in pagination.total_pages"
-        :key="item"
-      >
+      <li v-for="item in pagination.total_pages" :key="item">
         <a
-          class="text-white px-3 py-1"
+          class="text-dark px-3 py-1"
+          :class="[
+            pagination.current_page === item
+              ? ['bg-primary', 'rounded-circle', 'text-white']
+              : '',
+          ]"
           href="#"
           @click.prevent="paginationNum(item)"
           >{{ item }}</a
@@ -38,17 +35,17 @@
       </li>
       <li>
         <a
-          class="ps-1 py-1"
+          class="px-2 py-1"
           :class="[
             pagination.current_page < pagination.total_pages
-              ? 'text-white'
-              : ['pointer-none', 'text-secondary'],
+              ? 'text-dark'
+              : ['pointer-none', 'text-gray'],
           ]"
           href="#"
           @click.prevent="paginationNum(pagination.current_page + 1)"
           aria-label="Next"
         >
-          <span aria-hidden="true">&raquo;</span>
+          <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
         </a>
       </li>
     </ul>
@@ -81,8 +78,13 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .pointer-none {
   pointer-events: none;
+}
+a:hover {
+  color: white !important;
+  background-color: #8dbf41;
+  border-radius: 50%;
 }
 </style>

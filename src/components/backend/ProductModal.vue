@@ -109,7 +109,13 @@
                 />
               </div>
               <div
-                class="custom-control custom-checkbox d-flex align-items-center mr-sm-2 col-xl-1"
+                class="
+                  custom-control custom-checkbox
+                  d-flex
+                  align-items-center
+                  mr-sm-2
+                  col-xl-1
+                "
               >
                 <input
                   type="checkbox"
@@ -166,16 +172,12 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
+            <button type="button" class="btn btn-gray" data-bs-dismiss="modal">
               取消
             </button>
             <button
               type="submit"
-              class="btn btn-primary"
+              class="btn btn-success"
               @click="handlingProduct"
             >
               確認
@@ -216,7 +218,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-outline-secondary"
+              class="btn btn-outline-gray"
               data-bs-dismiss="modal"
             >
               取消

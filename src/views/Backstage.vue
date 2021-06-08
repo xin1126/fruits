@@ -2,14 +2,14 @@
   <section>
     <div class="container py-5">
       <button
-        class="btn btn-success text-white d-block ms-auto mb-3 mb-sm-0"
+        class="btn btn-primary text-white d-block ms-auto mb-3 mb-sm-0"
         @click="signout"
       >
         登出
       </button>
       <div class="d-flex">
         <button
-          class="btn btn-success text-white btn-sm"
+          class="btn btn-primary text-white btn-sm"
           data-bs-toggle="modal"
           data-bs-target="#productModal"
           @click="statusModal('post', '')"
@@ -57,7 +57,7 @@
               <td align="right">
                 <div class="btn-group">
                   <button
-                    class="btn btn-outline-secondary btn-sm"
+                    class="btn btn-outline-gray btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target="#productModal"
                     @click="statusModal('put', item)"

@@ -28,16 +28,17 @@ export function getAllProducts() {
 
 export function getCart() {
   const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
+  const arr = this.categoryValue === 'total' ? 'products' : 'allProducts';
   this.axios.get(url)
     .then((res) => {
       if (res.data.success) {
         this.cart = res.data.data;
         this.$bus.emit('cartsQuantity', this.cart.carts.length);
         this.cart.carts.forEach((cartsItem) => {
-          this.allProducts.forEach((productsItem, index) => {
+          this[arr].forEach((productsItem, index) => {
             if (cartsItem.product.id === productsItem.id) {
-              this.allProducts[index].joined = true;
-              this.allProducts[index].num = 1;
+              this[arr][index].joined = true;
+              this[arr][index].num = 1;
             }
           });
         });
