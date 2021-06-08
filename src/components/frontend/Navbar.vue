@@ -114,7 +114,7 @@
 export default {
   data() {
     return {
-      collectionData: JSON.parse(localStorage.getItem('listData')).length || [],
+      collectionData: JSON.parse(localStorage.getItem('listData'))?.length || 0,
       cartsQuantity: '',
     };
   },
@@ -123,7 +123,7 @@ export default {
       this.cartsQuantity = num;
     });
     this.$bus.on('collection', () => {
-      this.collectionData = JSON.parse(localStorage.getItem('listData')).length;
+      this.collectionData = JSON.parse(localStorage.getItem('listData'))?.length;
     });
   },
 };
