@@ -2,10 +2,11 @@
   <nav
     aria-label="Page navigation example"
     class="d-flex justify-content-center"
+    id="page"
     v-if="category === 'total' && pagination.total_pages > 1"
   >
     <ul class="d-flex fs-4 m-0 p-0">
-      <li>
+      <li v-scroll-to="el.left">
         <a
           class="px-2 py-1"
           :class="[
@@ -20,7 +21,15 @@
           <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
         </a>
       </li>
-      <li v-for="item in pagination.total_pages" :key="item">
+      <li
+        v-for="item in pagination.total_pages"
+        :key="item"
+        v-scroll-to="{
+          container: 'body',
+          el: '#topProduct',
+          offset: -50,
+        }"
+      >
         <a
           class="text-dark px-3 py-1"
           :class="[
@@ -33,7 +42,7 @@
           >{{ item }}</a
         >
       </li>
-      <li>
+      <li v-scroll-to="el.right">
         <a
           class="px-2 py-1"
           :class="[
@@ -55,7 +64,12 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      el: {
+        right: '',
+        left: '',
+      },
+    };
   },
   props: {
     category: {
@@ -73,6 +87,12 @@ export default {
   methods: {
     paginationNum(num) {
       this.$emit('page', num);
+    },
+  },
+  watch: {
+    pagination() {
+      this.el.right = this.pagination.has_next ? { el: '#topProduct', offset: -50 } : '';
+      this.el.left = this.pagination.has_pre ? { el: '#topProduct', offset: -50 } : '';
     },
   },
 };

@@ -44,18 +44,11 @@
           </div>
         </li>
       </ul>
-      <div
-        v-scroll-to="{
-          el: '#topProduct',
-          offset: -50,
-        }"
-      >
-        <Pagination
-          :category="categoryValue"
-          :pagination="pagination"
-          @page="getProducts"
-        />
-      </div>
+      <Pagination
+        :category="categoryValue"
+        :pagination="pagination"
+        @page="getProducts"
+      />
       <hr class="border border-primary border-3" />
       <h3 class="text-center text-secondary fw-bold mb-3">熱門商品</h3>
       <Swiper
