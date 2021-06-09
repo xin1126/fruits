@@ -22,7 +22,7 @@
                 <th width="10%">品名</th>
                 <th width="10%">單價</th>
                 <th width="35%" class="text-center">數量</th>
-                <th width="10%">單位</th>
+                <th width="20%">單位</th>
                 <th width="10%" class="text-end">金額</th>
                 <th width="10%" class="text-end">刪除</th>
               </tr>
@@ -60,7 +60,9 @@
                     </button>
                   </div>
                 </td>
-                <td>{{ item.product.unit }}</td>
+                <td>
+                  {{ item.product.unit }}({{ item.product.options.weight }})
+                </td>
                 <td class="text-end">
                   {{ item.final_total.toLocaleString() }}
                 </td>

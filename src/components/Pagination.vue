@@ -25,7 +25,6 @@
         v-for="item in pagination.total_pages"
         :key="item"
         v-scroll-to="{
-          container: 'body',
           el: '#topProduct',
           offset: -50,
         }"

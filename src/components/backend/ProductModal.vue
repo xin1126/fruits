@@ -131,7 +131,7 @@
                   >啟用</label
                 >
               </div>
-              <div class="form-group col-xl-2">
+              <div class="form-group col-xl-2 mb-2">
                 <label for="rating" class="col-form-label">星級</label>
                 <input
                   type="number"
@@ -142,12 +142,21 @@
                   placeholder="請輸入星級"
                   v-model="tempProduct.options.rating"
                 />
-                <label for="date" class="col-form-label">建立時間</label>
+                <label for="weight" class="col-form-label">重量</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="date"
-                  v-model="tempProduct.options.date"
+                  id="weight"
+                  placeholder="請輸入重量"
+                  v-model="tempProduct.options.weight"
+                />
+                <label for="origin" class="col-form-label">產地</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="origin"
+                  placeholder="請輸入產地"
+                  v-model="tempProduct.options.origin"
                 />
               </div>
               <div class="form-group col-xl-5">
@@ -250,8 +259,9 @@ export default {
         imgUrl: '',
         imagesUrl: [],
         options: {
-          date: '',
+          weight: '',
           rating: '',
+          origin: '',
         },
       },
       verificationStart: false,
@@ -306,6 +316,6 @@ export default {
 
 <style scoped lang="scss">
 textarea {
-  height: 150px;
+  height: 190px;
 }
 </style>

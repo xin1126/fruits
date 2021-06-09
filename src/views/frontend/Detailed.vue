@@ -25,11 +25,11 @@
           />
         </div>
         <div class="col-5">
-          <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">{{ singleProduct.title }}</h4>
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="fw-bold mb-0">{{ singleProduct.title }}</h4>
             <a href="#" @click.prevent="cutoverBookmark(singleProduct.id)"
               ><i
-                class="bi fs-3"
+                class="icon bi fs-3"
                 :class="[
                   singleBookmark
                     ? ['text-primary', 'bi-bookmark-heart-fill']
@@ -39,7 +39,35 @@
             </a>
           </div>
           <hr />
-          <p>{{ singleProduct.description }}</p>
+          <ul class="p-0 mb-2">
+            <li class="mb-1">
+              <i class="bi bi-hand-thumbs-up-fill me-1"></i
+              >果肉細緻、多汁美味超人氣
+            </li>
+            <li class="mb-1">
+              <i class="bi bi-hand-thumbs-up-fill me-1"></i>濃濃{{
+                singleProduct.title
+              }}香氣，香氣濃郁、果香清爽、滋味香甜
+            </li>
+            <li class="mb-1">
+              <i class="bi bi-hand-thumbs-up-fill me-1"></i
+              >營養元素豐富價值高，老少皆宜，大人小孩全都愛
+            </li>
+            <li class="mb-1">
+              <i class="bi bi-hand-thumbs-up-fill me-1"></i>精心栽培,自然熟成
+            </li>
+            <li class="mb-1">
+              <i class="bi bi-geo-alt-fill me-1"></i>產地：{{
+                singleProduct.options?.origin
+              }}
+            </li>
+            <li>
+              <i class="bi bi-speedometer2 me-1"></i>重量：{{
+                singleProduct.options?.weight
+              }}
+            </li>
+          </ul>
+          <p class="mb-2">{{ singleProduct.description }}</p>
           <h6>保存方式：</h6>
           <p>{{ singleProduct.content }}</p>
           <div class="d-flex justify-content-between">
@@ -174,6 +202,10 @@ export default {
 .swiper-slide img {
   width: 150px;
   height: 150px;
+}
+
+.icon:hover {
+  font-size: 28px !important;
 }
 
 .banner {

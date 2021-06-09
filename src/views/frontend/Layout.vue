@@ -3,7 +3,11 @@
     <Navbar />
     <router-view></router-view>
     <transition>
-      <a class="top fs-1 text-secondary" href="#" v-show="top"
+      <a
+        class="top fs-1 text-secondary"
+        href="javascript:void(0);"
+        v-show="top"
+        v-scroll-to="{ el: 'body' }"
         ><i class="bi bi-arrow-up-square-fill"></i
       ></a>
     </transition>
@@ -36,7 +40,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .top {
   position: fixed;
   bottom: 10%;

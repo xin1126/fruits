@@ -44,12 +44,25 @@
       ]"
     ></i>
   </a>
-  <h5 class="card-title text-center fw-bold">{{ products.title }}</h5>
+  <h5 class="card-title text-center fw-bold mb-0 mb-2">
+    {{ products.title }}
+  </h5>
   <div class="d-flex justify-content-center">
-    <small class="card-text text-decoration-line-through text-gray mt-1 me-2">
+    <small
+      class="card-text text-decoration-line-through text-gray mt-1 me-2"
+      v-if="products.origin_price !== products.price"
+    >
       原價:NT${{ products.origin_price }}
     </small>
-    <p class="fw-bold">售價:NT${{ products.price }}</p>
+    <p
+      class="fw-bold"
+      :class="[
+        products.origin_price !== products.price ? 'text-danger' : 'text-dark',
+      ]"
+    >
+      {{ products.origin_price !== products.price ? '促銷價:NT$' : '售價:NT$'
+      }}{{ products.price }}
+    </p>
   </div>
 </template>
 
