@@ -167,7 +167,10 @@ export default {
   },
   computed: {
     relatedProducts() {
-      const newArr = this.allProducts.filter((item) => item.category === this.product.category);
+      const newArr = this.allProducts.filter((item) => {
+        const arr = item.category === this.product.category && item.id !== this.product.id;
+        return arr;
+      });
       return newArr;
     },
     singleProduct() {

@@ -15,7 +15,7 @@
         <li class="pe-3 border-end border-gray border-4">
           <a
             href="#"
-            @click.prevent="categoryValue = 'total'"
+            @click.prevent="categoryCutover('total')"
             :class="[
               categoryValue === 'total' ? 'text-secondary' : 'text-dark',
             ]"
@@ -30,14 +30,19 @@
         >
           <a
             href="#"
-            @click.prevent="categoryValue = item"
+            @click.prevent="categoryCutover(item)"
             :class="[categoryValue === item ? 'text-secondary' : 'text-dark']"
             >{{ item }}</a
           >
         </li>
       </ul>
       <ul class="row row-cols-1 row-cols-md-4 g-4 p-0">
-        <li class="col" v-for="item in categoryProducts" :key="item.id">
+        <li
+          class="col"
+          v-for="item in categoryProducts"
+          :key="item.id"
+          :class="{ animate__animated: animate, animate__fadeIn: animate }"
+        >
           <div class="card h-100 border-0">
             <ProductImg :item="item" @bookmark-data="bookmark" />
             <AddToCart :item="item" @get-data="getCart" @is-loading="loading" />
@@ -47,7 +52,7 @@
       <Pagination
         :category="categoryValue"
         :pagination="pagination"
-        @page="getProducts"
+        @page="pageData"
       />
       <hr class="border border-primary border-3" />
       <h3 class="text-center text-secondary fw-bold mb-3">促銷商品</h3>
@@ -79,17 +84,18 @@ export default {
   data() {
     return {
       categoryValue: 'total',
-      cart: {},
       allProducts: [],
       category: [],
       products: [],
-      pagination: {},
       collectionData: JSON.parse(localStorage.getItem('listData')) || [],
-      isLoading: false,
+      cart: {},
+      pagination: {},
       autoplay: {
         delay: 2000,
         disableOnInteraction: false,
       },
+      isLoading: false,
+      animate: false,
     };
   },
   components: {
@@ -98,26 +104,17 @@ export default {
     Pagination,
   },
   methods: {
-    getProducts(num = 1) {
-      this.isLoading = true;
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/products?page=${num}`;
-      this.axios.get(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.products = res.data.products;
-            this.products = this.products.map((item) => ({
-              ...item, num: 1, joined: false, bookmark: false,
-            }));
-            this.pagination = res.data.pagination;
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.$swal({ title: error.data.message, icon: 'error' });
-          this.isLoading = false;
-        });
+    categoryCutover(item) {
+      this.categoryValue = item;
+      this.animate = true;
+    },
+    pageData(num) {
+      const min = (num * 12) - 12 + 1;
+      const max = (num * 12);
+      this.pagination.has_pre = num !== 1;
+      this.pagination.has_next = num !== this.pagination.total_pages;
+      this.pagination.current_page = num;
+      this.products = this.allProducts.filter((i, index) => index + 1 >= min && index + 1 <= max);
     },
     getAllProducts() {
       this.getAllProducts = getAllProducts;
@@ -152,10 +149,21 @@ export default {
       return newArr;
     },
   },
+  watch: {
+    allProducts() {
+      this.products = this.allProducts.filter((item, index) => index + 1 >= 1 && index + 1 <= 12);
+      this.pagination = {
+        total_pages: Math.ceil(this.allProducts.length / 12),
+        current_page: 1,
+        has_pre: false,
+        has_next: true,
+      };
+    },
+  },
   mounted() {
     this.tempCart();
     this.getAllProducts();
-    this.getProducts();
+    this.pageData();
   },
 };
 </script>

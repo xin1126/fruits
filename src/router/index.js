@@ -43,6 +43,16 @@ const routes = [
     path: '/backstage',
     component: () => import('../views/Backstage.vue'),
   },
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('../views/frontend/Layout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('../views/frontend/Products.vue'),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
