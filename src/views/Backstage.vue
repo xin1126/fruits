@@ -194,5 +194,8 @@ export default {
       this.$refs.category.getAllProducts();
     }
   },
+  unmounted() {
+    this.$bus.off('loading');
+  },
 };
 </script>

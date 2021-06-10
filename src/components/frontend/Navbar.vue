@@ -126,6 +126,10 @@ export default {
       this.collectionData = JSON.parse(localStorage.getItem('listData'))?.length;
     });
   },
+  unmounted() {
+    this.$bus.off('cartsQuantity');
+    this.$bus.off('collection');
+  },
 };
 </script>
 

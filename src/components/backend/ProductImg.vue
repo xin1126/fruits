@@ -152,5 +152,8 @@ export default {
       }
     });
   },
+  unmounted() {
+    this.$bus.off('tempProduct');
+  },
 };
 </script>
