@@ -1,36 +1,41 @@
 <template>
-  <div
-    class="input-group mx-auto text-center"
-    :class="[path ? 'w-50' : ['w-75', 'mb-3']]"
-  >
-    <button
-      type="button"
-      class="input-group-text"
-      :disabled="products.joined || products.num === 1"
-      @click="products.num--"
-    >
-      <i class="bi bi-dash-lg"></i>
-    </button>
-    <p class="form-control m-0">{{ products.num }}</p>
-    <button
-      type="button"
-      class="input-group-text"
+  <div class="d-flex-center">
+    <div class="input-group text-center" :class="[path ? 'w-100' : 'w-50']">
+      <button
+        type="button"
+        class="input-group-text rounded-0 bg-light text-gray fs-8 border-end-0"
+        :class="{ 'btn-hover': !products.joined }"
+        :disabled="products.joined || products.num === 1"
+        @click="products.num--"
+      >
+        <i class="bi bi-dash-lg"></i>
+      </button>
+      <p class="form-control m-0">{{ products.num }}</p>
+      <button
+        type="button"
+        class="input-group-text rounded-0 bg-light text-gray fs-8"
+        :class="{ 'btn-hover': !products.joined }"
+        :disabled="products.joined"
+        @click="products.num++"
+      >
+        <i class="bi bi-plus-lg"></i>
+      </button>
+    </div>
+    <a
+      href="#"
+      class="fs-1 ms-4 mb-1"
+      :class="[
+        !products.joined ? 'text-gray' : ['text-primary', 'cursor-default'],
+      ]"
       :disabled="products.joined"
-      @click="products.num++"
+      @click.prevent="addToCart(products.id, products.num)"
     >
-      <i class="bi bi-plus-lg"></i>
-    </button>
+      <i
+        class="bi me-1"
+        :class="[!products.joined ? 'bi-cart-plus-fill' : 'bi-cart-check-fill']"
+      ></i>
+    </a>
   </div>
-  <button
-    type="button"
-    class="btn rounded-0 d-block mx-auto fw-bold"
-    :class="[!products.joined ? 'btn-outline-primary' : ['btn-outline-gray']]"
-    :disabled="products.joined"
-    @click="addToCart(products.id, products.num)"
-  >
-    <i class="bi bi-cart-plus-fill me-1" v-show="!products.joined"></i
-    >{{ !item.joined ? '加入購物車' : '已加入購物車' }}
-  </button>
 </template>
 
 <script>
@@ -53,6 +58,7 @@ export default {
   },
   methods: {
     addToCart(id, qty) {
+      if (this.products.joined) return;
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
       this.$emit('is-loading', true);
       const cart = {
@@ -88,7 +94,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.btn-outline-primary:hover {
-  color: white !important;
+.btn-hover {
+  &:hover {
+    background-color: #8dbf41 !important;
+    color: white !important;
+  }
+}
+
+a:hover {
+  color: #8dbf41 !important;
 }
 </style>

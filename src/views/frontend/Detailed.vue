@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content mb-5">
     <div class="banner d-flex-center text-white fs-2 mb-4">
       <p class="bg-translucent fw-bolder px-5 py-3">商品資訊</p>
     </div>

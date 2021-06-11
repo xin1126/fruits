@@ -4,7 +4,7 @@
     <router-view></router-view>
     <transition>
       <a
-        class="top fs-1 text-secondary"
+        class="top fs-1 text-primary"
         href="javascript:void(0);"
         v-show="top"
         v-scroll-to="{ el: 'body' }"
@@ -47,7 +47,7 @@ export default {
   right: 3%;
   z-index: 1;
   &:hover {
-    color: #ce6e14e1 !important;
+    color: #49641f !important;
   }
 }
 

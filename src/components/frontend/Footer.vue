@@ -9,8 +9,8 @@
 
 <style scoped lang="scss">
 a:hover {
-  border: #b05b0a 1px solid;
+  border: #49641f 1px solid;
   background-color: #8dbf41;
-  color: #b05b0a;
+  color: #49641f;
 }
 </style>

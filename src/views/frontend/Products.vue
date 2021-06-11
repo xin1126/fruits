@@ -3,7 +3,7 @@
     <div class="banner d-flex-center text-white fs-2 mb-4">
       <p class="bg-translucent fw-bolder px-5 py-3">商品列表</p>
     </div>
-    <div class="container">
+    <div class="container mb-5">
       <nav aria-label="breadcrumb" id="topProduct">
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
@@ -13,43 +13,60 @@
       </nav>
       <div class="row">
         <div class="col-3">
-          <ul class="list-group position-sticky fw-bold fs-5">
-            <li class="list-group-item d-flex border-primary border-2 pe-3">
-              <img
-                src="@/assets/images/icon/全部商品.png"
-                class="icon"
-                :alt="item"
-              />
+          <ul class="list-group position-sticky fs-5">
+            <li
+              class="list-group-item d-flex p-0"
+              :class="[categoryValue === 'total' ? 'bg-primary' : 'bg-white']"
+            >
               <a
                 href="#"
                 @click.prevent="productsData('total', 'click')"
-                class="me-2"
+                class="d-flex w-100 py-2 ps-3"
                 :class="[
-                  categoryValue === 'total' ? 'text-secondary' : 'text-dark',
+                  categoryValue === 'total' ? 'text-white' : 'text-gray',
                 ]"
-                >全部商品</a
-              ><span>({{ allProducts.length }})</span>
+                v-scroll-to="{
+                  el: '#topProduct',
+                  offset: -50,
+                }"
+                ><img
+                  src="@/assets/images/icon/全部商品.png"
+                  class="icon"
+                  alt="全部商品"
+                />全部商品<span
+                  :class="[
+                    categoryValue === 'total' ? 'text-white' : 'text-gray',
+                  ]"
+                  >({{ allProducts.length }})</span
+                ></a
+              >
             </li>
             <li
-              class="list-group-item d-flex border-primary border-2 px-3"
+              class="list-group-item d-flex p-0"
+              :class="[categoryValue === item ? 'bg-primary' : 'bg-white']"
               v-for="(index, item) of totalNum"
               :key="item"
               :data-title="item"
             >
-              <img
-                :src="require(`@/assets/images/icon/${item}.png`)"
-                class="icon"
-                :alt="item"
-              />
               <a
                 href="#"
                 @click.prevent="productsData(item, 'click')"
-                class="me-2"
-                :class="[
-                  categoryValue === item ? 'text-secondary' : 'text-dark',
-                ]"
-                >{{ item }}</a
-              ><span>({{ index }})</span>
+                class="d-flex w-100 py-2 ps-3"
+                :class="[categoryValue === item ? 'text-white' : 'text-gray']"
+                v-scroll-to="{
+                  el: '#topProduct',
+                  offset: -50,
+                }"
+                ><img
+                  :src="require(`@/assets/images/icon/${item}.png`)"
+                  class="icon"
+                  :alt="item"
+                />{{ item
+                }}<span
+                  :class="[categoryValue === item ? 'text-white' : 'text-gray']"
+                  >({{ index }})</span
+                ></a
+              >
             </li>
           </ul>
         </div>
@@ -61,7 +78,7 @@
               v-model="optionValue"
               @change="productsData(optionValue, 'select')"
             >
-              <option value="">搜尋產品價格、星級</option>
+              <option value="" disabled>搜尋產品價格、星級</option>
               <option value="highPrice">商品價格由高到低</option>
               <option value="lowPrice">商品價格由低到高</option>
               <option value="2">二星級商品</option>
@@ -83,7 +100,7 @@
               />
             </div>
           </div>
-          <ul class="row row-cols-1 row-cols-md-3 g-4 p-0">
+          <ul class="row row-cols-1 row-cols-md-3 g-5 p-0">
             <li
               class="col"
               v-for="item in productsFilter"
@@ -162,8 +179,8 @@ export default {
   },
   methods: {
     pageData(num) {
-      const min = (num * 12) - 12 + 1;
-      const max = (num * 12);
+      const min = (num * 9) - 9 + 1;
+      const max = (num * 9);
       this.pagination.has_pre = num !== 1;
       this.pagination.has_next = num !== this.pagination.total_pages;
       this.pagination.current_page = num;
@@ -194,20 +211,37 @@ export default {
     productsData(value = 'total', status = 'click') {
       switch (status) {
         case 'input':
-          if (this.allProducts.filter((item) => item.title.match(value)).length) {
+          if ((this.allProducts.filter((item) => item.title.match(value))).length > 0 && value) {
+            this.optionValue = '';
+            this.categoryValue = '';
             this.productsFilter = this.allProducts.filter((item) => item.title.match(value));
+          } else if (!value) {
+            this.optionValue = '';
+            this.categoryValue = 'total';
+            this.productsFilter = this.products;
           }
           break;
         case 'select':
+          this.search = '';
           if (value * 1) {
+            this.categoryValue = '';
             this.productsFilter = this.allProducts.filter((item) => item.options.rating === value);
           } else if (value === 'highPrice') {
             this.productsFilter = this.allProducts.sort((a, b) => b.price - a.price);
           } else {
             this.productsFilter = this.allProducts.sort((a, b) => a.price - b.price);
           }
+          if (!(value * 1)) {
+            this.categoryValue = 'total';
+            this.productsFilter = this.productsFilter.filter((item, index) => {
+              const arr = index + 1 >= 1 && index + 1 <= 9;
+              return arr;
+            });
+          }
           break;
         case 'click':
+          this.optionValue = '';
+          this.search = '';
           this.categoryValue = value;
           this.animate = true;
           this.productsFilter = this.categoryValue === 'total' ? this.products : this.allProducts.filter((item) => item.category === this.categoryValue);
@@ -228,9 +262,9 @@ export default {
       this.allProducts.forEach((item) => {
         this.totalNum[item.category] = (this.totalNum[item.category] || 0) + 1;
       });
-      this.products = this.allProducts.filter((item, index) => index + 1 >= 1 && index + 1 <= 12);
+      this.products = this.allProducts.filter((item, index) => index + 1 >= 1 && index + 1 <= 9);
       this.pagination = {
-        total_pages: Math.ceil(this.allProducts.length / 12),
+        total_pages: Math.ceil(this.allProducts.length / 9),
         current_page: 1,
         has_pre: false,
         has_next: true,
@@ -249,8 +283,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-a:hover {
-  color: #b05b0a !important;
+.list-group-item:hover {
+  background-color: #8dbf41 !important;
+  a {
+    color: white !important;
+  }
+  span {
+    color: white !important;
+  }
 }
 
 .icon {
@@ -270,7 +310,8 @@ a:hover {
 
 .banner {
   background-image: url('~@/assets/images/banner1.jpg');
-  background-position: bottom;
+  opacity: 0.8;
+  background-position: center;
   background-size: cover;
   padding-top: 70px;
   height: 300px;

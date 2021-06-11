@@ -76,12 +76,8 @@
                     ]"
                     to="/favorites"
                     ><span
-                      class="
-                        badge
-                        rounded-circle
-                        bg-secondary
-                        position-absolute
-                      "
+                      v-show="collectionData"
+                      class="badge rounded-circle bg-danger position-absolute"
                       >{{ collectionData }}</span
                     ><i class="bi bi-suit-heart-fill fs-4"></i
                   ></router-link>
@@ -96,6 +92,7 @@
                     ]"
                     to="/carts"
                     ><span
+                      v-show="cartsQuantity"
                       class="badge rounded-circle bg-danger position-absolute"
                       >{{ cartsQuantity }}</span
                     ><i class="bi bi-cart-fill fs-4"></i
@@ -135,7 +132,7 @@ export default {
 
 <style scoped lang="scss">
 a:hover {
-  color: #b05b0a !important;
+  color: #49641f !important;
 }
 
 .favorites:hover {

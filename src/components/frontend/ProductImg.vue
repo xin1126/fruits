@@ -55,7 +55,7 @@
       原價:NT${{ products.origin_price }}
     </small>
     <p
-      class="fw-bold"
+      class="fw-bold mb-0"
       :class="[
         products.origin_price !== products.price ? 'text-danger' : 'text-dark',
       ]"

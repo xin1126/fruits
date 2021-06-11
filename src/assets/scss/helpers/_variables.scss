@@ -7,12 +7,58 @@ $container-max-widths: (
 
 $theme-colors: (
   "primary":    #8dbf41,
-  "secondary":  #b05b0a,
+  "secondary":  #49641f,
   "success":    #198754,
   "info":       #0dcaf0,
   "warning":    #ffc107,
   "danger":     #dc3545,
   "light":      #f8f9fa,
   "dark":       #212529,
-  "gray":       #6c757d
+  "gray":       #6c757d,
+  "aaa":       #40610f,
 );
+
+$spacer: 1rem;
+$gutters: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 2,
+  6: $spacer * 2.5,
+  7: $spacer * 3,
+);
+
+$font-size-base:              1rem !default;
+
+$h1-font-size:                $font-size-base * 2.5 !default;
+$h2-font-size:                $font-size-base * 2 !default;
+$h3-font-size:                $font-size-base * 1.75 !default;
+$h4-font-size:                $font-size-base * 1.5 !default;
+$h5-font-size:                $font-size-base * 1.25 !default;
+$h6-font-size:                $font-size-base !default;
+
+$font-sizes: (
+  1: $h1-font-size,
+  2: $h2-font-size,
+  3: $h3-font-size,
+  4: $h4-font-size,
+  5: $h5-font-size,
+  6: $h6-font-size,
+  7: $font-size-base * 0.75,
+  8: $font-size-base * 0.50,
+);
+
+$spacer: 1rem !default;
+$spacers: (
+  0: 0,
+  1: $spacer / 4,
+  2: $spacer / 2,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: $spacer * 3.5,
+  7: $spacer * 4.5,
+  8: $spacer * 5,
+) !default;
