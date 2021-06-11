@@ -116,7 +116,7 @@
         :loopFillGroupWithBlank="true"
         :autoplay="autoplay"
       >
-        <SwiperSlide v-for="item in fiveStarsProducts" :key="item.id">
+        <SwiperSlide v-for="item in specialOffer" :key="item.id">
           <ProductImg :item="item" @bookmark-data="bookmark" />
         </SwiperSlide>
       </Swiper>
@@ -218,8 +218,8 @@ export default {
     },
   },
   computed: {
-    fiveStarsProducts() {
-      const newArr = this.allProducts.filter((item) => item.options.rating === '5');
+    specialOffer() {
+      const newArr = this.allProducts.filter((item) => item.origin_price !== item.price);
       return newArr;
     },
   },
