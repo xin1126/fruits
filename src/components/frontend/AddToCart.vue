@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex-center">
-    <div class="input-group text-center" :class="[path ? 'w-100' : 'w-50']">
+  <div class="group d-flex-center mx-auto mt-1">
+    <div class="input-group text-center">
       <button
         type="button"
         class="input-group-text rounded-0 bg-light text-gray fs-8 border-end-0"
@@ -23,7 +23,7 @@
     </div>
     <a
       href="#"
-      class="fs-1 ms-4 mb-1"
+      class="fs-2 ms-4 mb-1"
       :class="[
         !products.joined ? 'text-gray' : ['text-primary', 'cursor-default'],
       ]"
@@ -43,7 +43,6 @@ export default {
   data() {
     return {
       products: this.item,
-      path: false,
     };
   },
   props: {
@@ -87,13 +86,14 @@ export default {
       this.products = this.item;
     },
   },
-  created() {
-    this.path = this.$route.path.length > 20;
-  },
 };
 </script>
 
 <style scoped lang="scss">
+.group {
+  width: 190px;
+}
+
 .btn-hover {
   &:hover {
     background-color: #8dbf41 !important;

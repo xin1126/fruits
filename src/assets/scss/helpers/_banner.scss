@@ -1,0 +1,20 @@
+@mixin banner {
+  opacity: 0.8;
+  background-position: center;
+  background-size: cover;
+  height: 100px;
+  @media screen and (min-width:300px) { 
+    height: 150px;
+  }
+  @include media-breakpoint-up(sm){
+    height: 200px;
+  }
+  @include media-breakpoint-up(xl){
+    height: 300px;
+  }
+}
+
+.products-banner {
+  background-image: url('~@/assets/images/banner1.jpg');
+  @include banner()
+}

@@ -1,11 +1,19 @@
 <template>
   <section class="bg-primary position-fixed z-index w-100">
-    <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
-          <router-link class="navbar-brand text-white logo" to="/home"
-            >Fresh Fruits</router-link
-          >
+    <div class="container d-flex justify-content-between align-items-md-center">
+      <router-link
+        class="navbar-brand text-white logo order-2 order-md-0 mt-md-0 mt-2"
+        to="/home"
+        >Fresh Fruits</router-link
+      >
+      <nav
+        class="
+          navbar navbar-expand-md navbar-light
+          order-1 order-md-0
+          ms-md-auto
+        "
+      >
+        <div class="container-fluid pe-1">
           <div>
             <button
               class="navbar-toggler"
@@ -66,7 +74,7 @@
                     >常見問題</router-link
                   >
                 </li>
-                <li class="nav-item position-relative pe-1">
+                <li class="nav-item position-relative">
                   <router-link
                     class="favorites nav-link fw-bold"
                     :class="[
@@ -79,23 +87,7 @@
                       v-show="collectionData"
                       class="badge rounded-circle bg-danger position-absolute"
                       >{{ collectionData }}</span
-                    ><i class="bi bi-suit-heart-fill fs-4"></i
-                  ></router-link>
-                </li>
-                <li class="nav-item position-relative">
-                  <router-link
-                    class="nav-link fw-bold"
-                    :class="[
-                      $route.fullPath === '/carts'
-                        ? 'text-secondary'
-                        : 'text-white',
-                    ]"
-                    to="/carts"
-                    ><span
-                      v-show="cartsQuantity"
-                      class="badge rounded-circle bg-danger position-absolute"
-                      >{{ cartsQuantity }}</span
-                    ><i class="bi bi-cart-fill fs-4"></i
+                    ><i class="bi bi-suit-heart-fill fs-4 me-2 me-md-0"></i
                   ></router-link>
                 </li>
               </ul>
@@ -103,6 +95,27 @@
           </div>
         </div>
       </nav>
+      <router-link
+        class="
+          nav-link
+          position-relative
+          fw-bold
+          order-3 order-md-0
+          ps-0
+          pe-2
+          mt-md-0 mt-1
+        "
+        :class="[
+          $route.fullPath === '/carts' ? 'text-secondary' : 'text-white',
+        ]"
+        to="/carts"
+        ><span
+          v-show="cartsQuantity"
+          class="badge rounded-circle bg-danger position-absolute"
+          >{{ cartsQuantity }}</span
+        >
+        <i class="bi bi-cart-fill fs-4 fw-lighter"></i>
+      </router-link>
     </div>
   </section>
 </template>
@@ -144,7 +157,7 @@ a:hover {
 }
 .badge {
   top: 3%;
-  right: -5%;
-  padding: 4px 5px !important;
+  right: -6%;
+  padding: 3px 5px !important;
 }
 </style>

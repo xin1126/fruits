@@ -18,6 +18,7 @@
 <script>
 import Navbar from '@/components/frontend/Navbar.vue';
 import Footer from '@/components/frontend/Footer.vue';
+import 'bootstrap';
 
 export default {
   data() {
@@ -41,16 +42,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.top {
-  position: fixed;
-  bottom: 10%;
-  right: 3%;
-  z-index: 1;
-  &:hover {
-    color: #49641f !important;
-  }
-}
-
 .v-enter-active,
 .v-leave-active {
   transition: opacity 1s;

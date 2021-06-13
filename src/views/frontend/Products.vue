@@ -1,113 +1,78 @@
 <template>
   <section class="content">
-    <div class="banner d-flex-center text-white fs-2 mb-4">
-      <p class="bg-translucent fw-bolder px-5 py-3">商品列表</p>
+    <div class="products-banner d-flex-center text-white fs-2 mb-lg-4 mb-2">
+      <p class="bg-translucent fw-bolder px-lg-5 py-lg-3 px-4 py-2 m-0">
+        商品列表
+      </p>
     </div>
     <div class="container mb-5">
-      <nav aria-label="breadcrumb" id="topProduct">
-        <ol class="breadcrumb">
+      <nav aria-label="breadcrumb" id="topProduct" class="bg-white mb-lg-3">
+        <ol class="breadcrumb mb-0">
           <li class="breadcrumb-item text-gray">首頁</li>
           <li class="breadcrumb-item text-gray">商品列表</li>
           <li class="breadcrumb-item text-secondary">全部商品</li>
         </ol>
       </nav>
       <div class="row">
-        <div class="col-3">
-          <ul class="list-group position-sticky fs-5">
-            <li
-              class="list-group-item d-flex p-0"
-              :class="[categoryValue === 'total' ? 'bg-primary' : 'bg-white']"
-            >
-              <a
-                href="#"
-                @click.prevent="productsData('total', 'click')"
-                class="d-flex w-100 py-2 ps-3"
-                :class="[
-                  categoryValue === 'total' ? 'text-white' : 'text-gray',
-                ]"
-                v-scroll-to="{
-                  el: '#topProduct',
-                  offset: -50,
-                }"
-                ><img
-                  src="@/assets/images/icon/全部商品.png"
-                  class="icon"
-                  alt="全部商品"
-                />全部商品<span
-                  :class="[
-                    categoryValue === 'total' ? 'text-white' : 'text-gray',
-                  ]"
-                  >({{ allProducts.length }})</span
-                ></a
-              >
-            </li>
-            <li
-              class="list-group-item d-flex p-0"
-              :class="[categoryValue === item ? 'bg-primary' : 'bg-white']"
-              v-for="(index, item) of totalNum"
-              :key="item"
-              :data-title="item"
-            >
-              <a
-                href="#"
-                @click.prevent="productsData(item, 'click')"
-                class="d-flex w-100 py-2 ps-3"
-                :class="[categoryValue === item ? 'text-white' : 'text-gray']"
-                v-scroll-to="{
-                  el: '#topProduct',
-                  offset: -50,
-                }"
-                ><img
-                  :src="require(`@/assets/images/icon/${item}.png`)"
-                  class="icon"
-                  :alt="item"
-                />{{ item
-                }}<span
-                  :class="[categoryValue === item ? 'text-white' : 'text-gray']"
-                  >({{ index }})</span
-                ></a
-              >
-            </li>
-          </ul>
+        <div class="col-lg-3 position-sticky title-top">
+          <ProductList
+            :widthData="width"
+            :allData="allProducts"
+            :categoryValue="categoryValue"
+            @emitData="productsData"
+          />
         </div>
-        <div class="col-9">
-          <div class="d-flex justify-content-between align-items-end mb-3">
-            <select
-              class="form-select border-primary w-25"
-              aria-label="Default select example"
-              v-model="optionValue"
-              @change="productsData(optionValue, 'select')"
-            >
-              <option value="" disabled>搜尋產品價格、星級</option>
-              <option value="highPrice">商品價格由高到低</option>
-              <option value="lowPrice">商品價格由低到高</option>
-              <option value="2">二星級商品</option>
-              <option value="3">三星級商品</option>
-              <option value="4">四星級商品</option>
-              <option value="5">五星級商品</option>
-            </select>
-            <div class="d-flex justify-content-end align-items-center w-50">
-              <label for="exampleFormControlInput1" class="form-label mb-0 me-2"
-                ><i class="bi bi-search"></i
-              ></label>
-              <input
-                type="email"
-                class="form-control border-primary w-50"
-                id="exampleFormControlInput1"
-                placeholder="請輸入產品"
-                v-model="search"
-                @input="productsData(search, 'input')"
-              />
+        <div class="col-lg-9">
+          <div class="row justify-content-between">
+            <div class="col-lg-4 d-lg-block d-none">
+              <select
+                class="form-select rounded-0"
+                aria-label="Default select example"
+                v-model="optionValue"
+                @change="productsData(optionValue, 'select')"
+              >
+                <option value="" disabled>搜尋產品價格、星級</option>
+                <option value="highPrice">商品價格由高到低</option>
+                <option value="lowPrice">商品價格由低到高</option>
+                <option value="2">二星級商品</option>
+                <option value="3">三星級商品</option>
+                <option value="4">四星級商品</option>
+                <option value="5">五星級商品</option>
+              </select>
+            </div>
+            <div class="col-lg-5 d-lg-block d-none">
+              <div class="d-flex justify-content-end align-items-center w-100">
+                <label
+                  for="exampleFormControlInput1"
+                  class="form-label mb-0 me-2"
+                  ><i class="bi bi-search"></i
+                ></label>
+                <input
+                  type="email"
+                  class="form-control w-50 rounded-0"
+                  id="exampleFormControlInput1"
+                  placeholder="請輸入產品"
+                  v-model="search"
+                  @input="productsData(search, 'input')"
+                />
+              </div>
             </div>
           </div>
-          <ul class="row row-cols-1 row-cols-md-3 g-5 p-0">
+          <ul
+            class="
+              row row-cols-1 row-cols-lg-3 row-cols-md-2
+              g-5
+              p-0
+              mt-5 mt-lg-0
+            "
+          >
             <li
-              class="col"
+              class="col d-flex-center mt-lg-4"
               v-for="item in productsFilter"
               :key="item.id"
               :class="{ animate__animated: animate, animate__fadeIn: animate }"
             >
-              <div class="card h-100 border-0">
+              <div class="card w-100 w-sm-65 w-md-100 h-100 border-0">
                 <ProductImg :item="item" @bookmark-data="bookmark" />
                 <AddToCart
                   :item="item"
@@ -127,8 +92,8 @@
       <hr class="border border-primary border-3" />
       <h3 class="text-center text-secondary fw-bold mb-3">促銷商品</h3>
       <Swiper
-        :slides-per-view="4"
-        :space-between="50"
+        :slides-per-view="width.slidesView"
+        :space-between="30"
         :loop="true"
         :loopFillGroupWithBlank="true"
         :autoplay="autoplay"
@@ -146,6 +111,7 @@
 
 <script>
 import ProductImg from '@/components/frontend/ProductImg.vue';
+import ProductList from '@/components/frontend/ProductList.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
 import Pagination from '@/components/Pagination.vue';
 import { getAllProducts, getCart } from '@/components/frontend/getData';
@@ -155,6 +121,7 @@ export default {
     return {
       optionValue: '',
       search: '',
+      offsetWidth: '',
       categoryValue: 'total',
       allProducts: [],
       category: [],
@@ -163,7 +130,10 @@ export default {
       collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       cart: {},
       pagination: {},
-      totalNum: {},
+      width: {
+        slidesView: 4,
+        list: '',
+      },
       autoplay: {
         delay: 2000,
         disableOnInteraction: false,
@@ -173,6 +143,7 @@ export default {
     };
   },
   components: {
+    ProductList,
     ProductImg,
     AddToCart,
     Pagination,
@@ -223,6 +194,7 @@ export default {
           break;
         case 'select':
           this.search = '';
+          this.optionValue = value;
           if (value * 1) {
             this.categoryValue = '';
             this.productsFilter = this.allProducts.filter((item) => item.options.rating === value);
@@ -259,9 +231,6 @@ export default {
   },
   watch: {
     allProducts() {
-      this.allProducts.forEach((item) => {
-        this.totalNum[item.category] = (this.totalNum[item.category] || 0) + 1;
-      });
       this.products = this.allProducts.filter((item, index) => index + 1 >= 1 && index + 1 <= 9);
       this.pagination = {
         total_pages: Math.ceil(this.allProducts.length / 9),
@@ -273,47 +242,43 @@ export default {
     products() {
       this.productsData();
     },
+    offsetWidth() {
+      this.width.list = this.offsetWidth < 992;
+      this.width.offset = -45;
+      if (this.offsetWidth < 992 && this.offsetWidth >= 768) {
+        this.width.slidesView = 2;
+      } else if (this.offsetWidth < 768) {
+        this.width.slidesView = 1;
+        this.width.offset = -30;
+      } else {
+        this.width.slidesView = 4;
+      }
+    },
   },
   mounted() {
     this.tempCart();
     this.getAllProducts();
     this.pageData();
+    this.offsetWidth = window.innerWidth;
+    this.width.list = this.offsetWidth < 992;
+    window.onresize = () => {
+      this.offsetWidth = document.body.offsetWidth;
+    };
   },
 };
 </script>
 
-<style scoped lang="scss">
-.list-group-item:hover {
-  background-color: #8dbf41 !important;
-  a {
-    color: white !important;
-  }
-  span {
-    color: white !important;
-  }
-}
-
-.icon {
-  margin: 3px 6px 0 0;
-  width: 25px;
-  height: 25px;
+<style scoped  lang="scss">
+.title-top {
+  top: 56px;
 }
 
 .position-sticky {
-  top: 10%;
+  z-index: 10;
 }
 
 .swiper-slide img {
   width: 150px;
   height: 150px;
-}
-
-.banner {
-  background-image: url('~@/assets/images/banner1.jpg');
-  opacity: 0.8;
-  background-position: center;
-  background-size: cover;
-  padding-top: 70px;
-  height: 300px;
 }
 </style>

@@ -86,10 +86,6 @@ export default {
   methods: {
     paginationNum(num) {
       this.$emit('page', num);
-    },
-  },
-  watch: {
-    pagination() {
       this.el.right = this.pagination.has_next ? { el: '#topProduct', offset: -50 } : '';
       this.el.left = this.pagination.has_pre ? { el: '#topProduct', offset: -50 } : '';
     },
