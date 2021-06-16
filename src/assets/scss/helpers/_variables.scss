@@ -5,17 +5,26 @@ $container-max-widths: (
   xl: 1140px,
 );
 
+$primary: #638031;
+$secondary: #150000;
+$success: #198754;
+$info: #0dcaf0;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #212529;
+$gray: #6c757d;
+
 $theme-colors: (
-  "primary":    #8dbf41,
-  "secondary":  #49641f,
-  "success":    #198754,
-  "info":       #0dcaf0,
-  "warning":    #ffc107,
-  "danger":     #dc3545,
-  "light":      #f8f9fa,
-  "dark":       #212529,
-  "gray":       #6c757d,
-  "aaa":       #40610f,
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
+  'gray': $gray,
 );
 
 $spacer: 1rem;

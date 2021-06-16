@@ -74,7 +74,7 @@
 .bi-bookmark-heart, .bi-bookmark-heart-fill{
   &:hover{
     transition: 0.5s;
-    color: #8dbf41 !important;
+    color: $primary !important;
     font-size: 35px !important;
   }
 }

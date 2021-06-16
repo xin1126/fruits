@@ -252,8 +252,8 @@
 export default {
   data() {
     return {
-      search: '',
       optionValue: '',
+      search: '',
       width: {},
       totalNum: {},
       allProducts: {},
@@ -286,14 +286,16 @@ export default {
   methods: {
     productsData(value, status) {
       this.$emit('emitData', value, status);
+      this.search = status !== 'input' ? '' : value;
     },
   },
 };
 </script>
 
 <style scoped  lang="scss">
+@import '@/assets/scss/all';
 .list-group-item:hover {
-  background-color: #8dbf41 !important;
+  background-color: $primary !important;
   a {
     color: white !important;
   }

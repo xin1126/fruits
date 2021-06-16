@@ -25,9 +25,10 @@
 </template>
 
 <style scoped lang="scss">
+@import '@/assets/scss/all';
 a:hover {
-  border: #49641f 1px solid;
-  background-color: #8dbf41;
-  color: #49641f;
+  border: $secondary 1px solid !important;
+  background-color: $primary !important;
+  color: $secondary;
 }
 </style>

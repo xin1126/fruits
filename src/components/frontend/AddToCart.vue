@@ -1,5 +1,5 @@
 <template>
-  <div class="group d-flex-center mx-auto mt-1">
+  <div class="group d-flex-center mt-1">
     <div class="input-group text-center">
       <button
         type="button"
@@ -90,18 +90,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/scss/all';
 .group {
   width: 190px;
 }
 
 .btn-hover {
   &:hover {
-    background-color: #8dbf41 !important;
+    background-color: $primary !important;
     color: white !important;
   }
 }
 
 a:hover {
-  color: #8dbf41 !important;
+  color: $primary !important;
 }
 </style>

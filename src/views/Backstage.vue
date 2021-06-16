@@ -19,7 +19,7 @@
         <ProductsCategory @value="categoryValue" ref="category" />
       </div>
       <div class="table-responsive">
-        <table class="table table-hover table-responsive">
+        <table class="table table-responsive">
           <thead>
             <tr>
               <th scope="col" class="ps-3" width="10%">縮圖</th>

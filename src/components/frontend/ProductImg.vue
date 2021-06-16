@@ -45,7 +45,7 @@
     ></i>
   </a>
   <h5 class="card-title text-center fw-bold mb-0 mb-2">
-    {{ products.title }}
+    {{ products.title }}{{ products.options.origin !== '台灣' ? '(進口)' : '' }}
   </h5>
   <div class="d-flex justify-content-center">
     <small

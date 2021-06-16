@@ -42,6 +42,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/scss/all';
+.top {
+  position: fixed;
+  bottom: 15%;
+  @include media-breakpoint-up(sm) {
+    bottom: 10%;
+  }
+  right: 3%;
+  z-index: 1;
+  &:hover {
+    color: $secondary !important;
+  }
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 1s;

@@ -76,18 +76,23 @@
                 </li>
                 <li class="nav-item position-relative">
                   <router-link
-                    class="favorites nav-link fw-bold"
+                    class="nav-link fw-bold"
                     :class="[
                       $route.fullPath === '/favorites'
-                        ? 'text-danger'
+                        ? 'text-secondary'
                         : 'text-white',
                     ]"
                     to="/favorites"
                     ><span
                       v-show="collectionData"
-                      class="badge rounded-circle bg-danger position-absolute"
+                      class="
+                        badge
+                        rounded-circle
+                        bg-secondary
+                        position-absolute
+                      "
                       >{{ collectionData }}</span
-                    ><i class="bi bi-suit-heart-fill fs-4 me-2 me-md-0"></i
+                    ><i class="bi bi-bookmark-fill fs-4 me-2 me-md-0"></i
                   ></router-link>
                 </li>
               </ul>
@@ -111,7 +116,7 @@
         to="/carts"
         ><span
           v-show="cartsQuantity"
-          class="badge rounded-circle bg-danger position-absolute"
+          class="badge rounded-circle bg-secondary position-absolute"
           >{{ cartsQuantity }}</span
         >
         <i class="bi bi-cart-fill fs-4 fw-lighter"></i>
@@ -144,12 +149,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/scss/all';
 a:hover {
-  color: #49641f !important;
-}
-
-.favorites:hover {
-  color: #dc3545 !important;
+  color: $secondary !important;
 }
 
 .logo {

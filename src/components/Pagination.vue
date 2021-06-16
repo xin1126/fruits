@@ -94,12 +94,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/scss/all';
 .pointer-none {
   pointer-events: none;
 }
 a:hover {
   color: white !important;
-  background-color: #8dbf41;
+  background-color: $primary;
   border-radius: 50%;
 }
 </style>

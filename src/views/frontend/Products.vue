@@ -7,7 +7,7 @@
     </div>
     <div class="container mb-5">
       <nav aria-label="breadcrumb" id="topProduct" class="bg-white mb-lg-3">
-        <ol class="breadcrumb mb-0">
+        <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
           <li class="breadcrumb-item text-gray">商品列表</li>
           <li class="breadcrumb-item text-secondary">全部商品</li>
@@ -67,14 +67,19 @@
             "
           >
             <li
-              class="col d-flex-center mt-lg-4"
+              class="
+                col
+                animate__animated animate__fadeIn
+                d-flex-center
+                mt-lg-4
+              "
               v-for="item in productsFilter"
               :key="item.id"
-              :class="{ animate__animated: animate, animate__fadeIn: animate }"
             >
               <div class="card w-100 w-sm-65 w-md-100 h-100 border-0">
                 <ProductImg :item="item" @bookmark-data="bookmark" />
                 <AddToCart
+                  class="mx-auto"
                   :item="item"
                   @get-data="getCart"
                   @is-loading="loading"
@@ -139,7 +144,6 @@ export default {
         disableOnInteraction: false,
       },
       isLoading: false,
-      animate: false,
     };
   },
   components: {
@@ -215,7 +219,6 @@ export default {
           this.optionValue = '';
           this.search = '';
           this.categoryValue = value;
-          this.animate = true;
           this.productsFilter = this.categoryValue === 'total' ? this.products : this.allProducts.filter((item) => item.category === this.categoryValue);
           break;
         default:
