@@ -4,7 +4,7 @@
       <router-link
         class="navbar-brand text-white logo order-2 order-md-0 mt-md-0 mt-2"
         to="/home"
-        >Fresh Fruits</router-link
+        ><h1 class="h3">Fresh Fruits</h1></router-link
       >
       <nav
         class="
@@ -130,19 +130,19 @@ export default {
   data() {
     return {
       collectionData: JSON.parse(localStorage.getItem('listData'))?.length || 0,
-      cartsQuantity: '',
     };
   },
+  computed: {
+    cartsQuantity() {
+      return this.$store.state.cart.carts?.length;
+    },
+  },
   created() {
-    this.$bus.on('cartsQuantity', (num) => {
-      this.cartsQuantity = num;
-    });
     this.$bus.on('collection', () => {
       this.collectionData = JSON.parse(localStorage.getItem('listData'))?.length;
     });
   },
   unmounted() {
-    this.$bus.off('cartsQuantity');
     this.$bus.off('collection');
   },
 };

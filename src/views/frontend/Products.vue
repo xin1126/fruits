@@ -22,7 +22,7 @@
             @emitData="productsData"
           />
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-9 mb-4">
           <div class="row justify-content-between">
             <div class="col-lg-4 d-lg-block d-none">
               <select
@@ -78,12 +78,7 @@
             >
               <div class="card w-100 w-sm-65 w-md-100 h-100 border-0">
                 <ProductImg :item="item" @bookmark-data="bookmark" />
-                <AddToCart
-                  class="mx-auto"
-                  :item="item"
-                  @get-data="getCart"
-                  @is-loading="loading"
-                />
+                <AddToCart class="mx-auto" :item="item" @get-data="getCart" />
               </div>
             </li>
           </ul>
@@ -119,7 +114,6 @@ import ProductImg from '@/components/frontend/ProductImg.vue';
 import ProductList from '@/components/frontend/ProductList.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
 import Pagination from '@/components/Pagination.vue';
-import { getAllProducts, getCart } from '@/components/frontend/getData';
 
 export default {
   data() {
@@ -128,12 +122,9 @@ export default {
       search: '',
       offsetWidth: '',
       categoryValue: 'total',
-      allProducts: [],
-      category: [],
       products: [],
       productsFilter: [],
       collectionData: JSON.parse(localStorage.getItem('listData')) || [],
-      cart: {},
       pagination: {},
       width: {
         slidesView: 4,
@@ -143,7 +134,6 @@ export default {
         delay: 2000,
         disableOnInteraction: false,
       },
-      isLoading: false,
     };
   },
   components: {
@@ -162,17 +152,11 @@ export default {
       this.products = this.allProducts.filter((i, index) => index + 1 >= min && index + 1 <= max);
     },
     getAllProducts() {
-      this.getAllProducts = getAllProducts;
-      this.getAllProducts();
-    },
-    tempCart() {
-      this.tempCart = getCart;
+      this.$store.dispatch('getAllProducts');
+      this.getCart();
     },
     getCart() {
-      this.tempCart();
-    },
-    loading(boolean) {
-      this.isLoading = boolean;
+      this.$store.dispatch('getCart');
     },
     bookmark(bool, id) {
       if (bool) {
@@ -231,8 +215,33 @@ export default {
       const newArr = this.allProducts.filter((item) => item.origin_price !== item.price);
       return newArr;
     },
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
+    allProducts() {
+      return this.$store.state.allProducts;
+    },
+    cart() {
+      return this.$store.state.cart;
+    },
+    data() {
+      const { allProducts, cart } = this;
+      return {
+        allProducts,
+        cart,
+      };
+    },
   },
   watch: {
+    data: {
+      handler(val) {
+        if (val.allProducts.length && Object.values(val.cart).length) {
+          this.$store.dispatch('updateLoading', false);
+          this.$store.dispatch('data');
+        }
+      },
+      deep: true,
+    },
     allProducts() {
       this.products = this.allProducts.filter((item, index) => index + 1 >= 1 && index + 1 <= 9);
       this.pagination = {
@@ -259,9 +268,7 @@ export default {
     },
   },
   mounted() {
-    this.tempCart();
     this.getAllProducts();
-    this.pageData();
     this.offsetWidth = window.innerWidth;
     this.width.list = this.offsetWidth < 992;
     window.onresize = () => {

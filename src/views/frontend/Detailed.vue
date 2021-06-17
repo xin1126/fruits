@@ -3,8 +3,8 @@
     <div class="detailed-banner d-flex-center text-white fs-2 mb-lg-4 mb-2">
       <p class="bg-translucent fw-bolder px-5 py-3">商品介紹</p>
     </div>
-    <div class="container">
-      <nav aria-label="breadcrumb mb-3">
+    <div class="container animate__animated animate__fadeIn" v-if="view">
+      <nav aria-label="breadcrumb mb-3 mt-5">
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
           <li class="breadcrumb-item text-gray">商品列表</li>
@@ -152,11 +152,7 @@
                   原價:NT${{ singleProduct.origin_price }}
                 </small>
               </div>
-              <AddToCart
-                :item="singleProduct"
-                @get-data="getCart"
-                @is-loading="loading"
-              />
+              <AddToCart :item="singleProduct" @get-data="getCart" />
             </div>
           </div>
         </div>
@@ -164,26 +160,26 @@
       <div class="row justify-content-center">
         <div class="col-md-10">
           <div class="row mb-4">
-            <div class="col-sm-4">
-              <h6 class="text-primary fw-bold">營養與功效</h6>
+            <div class="col-sm-3">
+              <h5 class="text-primary fw-bold">營養與功效</h5>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-9">
               <p class="mb-2">{{ singleProduct.description }}</p>
             </div>
           </div>
           <div class="row mb-4">
-            <div class="col-sm-4">
-              <h6 class="text-primary fw-bold">保存方式</h6>
+            <div class="col-sm-3">
+              <h5 class="text-primary fw-bold">保存方式</h5>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-9">
               <p class="mb-2">{{ singleProduct.content }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-4">
-              <h6 class="text-primary fw-bold">購物須知</h6>
+            <div class="col-sm-3">
+              <h5 class="text-primary fw-bold">購物須知</h5>
             </div>
-            <ul class="col-sm-8">
+            <ul class="col-sm-9">
               <li class="d-flex mb-1">
                 ※
                 <p class="ms-1 mb-0">
@@ -234,7 +230,6 @@
 <script>
 import ProductImg from '@/components/frontend/ProductImg.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
-import { getAllProducts, getCart } from '@/components/frontend/getData';
 
 export default {
   data() {
@@ -249,9 +244,8 @@ export default {
         delay: 2000,
         disableOnInteraction: false,
       },
-      allProducts: [],
       collectionData: JSON.parse(localStorage.getItem('listData')) || [],
-      isLoading: false,
+      view: false,
     };
   },
   components: {
@@ -261,23 +255,25 @@ export default {
   methods: {
     getProduct() {
       const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/product/${this.id}`;
-      this.isLoading = true;
-      this.axios.get(api).then((res) => {
-        if (res.data.success) {
-          this.product = res.data.product;
-        }
-        this.isLoading = false;
-      });
+      this.$store.dispatch('updateLoading', true);
+      this.axios.get(api)
+        .then((res) => {
+          if (res.data.success) {
+            this.product = res.data.product;
+          }
+          this.$store.dispatch('updateLoading', false);
+        })
+        .catch(() => {
+          this.$swal({ title: '請求API失敗', icon: 'error' });
+          this.$store.dispatch('updateLoading', false);
+        });
     },
     getAllProducts() {
-      this.getAllProducts = getAllProducts;
-      this.getAllProducts();
-    },
-    tempCart() {
-      this.tempCart = getCart;
+      this.$store.dispatch('getAllProducts');
+      this.getCart();
     },
     getCart() {
-      this.tempCart();
+      this.$store.dispatch('getCart');
     },
     cutoverBookmark(id) {
       this.singleBookmark = !this.singleBookmark;
@@ -301,9 +297,6 @@ export default {
       this.index = num;
       this.visible = true;
     },
-    loading(boolean) {
-      this.isLoading = boolean;
-    },
   },
   computed: {
     relatedProducts() {
@@ -318,9 +311,35 @@ export default {
       const data = newArr[0] ?? {};
       return data;
     },
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
+    allProducts() {
+      return this.$store.state.allProducts;
+    },
+    cart() {
+      return this.$store.state.cart;
+    },
+    data() {
+      const { allProducts, cart } = this;
+      return {
+        allProducts,
+        cart,
+      };
+    },
   },
   watch: {
+    data: {
+      handler(val) {
+        if (val.allProducts.length && Object.values(val.cart).length) {
+          this.$store.dispatch('updateLoading', false);
+          this.$store.dispatch('data');
+        }
+      },
+      deep: true,
+    },
     singleProduct() {
+      this.view = true;
       this.collectionData.forEach((item) => {
         if (this.product.id === item.id) {
           this.singleBookmark = true;
@@ -344,7 +363,6 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id;
-    this.tempCart();
     this.getAllProducts();
     this.getProduct();
     this.offsetWidth = window.innerWidth;
@@ -378,10 +396,6 @@ export default {
   @include media-breakpoint-up(xl) {
     height: 84px;
   }
-}
-
-.content-img {
-  height: 390px;
 }
 
 .icon:hover {

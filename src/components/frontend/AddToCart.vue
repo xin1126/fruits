@@ -53,13 +53,12 @@ export default {
   },
   emits: {
     'get-data': () => true,
-    'is-loading': (bool) => typeof bool === 'boolean',
   },
   methods: {
     addToCart(id, qty) {
       if (this.products.joined) return;
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
-      this.$emit('is-loading', true);
+      this.$store.dispatch('updateLoading', true);
       const cart = {
         product_id: id,
         qty,
@@ -68,16 +67,16 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.$swal({ title: `${res.data.data.product.title}加入購物車`, icon: 'success' });
-            this.$emit('is-loading', false);
+            this.$store.dispatch('updateLoading', false);
             this.$emit('get-data');
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
-            this.$emit('is-loading', false);
+            this.$store.dispatch('updateLoading', false);
           }
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
-          this.$emit('is-loading', false);
+          this.$store.dispatch('updateLoading', false);
         });
     },
   },

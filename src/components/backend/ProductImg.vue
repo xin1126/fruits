@@ -138,7 +138,8 @@ export default {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
           this.$bus.emit('loading', false);
-        }).catch((error) => {
+        })
+        .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
           this.$bus.emit('loading', false);
         });

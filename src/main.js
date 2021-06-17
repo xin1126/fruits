@@ -20,6 +20,7 @@ import VueEasyLightbox from 'vue-easy-lightbox';
 import 'default-passive-events';
 import bus from './bus';
 import App from './App.vue';
+import store from './store';
 import router from './router';
 
 const options = {
@@ -46,6 +47,7 @@ app.use(animated);
 app.use(VueEasyLightbox);
 app.use(VueScrollTo, { duration: 0 });
 app.use(VueSweetalert2, options);
+app.use(store);
 app.component('Swiper', Swiper);
 app.component('SwiperSlide', SwiperSlide);
 app.component('Field', Field);

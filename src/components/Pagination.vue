@@ -5,10 +5,10 @@
     id="page"
     v-if="category === 'total' && pagination.total_pages > 1"
   >
-    <ul class="d-flex fs-4 m-0 p-0">
+    <ul class="d-flex fs-5 m-0 p-0">
       <li v-scroll-to="el.left">
         <a
-          class="px-2 py-1"
+          class="px-1"
           :class="[
             pagination.current_page !== 1
               ? 'text-dark'
@@ -28,9 +28,10 @@
           el: '#topProduct',
           offset: -50,
         }"
+        class="px-2"
       >
         <a
-          class="text-dark px-3 py-1"
+          class="text-dark px-2"
           :class="[
             pagination.current_page === item
               ? ['bg-primary', 'rounded-circle', 'text-white']
@@ -43,7 +44,7 @@
       </li>
       <li v-scroll-to="el.right">
         <a
-          class="px-2 py-1"
+          class="px-1"
           :class="[
             pagination.current_page < pagination.total_pages
               ? 'text-dark'
