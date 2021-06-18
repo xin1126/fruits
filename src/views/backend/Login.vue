@@ -82,8 +82,8 @@ export default {
       this.axios.post(api, this.user).then((res) => {
         if (res.data.success) {
           const { token, expired } = res.data;
-          document.cookie = `hexToken=${token};expires=${new Date(expired)}; path=/`;
-          this.$router.push('/backstage');
+          document.cookie = `hexToken=${token};expires=${new Date(expired * 1000)}; path=/`;
+          this.$router.push('/backstage/products');
         } else {
           this.$swal({ title: res.data.message, icon: 'error' });
         }

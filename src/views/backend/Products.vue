@@ -1,12 +1,6 @@
 <template>
   <section>
     <div class="container py-5">
-      <button
-        class="btn btn-primary text-white d-block ms-auto mb-3 mb-sm-0"
-        @click="signout"
-      >
-        登出
-      </button>
       <div class="d-flex">
         <button
           class="btn btn-primary text-white btn-sm"
@@ -129,7 +123,7 @@ export default {
             this.pagination = res.data.pagination;
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
-            this.$router.push('/');
+            this.$router.push('/login');
           }
           this.isLoading = false;
         })
@@ -143,25 +137,6 @@ export default {
       this.$refs.modal.verificationStart = false;
       this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { rating: '', weight: '', origin: '' } } : JSON.parse(JSON.stringify(data));
       this.$bus.emit('tempProduct', this.$refs.modal.tempProduct);
-    },
-    signout() {
-      const url = `${process.env.VUE_APP_APIURL}/logout`;
-      this.isLoading = true;
-      this.axios.post(url)
-        .then((res) => {
-          if (res.data.success) {
-            document.cookie = 'hexToken=; expires=; path=/';
-            this.$swal({ title: res.data.message, icon: 'success' });
-            this.$router.push('/login');
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.$swal({ title: error.data.message, icon: 'error' });
-          this.isLoading = false;
-        });
     },
     loading(boolean) {
       this.isLoading = boolean;
@@ -184,15 +159,8 @@ export default {
     this.$bus.on('loading', (boolean) => this.loading(boolean));
   },
   mounted() {
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    if (!token) {
-      this.$swal({ title: '尚未登入', icon: 'error' });
-      this.$router.push('/');
-    } else {
-      this.axios.defaults.headers.common.Authorization = token;
-      this.getProducts();
-      this.$refs.category.getAllProducts();
-    }
+    this.getProducts();
+    this.$refs.category.getAllProducts();
   },
   unmounted() {
     this.$bus.off('loading');

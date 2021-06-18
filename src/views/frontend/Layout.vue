@@ -18,7 +18,6 @@
 <script>
 import Navbar from '@/components/frontend/Navbar.vue';
 import Footer from '@/components/frontend/Footer.vue';
-import 'bootstrap';
 
 export default {
   data() {

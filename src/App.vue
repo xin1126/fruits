@@ -9,7 +9,7 @@ export default {
   },
   watch: {
     $route() {
-      const status = this.$route.path === '/backstage' ? 'add' : 'remove';
+      const status = this.$route.path.indexOf('backstage') > 0 ? 'add' : 'remove';
       document.body.classList[status]('bg');
     },
   },

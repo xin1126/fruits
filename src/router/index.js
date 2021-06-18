@@ -36,12 +36,30 @@ const routes = [
     ],
   },
   {
-    path: '/login',
-    component: () => import('../views/Login.vue'),
+    path: '/backstage',
+    component: () => import('../views/backend/Layout.vue'),
+    children: [
+      {
+        path: 'products',
+        component: () => import('../views/backend/Products.vue'),
+      },
+      {
+        path: 'order',
+        component: () => import('../views/backend/Order.vue'),
+      },
+      {
+        path: 'coupon',
+        component: () => import('../views/backend/Coupon.vue'),
+      },
+      {
+        path: 'article',
+        component: () => import('../views/backend/Article.vue'),
+      },
+    ],
   },
   {
-    path: '/backstage',
-    component: () => import('../views/Backstage.vue'),
+    path: '/login',
+    component: () => import('../views/backend/Login.vue'),
   },
   {
     path: '/:pathMatch(.*)*',

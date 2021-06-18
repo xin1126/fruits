@@ -18,6 +18,7 @@ import VueScrollTo from 'vue-scrollto';
 import animated from 'animate.css';
 import VueEasyLightbox from 'vue-easy-lightbox';
 import 'default-passive-events';
+import 'bootstrap';
 import bus from './bus';
 import App from './App.vue';
 import store from './store';

@@ -4,7 +4,7 @@
       <p class="bg-translucent fw-bolder px-5 py-3">購物車列表</p>
     </div>
     <div class="container mb-5">
-      <div class="row" v-if="cart.carts?.length">
+      <div class="row" v-if="$store.state.cart.carts?.length">
         <div class="col-lg-8">
           <div class="text-end">
             <button
@@ -163,7 +163,15 @@
         </div>
       </div>
       <div v-else class="d-flex justify-content-center">
-        <router-link to="/"><img :src="img" alt="" /></router-link>
+        <router-link to="/"
+          ><img
+            :src="
+              $store.state.cart.carts?.length
+                ? ''
+                : 'https://i.imgur.com/JWtbdcf.jpg'
+            "
+            alt=""
+        /></router-link>
       </div>
     </div>
   </section>
@@ -186,7 +194,6 @@ export default {
         message: '',
       },
       cart: {},
-      img: '',
       isLoading: false,
       test: '',
     };
@@ -204,7 +211,6 @@ export default {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
           this.isLoading = false;
-          this.img = !this.cart.carts.length ? 'https://i.imgur.com/JWtbdcf.jpg' : '';
         })
         .catch((error) => {
           this.$swal({ title: error.data?.message, icon: 'error' });
@@ -218,7 +224,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.$swal({ title: res.data.message, icon: 'success' });
-            this.getCart();
+            this.$store.dispatch('getCart');
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
@@ -237,7 +243,7 @@ export default {
           if (res.data.success) {
             this.$swal({ title: res.data.message, icon: 'success' });
             this.isLoading = false;
-            this.getCart();
+            this.$store.dispatch('getCart');
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
             this.isLoading = false;
