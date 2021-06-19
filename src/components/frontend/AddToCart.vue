@@ -4,19 +4,19 @@
       <button
         type="button"
         class="input-group-text rounded-0 bg-light text-gray fs-8 border-end-0"
-        :class="{ 'btn-hover': !products.joined }"
-        :disabled="products.joined || products.num === 1"
-        @click="products.num--"
+        :class="{ 'btn-hover': !products.joined && num !== 1 }"
+        :disabled="products.joined || num === 1"
+        @click="$store.dispatch('updateProductNum', [products.id, num--])"
       >
         <i class="bi bi-dash-lg"></i>
       </button>
-      <p class="form-control m-0">{{ products.num }}</p>
+      <p class="form-control m-0">{{ num }}</p>
       <button
         type="button"
         class="input-group-text rounded-0 bg-light text-gray fs-8"
         :class="{ 'btn-hover': !products.joined }"
         :disabled="products.joined"
-        @click="products.num++"
+        @click="$store.dispatch('updateProductNum', [products.id, num++])"
       >
         <i class="bi bi-plus-lg"></i>
       </button>
@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       products: this.item,
+      num: 1,
     };
   },
   props: {
@@ -50,9 +51,6 @@ export default {
       typeof: Object,
       require: true,
     },
-  },
-  emits: {
-    'get-data': () => true,
   },
   methods: {
     addToCart(id, qty) {
@@ -66,9 +64,10 @@ export default {
       this.axios.post(url, { data: cart })
         .then((res) => {
           if (res.data.success) {
+            this.num = 1;
             this.$swal({ title: `${res.data.data.product.title}加入購物車`, icon: 'success' });
+            this.$store.dispatch('getCart');
             this.$store.dispatch('updateLoading', false);
-            this.$emit('get-data');
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
             this.$store.dispatch('updateLoading', false);

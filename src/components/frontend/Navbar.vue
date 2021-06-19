@@ -84,14 +84,18 @@
                     ]"
                     to="/favorites"
                     ><span
-                      v-show="collectionData"
+                      v-show="
+                        $store.state.bookmarkModules.collectionData?.length
+                      "
                       class="
                         badge
                         rounded-circle
                         bg-secondary
                         position-absolute
                       "
-                      >{{ collectionData }}</span
+                      >{{
+                        $store.state.bookmarkModules.collectionData?.length
+                      }}</span
                     ><i class="bi bi-bookmark-fill fs-4 me-2 me-md-0"></i
                   ></router-link>
                 </li>
@@ -115,9 +119,9 @@
         ]"
         to="/carts"
         ><span
-          v-show="cartsQuantity"
+          v-show="$store.state.cartModules.cart.carts?.length"
           class="badge rounded-circle bg-secondary position-absolute"
-          >{{ cartsQuantity }}</span
+          >{{ $store.state.cartModules.cart.carts?.length }}</span
         >
         <i class="bi bi-cart-fill fs-4 fw-lighter"></i>
       </router-link>
@@ -128,22 +132,7 @@
 <script>
 export default {
   data() {
-    return {
-      collectionData: JSON.parse(localStorage.getItem('listData'))?.length || 0,
-    };
-  },
-  computed: {
-    cartsQuantity() {
-      return this.$store.state.cart.carts?.length;
-    },
-  },
-  created() {
-    this.$bus.on('collection', () => {
-      this.collectionData = JSON.parse(localStorage.getItem('listData'))?.length;
-    });
-  },
-  unmounted() {
-    this.$bus.off('collection');
+    return {};
   },
 };
 </script>
@@ -157,6 +146,7 @@ a:hover {
 .logo {
   font-family: 'Sigmar One', cursive;
 }
+
 .badge {
   top: 3%;
   right: -6%;

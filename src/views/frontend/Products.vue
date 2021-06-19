@@ -77,8 +77,8 @@
               :key="item.id"
             >
               <div class="card w-100 w-sm-65 w-md-100 h-100 border-0">
-                <ProductImg :item="item" @bookmark-data="bookmark" />
-                <AddToCart class="mx-auto" :item="item" @get-data="getCart" />
+                <ProductImg :item="item" />
+                <AddToCart class="mx-auto" :item="item" />
               </div>
             </li>
           </ul>
@@ -99,7 +99,7 @@
         :autoplay="autoplay"
       >
         <SwiperSlide v-for="item in specialOffer" :key="item.id">
-          <ProductImg :item="item" @bookmark-data="bookmark" />
+          <ProductImg :item="item" />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -124,7 +124,6 @@ export default {
       categoryValue: 'total',
       products: [],
       productsFilter: [],
-      collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       pagination: {},
       width: {
         slidesView: 4,
@@ -153,19 +152,6 @@ export default {
     },
     getAllProducts() {
       this.$store.dispatch('getAllProducts');
-      this.getCart();
-    },
-    getCart() {
-      this.$store.dispatch('getCart');
-    },
-    bookmark(bool, id) {
-      if (bool) {
-        const newArr = this.allProducts.filter((item) => item.id === id);
-        this.collectionData.push(newArr[0]);
-      } else {
-        this.collectionData = this.collectionData.filter((item) => item.id !== id);
-      }
-      localStorage.setItem('listData', JSON.stringify(this.collectionData));
     },
     productsData(value = 'total', status = 'click') {
       switch (status) {
@@ -187,9 +173,9 @@ export default {
             this.categoryValue = '';
             this.productsFilter = this.allProducts.filter((item) => item.options.rating === value);
           } else if (value === 'highPrice') {
-            this.productsFilter = this.allProducts.sort((a, b) => b.price - a.price);
+            this.productsFilter = [...this.allProducts].sort((a, b) => b.price - a.price);
           } else {
-            this.productsFilter = this.allProducts.sort((a, b) => a.price - b.price);
+            this.productsFilter = [...this.allProducts].sort((a, b) => a.price - b.price);
           }
           if (!(value * 1)) {
             this.categoryValue = 'total';
@@ -219,10 +205,10 @@ export default {
       return this.$store.state.isLoading;
     },
     allProducts() {
-      return this.$store.state.allProducts;
+      return this.$store.state.allProductsModules.allProducts;
     },
     cart() {
-      return this.$store.state.cart;
+      return this.$store.state.cartModules.cart;
     },
     data() {
       const { allProducts, cart } = this;

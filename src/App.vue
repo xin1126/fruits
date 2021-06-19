@@ -13,6 +13,9 @@ export default {
       document.body.classList[status]('bg');
     },
   },
+  mounted() {
+    this.$store.dispatch('getCart');
+  },
 };
 </script>
 

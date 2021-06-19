@@ -70,7 +70,6 @@
 export default {
   data() {
     return {
-      collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       products: this.item,
     };
   },
@@ -88,17 +87,13 @@ export default {
   },
   methods: {
     bookmark(id) {
-      this.products.bookmark = !this.products.bookmark;
-      this.$emit('bookmark-data', this.products.bookmark, id);
+      this.$store.dispatch('updateBookmark', id);
+      // this.$emit('bookmark-data', this.products.bookmark, id);
       this.$bus.emit('collection');
     },
   },
   created() {
-    this.collectionData.forEach((item) => {
-      if (this.products.id === item.id) {
-        this.products.bookmark = true;
-      }
-    });
+    this.$store.dispatch('initBookmark', this.products.id);
   },
 };
 </script>

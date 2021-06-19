@@ -16,7 +16,7 @@
 export default {
   data() {
     return {
-      collectionData: JSON.parse(localStorage.getItem('listData')) || [],
+      collectionData: this.$store.state.bookmarkModules.collectionData,
     };
   },
 };

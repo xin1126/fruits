@@ -9,10 +9,10 @@
           <li class="breadcrumb-item text-gray">首頁</li>
           <li class="breadcrumb-item text-gray">商品列表</li>
           <li class="breadcrumb-item text-gray">
-            {{ singleProduct.category }}
+            {{ product.category }}
           </li>
           <li class="breadcrumb-item text-secondary" aria-current="page">
-            {{ singleProduct.title }}
+            {{ product.title }}
           </li>
         </ol>
       </nav>
@@ -29,13 +29,13 @@
               "
             >
               <img
-                @click="img = singleProduct.imgUrl"
-                :src="singleProduct.imgUrl"
-                :alt="singleProduct.title"
+                @click="img = product.imgUrl"
+                :src="product.imgUrl"
+                :alt="product.title"
                 class="img-fluid small-img cursor-pointer border"
               />
               <img
-                v-for="item in singleProduct.imagesUrl"
+                v-for="item in product.imagesUrl"
                 :key="item"
                 @click="img = item"
                 :alt="item.title"
@@ -46,7 +46,7 @@
             <div class="col-xl-10 bg-light d-flex-center">
               <img
                 :src="img"
-                :alt="singleProduct.title"
+                :alt="product.title"
                 class="img-fluid img-transparent w-100 main-img"
               />
             </div>
@@ -57,24 +57,22 @@
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex">
                 <h4 class="fw-bold mb-0 d-flex-center me-2">
-                  {{ singleProduct.title }}
+                  {{ product.title }}
                 </h4>
                 <i
                   class="bi text-warning fs-5"
                   :class="[
-                    singleProduct.options?.rating >= num
-                      ? 'bi-star-fill'
-                      : 'bi-star',
+                    product.options?.rating >= num ? 'bi-star-fill' : 'bi-star',
                   ]"
                   v-for="num in 5"
                   :key="num"
                 ></i>
               </div>
-              <a href="#" @click.prevent="cutoverBookmark(singleProduct.id)"
+              <a href="#" @click.prevent="updateBookmark"
                 ><i
                   class="icon bi fs-3"
                   :class="[
-                    singleBookmark
+                    bookmark
                       ? ['text-primary', 'bi-bookmark-heart-fill']
                       : ['text-gray', 'bi-bookmark-heart'],
                   ]"
@@ -90,9 +88,7 @@
               <li class="d-flex mb-1">
                 <i class="bi bi-hand-thumbs-up me-1"></i>
                 <p class="mb-0">
-                  濃濃{{
-                    singleProduct.title
-                  }}香氣，香氣濃郁、果香清爽、滋味香甜
+                  濃濃{{ product.title }}香氣，香氣濃郁、果香清爽、滋味香甜
                 </p>
               </li>
               <li class="mb-1 d-xl-flex d-lg-none d-flex">
@@ -104,13 +100,13 @@
               </li>
               <li class="mb-1">
                 <i class="bi bi-geo-alt me-1"></i>產地：{{
-                  singleProduct.options?.origin
+                  product.options?.origin
                 }}
               </li>
               <li class="d-flex mb-1">
                 <i class="bi bi-speedometer2 me-1"></i>重量：{{
-                  singleProduct.options?.weight
-                }}({{ singleProduct.unit }})
+                  product.options?.weight
+                }}({{ product.unit }})
               </li>
               <li class="d-flex mb-1">
                 <i class="bi bi-cash-coin me-1"></i>
@@ -129,16 +125,16 @@
                 <p
                   class="fw-bold mb-0 me-2"
                   :class="[
-                    singleProduct.origin_price !== singleProduct.price
+                    product.origin_price !== product.price
                       ? 'text-danger'
                       : 'text-dark',
                   ]"
                 >
                   {{
-                    singleProduct.origin_price !== singleProduct.price
+                    product.origin_price !== product.price
                       ? '促銷價:NT$'
                       : '售價:NT$'
-                  }}{{ singleProduct.price }}
+                  }}{{ product.price }}
                 </p>
                 <small
                   class="
@@ -147,12 +143,12 @@
                     mt-1
                     me-2
                   "
-                  v-if="singleProduct.origin_price !== singleProduct.price"
+                  v-if="product.origin_price !== product.price"
                 >
-                  原價:NT${{ singleProduct.origin_price }}
+                  原價:NT${{ product.origin_price }}
                 </small>
               </div>
-              <AddToCart :item="singleProduct" @get-data="getCart" />
+              <AddToCart :item="singleProduct" />
             </div>
           </div>
         </div>
@@ -164,7 +160,7 @@
               <h5 class="text-primary fw-bold">營養與功效</h5>
             </div>
             <div class="col-sm-9">
-              <p class="mb-2">{{ singleProduct.description }}</p>
+              <p class="mb-2">{{ product.description }}</p>
             </div>
           </div>
           <div class="row mb-4">
@@ -172,7 +168,7 @@
               <h5 class="text-primary fw-bold">保存方式</h5>
             </div>
             <div class="col-sm-9">
-              <p class="mb-2">{{ singleProduct.content }}</p>
+              <p class="mb-2">{{ product.content }}</p>
             </div>
           </div>
           <div class="row">
@@ -218,7 +214,7 @@
         :autoplay="autoplay"
       >
         <SwiperSlide v-for="item in relatedProducts" :key="item.id">
-          <ProductImg :item="item" @bookmark-data="bookmark" />
+          <ProductImg :item="item" />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -237,14 +233,13 @@ export default {
       id: '',
       img: '',
       offsetWidth: '',
-      singleBookmark: '',
+      bookmark: '',
       width: 4,
       product: {},
       autoplay: {
         delay: 2000,
         disableOnInteraction: false,
       },
-      collectionData: JSON.parse(localStorage.getItem('listData')) || [],
       view: false,
     };
   },
@@ -255,11 +250,13 @@ export default {
   methods: {
     getProduct() {
       const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/product/${this.id}`;
+      const arr = this.$store.state.bookmarkModules.collectionData.map((item) => item.id);
       this.$store.dispatch('updateLoading', true);
       this.axios.get(api)
         .then((res) => {
           if (res.data.success) {
             this.product = res.data.product;
+            this.bookmark = arr.indexOf(this.product.id) >= 0;
           }
           this.$store.dispatch('updateLoading', false);
         })
@@ -270,32 +267,10 @@ export default {
     },
     getAllProducts() {
       this.$store.dispatch('getAllProducts');
-      this.getCart();
     },
-    getCart() {
-      this.$store.dispatch('getCart');
-    },
-    cutoverBookmark(id) {
-      this.singleBookmark = !this.singleBookmark;
-      this.singleProduct.bookmark = this.singleBookmark;
-      this.bookmark(this.singleBookmark, id);
-    },
-    bookmark(bool, id) {
-      if (this.product.id === id) {
-        this.singleBookmark = bool;
-      }
-      if (bool) {
-        const newArr = this.allProducts.filter((item) => item.id === id);
-        this.collectionData.push(newArr[0]);
-      } else {
-        this.collectionData = this.collectionData.filter((item) => item.id !== id);
-      }
-      localStorage.setItem('listData', JSON.stringify(this.collectionData));
-      this.$bus.emit('collection');
-    },
-    showMultiple(num) {
-      this.index = num;
-      this.visible = true;
+    updateBookmark() {
+      this.bookmark = !this.bookmark;
+      this.$store.dispatch('updateBookmark', this.product.id);
     },
   },
   computed: {
@@ -315,10 +290,10 @@ export default {
       return this.$store.state.isLoading;
     },
     allProducts() {
-      return this.$store.state.allProducts;
+      return this.$store.state.allProductsModules.allProducts;
     },
     cart() {
-      return this.$store.state.cart;
+      return this.$store.state.cartModules.cart;
     },
     data() {
       const { allProducts, cart } = this;
@@ -332,20 +307,16 @@ export default {
     data: {
       handler(val) {
         if (val.allProducts.length && Object.values(val.cart).length) {
+          this.view = true;
           this.$store.dispatch('updateLoading', false);
           this.$store.dispatch('data');
         }
       },
       deep: true,
     },
-    singleProduct() {
-      this.view = true;
-      this.collectionData.forEach((item) => {
-        if (this.product.id === item.id) {
-          this.singleBookmark = true;
-        }
-      });
-      this.img = this.singleProduct.imgUrl;
+    product() {
+      this.$store.dispatch('initBookmark', this.product.id);
+      this.img = this.product.imgUrl;
     },
     $route() {
       this.id = this.$route.params.id;

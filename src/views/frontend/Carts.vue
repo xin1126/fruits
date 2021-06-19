@@ -4,7 +4,7 @@
       <p class="bg-translucent fw-bolder px-5 py-3">購物車列表</p>
     </div>
     <div class="container mb-5">
-      <div class="row" v-if="$store.state.cart.carts?.length">
+      <div class="row" v-if="$store.state.cartModules.cart.carts?.length">
         <div class="col-lg-8">
           <div class="text-end">
             <button
@@ -166,7 +166,7 @@
         <router-link to="/"
           ><img
             :src="
-              $store.state.cart.carts?.length
+              $store.state.cartModules.cart.carts?.length
                 ? ''
                 : 'https://i.imgur.com/JWtbdcf.jpg'
             "
@@ -193,29 +193,13 @@ export default {
         },
         message: '',
       },
-      cart: {},
       isLoading: false,
       test: '',
     };
   },
   methods: {
     getCart() {
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
-      this.isLoading = true;
-      this.axios.get(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.cart = res.data.data;
-            this.$bus.emit('cartsQuantity', this.cart.carts.length);
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.$swal({ title: error.data?.message, icon: 'error' });
-          this.isLoading = false;
-        });
+      this.$store.dispatch('getCart');
     },
     deleteAllCarts() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/carts`;
@@ -224,7 +208,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.$swal({ title: res.data.message, icon: 'success' });
-            this.$store.dispatch('getCart');
+            this.getCart();
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
@@ -243,7 +227,7 @@ export default {
           if (res.data.success) {
             this.$swal({ title: res.data.message, icon: 'success' });
             this.isLoading = false;
-            this.$store.dispatch('getCart');
+            this.getCart();
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
             this.isLoading = false;
@@ -293,6 +277,11 @@ export default {
           this.$swal({ title: error.data.message, icon: 'error' });
           this.isLoading = false;
         });
+    },
+  },
+  computed: {
+    cart() {
+      return this.$store.state.cartModules.cart;
     },
   },
   mounted() {
