@@ -26,7 +26,7 @@
         :key="item"
         v-scroll-to="{
           el: '#topProduct',
-          offset: -50,
+          offset: -40,
         }"
         class="px-2"
       >
@@ -87,8 +87,8 @@ export default {
   methods: {
     paginationNum(num) {
       this.$emit('page', num);
-      this.el.right = this.pagination.has_next ? { el: '#topProduct', offset: -50 } : '';
-      this.el.left = this.pagination.has_pre ? { el: '#topProduct', offset: -50 } : '';
+      this.el.right = this.pagination.has_next ? { el: '#topProduct', offset: -40 } : '';
+      this.el.left = this.pagination.has_pre ? { el: '#topProduct', offset: -40 } : '';
     },
   },
 };

@@ -1,4 +1,7 @@
 <template>
+  <Loading :active="isLoading">
+    <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
+  </Loading>
   <router-view />
 </template>
 
@@ -6,6 +9,11 @@
 export default {
   data() {
     return {};
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
   },
   watch: {
     $route() {

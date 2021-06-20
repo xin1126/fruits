@@ -33,7 +33,7 @@
   <a
     href="#"
     class="position-absolute top-0 end-0 mt-1 me-2"
-    @click.prevent="bookmark(products.id)"
+    @click.prevent="$store.dispatch('updateBookmark', products.id)"
   >
     <i
       class="bi fs-3"
@@ -77,19 +77,6 @@ export default {
     item: {
       typeof: Object,
       require: true,
-    },
-  },
-  emits: {
-    'bookmark-data': {
-      typeof: Boolean,
-      require: true,
-    },
-  },
-  methods: {
-    bookmark(id) {
-      this.$store.dispatch('updateBookmark', id);
-      // this.$emit('bookmark-data', this.products.bookmark, id);
-      this.$bus.emit('collection');
     },
   },
   created() {

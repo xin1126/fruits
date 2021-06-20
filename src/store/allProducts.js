@@ -5,7 +5,6 @@ import 'sweetalert2/src/sweetalert2.scss';
 export default {
   state: {
     allProducts: [],
-    category: [],
   },
   actions: {
     getAllProducts({ commit }) {
@@ -17,7 +16,6 @@ export default {
             commit('allProducts', Object.values(res.data.products).map((item) => ({
               ...item, num: 1, joined: false, bookmark: false,
             })));
-            commit('category', new Set(Object.values(res.data.products).map((item) => item.category)));
           } else {
             Swal.fire(res.data.message);
           }
@@ -44,13 +42,10 @@ export default {
     allProducts(state, payload) {
       state.allProducts = payload;
     },
-    category(state, payload) {
-      state.category = payload;
-    },
   },
   getters: {
-    specialOffer(state) {
-      return state.allProducts.filter((item) => item.origin_price !== item.price);
+    allProducts(state) {
+      return state.allProducts;
     },
   },
 };

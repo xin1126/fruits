@@ -16,8 +16,6 @@
       <div class="row">
         <div class="col-lg-3 position-sticky title-top">
           <ProductList
-            :widthData="width"
-            :allData="allProducts"
             :categoryValue="categoryValue"
             @emitData="productsData"
           />
@@ -92,7 +90,7 @@
       <hr class="border border-primary border-3" />
       <h3 class="text-center text-secondary fw-bold mb-3">促銷商品</h3>
       <Swiper
-        :slides-per-view="width.slidesView"
+        :slides-per-view="offsetWidthData.slidesView"
         :space-between="30"
         :loop="true"
         :loopFillGroupWithBlank="true"
@@ -103,9 +101,6 @@
         </SwiperSlide>
       </Swiper>
     </div>
-    <Loading :active="isLoading">
-      <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
-    </Loading>
   </section>
 </template>
 
@@ -114,21 +109,17 @@ import ProductImg from '@/components/frontend/ProductImg.vue';
 import ProductList from '@/components/frontend/ProductList.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
 import Pagination from '@/components/Pagination.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       optionValue: '',
       search: '',
-      offsetWidth: '',
       categoryValue: 'total',
       products: [],
       productsFilter: [],
       pagination: {},
-      width: {
-        slidesView: 4,
-        list: '',
-      },
       autoplay: {
         delay: 2000,
         disableOnInteraction: false,
@@ -142,6 +133,7 @@ export default {
     Pagination,
   },
   methods: {
+    ...mapActions(['getAllProducts', 'initOffsetWidth', 'updateOffsetWidth']),
     pageData(num) {
       const min = (num * 9) - 9 + 1;
       const max = (num * 9);
@@ -149,9 +141,6 @@ export default {
       this.pagination.has_next = num !== this.pagination.total_pages;
       this.pagination.current_page = num;
       this.products = this.allProducts.filter((i, index) => index + 1 >= min && index + 1 <= max);
-    },
-    getAllProducts() {
-      this.$store.dispatch('getAllProducts');
     },
     productsData(value = 'total', status = 'click') {
       switch (status) {
@@ -197,18 +186,10 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(['allProducts', 'cart', 'offsetWidth', 'offsetWidthData']),
     specialOffer() {
       const newArr = this.allProducts.filter((item) => item.origin_price !== item.price);
       return newArr;
-    },
-    isLoading() {
-      return this.$store.state.isLoading;
-    },
-    allProducts() {
-      return this.$store.state.allProductsModules.allProducts;
-    },
-    cart() {
-      return this.$store.state.cartModules.cart;
     },
     data() {
       const { allProducts, cart } = this;
@@ -222,7 +203,6 @@ export default {
     data: {
       handler(val) {
         if (val.allProducts.length && Object.values(val.cart).length) {
-          this.$store.dispatch('updateLoading', false);
           this.$store.dispatch('data');
         }
       },
@@ -241,25 +221,17 @@ export default {
       this.productsData();
     },
     offsetWidth() {
-      this.width.list = this.offsetWidth < 992;
-      this.width.offset = -45;
-      if (this.offsetWidth < 992 && this.offsetWidth >= 768) {
-        this.width.slidesView = 2;
-      } else if (this.offsetWidth < 768) {
-        this.width.slidesView = 1;
-        this.width.offset = -30;
-      } else {
-        this.width.slidesView = 4;
-      }
+      this.updateOffsetWidth();
     },
+  },
+  created() {
+    this.initOffsetWidth();
+    window.onresize = () => {
+      this.updateOffsetWidth();
+    };
   },
   mounted() {
     this.getAllProducts();
-    this.offsetWidth = window.innerWidth;
-    this.width.list = this.offsetWidth < 992;
-    window.onresize = () => {
-      this.offsetWidth = document.body.offsetWidth;
-    };
   },
 };
 </script>

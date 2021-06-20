@@ -85,7 +85,7 @@
                     to="/favorites"
                     ><span
                       v-show="
-                        $store.state.bookmarkModules.collectionData?.length
+                        $store.getters.collectionData?.length
                       "
                       class="
                         badge
@@ -94,7 +94,7 @@
                         position-absolute
                       "
                       >{{
-                        $store.state.bookmarkModules.collectionData?.length
+                        $store.getters.collectionData?.length
                       }}</span
                     ><i class="bi bi-bookmark-fill fs-4 me-2 me-md-0"></i
                   ></router-link>
@@ -119,9 +119,9 @@
         ]"
         to="/carts"
         ><span
-          v-show="$store.state.cartModules.cart.carts?.length"
+          v-show="$store.getters.cart.carts?.length"
           class="badge rounded-circle bg-secondary position-absolute"
-          >{{ $store.state.cartModules.cart.carts?.length }}</span
+          >{{ $store.getters.cart.carts?.length }}</span
         >
         <i class="bi bi-cart-fill fs-4 fw-lighter"></i>
       </router-link>

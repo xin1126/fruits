@@ -222,9 +222,6 @@
           </tr>
         </tbody>
       </table>
-      <Loading :active="isLoading">
-        <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
-      </Loading>
       <Pagination :pagination="pagination" @page="getOrders" />
     </div>
   </section>
@@ -292,11 +289,6 @@ export default {
           this.$swal({ title: '請求API失敗', icon: 'error' });
           this.$store.dispatch('updateLoading', false);
         });
-    },
-  },
-  computed: {
-    isLoading() {
-      return this.$store.state.isLoading;
     },
   },
   mounted() {

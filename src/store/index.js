@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import allProductsModules from './allProducts';
 import bookmarkModules from './bookmark';
 import cartModules from './cart';
+import offsetWidthModules from './offsetWidth';
 
 export default createStore({
   strict: true,
@@ -33,9 +34,15 @@ export default createStore({
       });
     },
   },
+  getters: {
+    isLoading(state) {
+      return state.isLoading;
+    },
+  },
   modules: {
     allProductsModules,
     bookmarkModules,
     cartModules,
+    offsetWidthModules,
   },
 });

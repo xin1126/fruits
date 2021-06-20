@@ -16,7 +16,7 @@
 export default {
   data() {
     return {
-      collectionData: this.$store.state.bookmarkModules.collectionData,
+      collectionData: this.$store.getters.collectionData,
     };
   },
 };

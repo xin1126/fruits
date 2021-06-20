@@ -9,14 +9,15 @@ export default {
   actions: {
     getCart({ commit }) {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
+      commit('loading', true);
       axios.get(url)
         .then((res) => {
           if (res.data.success) {
             commit('cart', res.data.data);
           } else {
-            commit('loading', false);
             Swal.fire(res.data.message);
           }
+          commit('loading', false);
         })
         .catch(() => {
           commit('loading', false);
@@ -27,6 +28,11 @@ export default {
   mutations: {
     cart(state, payload) {
       state.cart = payload;
+    },
+  },
+  getters: {
+    cart(state) {
+      return state.cart;
     },
   },
 };

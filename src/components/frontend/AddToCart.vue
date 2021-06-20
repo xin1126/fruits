@@ -67,21 +67,15 @@ export default {
             this.num = 1;
             this.$swal({ title: `${res.data.data.product.title}加入購物車`, icon: 'success' });
             this.$store.dispatch('getCart');
-            this.$store.dispatch('updateLoading', false);
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
-            this.$store.dispatch('updateLoading', false);
           }
+          this.$store.dispatch('updateLoading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
           this.$store.dispatch('updateLoading', false);
         });
-    },
-  },
-  watch: {
-    item() {
-      this.products = this.item;
     },
   },
 };

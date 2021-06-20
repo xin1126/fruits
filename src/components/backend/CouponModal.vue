@@ -227,11 +227,6 @@ export default {
         });
     },
   },
-  computed: {
-    isLoading() {
-      return this.$store.state.isLoading;
-    },
-  },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
   },

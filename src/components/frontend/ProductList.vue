@@ -1,7 +1,9 @@
 <template>
   <div
     :class="[
-      width.list ? 'position-relative' : ['position-sticky', 'list-top'],
+      offsetWidthData.list
+        ? 'position-relative'
+        : ['position-sticky', 'list-top'],
     ]"
   >
     <ul
@@ -11,7 +13,7 @@
       <li>
         <a
           data-bs-toggle="collapse"
-          :href="width.list ? '#collapseExample' : '#'"
+          :href="offsetWidthData.list ? '#collapseExample' : '#'"
           class="
             d-flex
             justify-content-between
@@ -48,7 +50,7 @@
       <li class="collapse" id="collapseExample">
         <a
           data-bs-toggle="collapse"
-          :data-bs-target="width.list ? '#flush-collapseOne' : '#'"
+          :data-bs-target="offsetWidthData.list ? '#flush-collapseOne' : '#'"
           href="#"
           class="
             d-flex
@@ -68,7 +70,7 @@
       <li class="list-group fs-6 p-0 rounded-0" id="collapseExample">
         <ul
           class="accordion-collapse p-0"
-          :class="{ collapse: width.list }"
+          :class="{ collapse: offsetWidthData.list }"
           id="flush-collapseOne"
           data-bs-parent="#accordionFlushExample"
         >
@@ -78,13 +80,13 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               @click.prevent="productsData('total', 'click')"
               class="d-flex w-100 ms-4 ms-lg-0 py-2 ps-3"
               :class="[categoryValue === 'total' ? 'text-white' : 'text-gray']"
               v-scroll-to="{
                 el: '#topProduct',
-                offset: width.offset,
+                offset: offsetWidthData.offset,
               }"
               ><img
                 src="@/assets/images/icon/全部商品.png"
@@ -107,13 +109,13 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               @click.prevent="productsData(item, 'click')"
               class="d-flex w-100 ms-4 ms-lg-0 py-2 ps-3"
               :class="[categoryValue === item ? 'text-white' : 'text-gray']"
               v-scroll-to="{
                 el: '#topProduct',
-                offset: width.offset,
+                offset: offsetWidthData.offset,
               }"
               ><img
                 :src="require(`@/assets/images/icon/${item}.png`)"
@@ -131,7 +133,7 @@
       <li class="collapse" id="collapseExample">
         <a
           data-bs-toggle="collapse"
-          :data-bs-target="width.list ? '#flush-collapseTwo' : '#'"
+          :data-bs-target="offsetWidthData.list ? '#flush-collapseTwo' : '#'"
           href="#"
           class="
             d-flex
@@ -167,7 +169,7 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               class="ps-4 py-2"
               :class="[
                 optionValue === 'highPrice' ? 'text-white' : 'text-gray',
@@ -183,7 +185,7 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               class="ps-4 py-2"
               :class="[optionValue === 'lowPrice' ? 'text-white' : 'text-gray']"
               @click.prevent="productsData('lowPrice', 'select')"
@@ -196,7 +198,7 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               class="ps-4 py-2"
               :class="[optionValue === '2' ? 'text-white' : 'text-gray']"
               @click.prevent="productsData('2', 'select')"
@@ -209,7 +211,7 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               class="ps-4 py-2"
               :class="[optionValue === '3' ? 'text-white' : 'text-gray']"
               @click.prevent="productsData('3', 'select')"
@@ -222,7 +224,7 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               class="ps-4 py-2"
               :class="[optionValue === '4' ? 'text-white' : 'text-gray']"
               @click.prevent="productsData('4', 'select')"
@@ -235,7 +237,7 @@
           >
             <a
               data-bs-toggle="collapse"
-              :href="width.list ? '#collapseExample' : '#'"
+              :href="offsetWidthData.list ? '#collapseExample' : '#'"
               class="ps-4 py-2"
               :class="[optionValue === '5' ? 'text-white' : 'text-gray']"
               @click.prevent="productsData('5', 'select')"
@@ -249,44 +251,37 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
       optionValue: '',
       search: '',
-      width: {},
       totalNum: {},
-      allProducts: {},
       color: false,
     };
   },
   props: {
-    widthData: {
-      typeof: Object,
-      require: true,
-    },
-    allData: {
-      typeof: Object,
-      require: true,
-    },
     categoryValue: {
       typeof: String,
       require: true,
     },
   },
-  watch: {
-    allData() {
-      this.allProducts = this.allData;
-      this.width = this.widthData;
-      this.allProducts.forEach((item) => {
-        this.totalNum[item.category] = (this.totalNum[item.category] || 0) + 1;
-      });
-    },
+  computed: {
+    ...mapGetters(['offsetWidthData', 'allProducts']),
   },
   methods: {
     productsData(value, status) {
       this.$emit('emitData', value, status);
       this.search = status !== 'input' ? '' : value;
+    },
+  },
+  watch: {
+    allProducts() {
+      this.allProducts.forEach((item) => {
+        this.totalNum[item.category] = (this.totalNum[item.category] || 0) + 1;
+      });
     },
   },
 };

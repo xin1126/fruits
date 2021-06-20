@@ -207,7 +207,7 @@
       <hr class="border border-primary border-3" />
       <h2 class="fw-bold mt-4 text-center text-secondary pb-3">相關商品</h2>
       <Swiper
-        :slides-per-view="width"
+        :slides-per-view="offsetWidthData.slidesView"
         :space-between="30"
         :loop="true"
         :loopFillGroupWithBlank="true"
@@ -219,22 +219,18 @@
       </Swiper>
     </div>
   </div>
-  <Loading :active="isLoading">
-    <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
-  </Loading>
 </template>
 <script>
 import ProductImg from '@/components/frontend/ProductImg.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       id: '',
       img: '',
-      offsetWidth: '',
       bookmark: '',
-      width: 4,
       product: {},
       autoplay: {
         delay: 2000,
@@ -248,14 +244,16 @@ export default {
     AddToCart,
   },
   methods: {
+    ...mapActions(['getAllProducts', 'initOffsetWidth', 'updateOffsetWidth']),
     getProduct() {
       const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/product/${this.id}`;
-      const arr = this.$store.state.bookmarkModules.collectionData.map((item) => item.id);
+      const arr = this.$store.getters.collectionData.map((item) => item.id);
       this.$store.dispatch('updateLoading', true);
       this.axios.get(api)
         .then((res) => {
           if (res.data.success) {
             this.product = res.data.product;
+            this.$store.dispatch('initBookmark', res.data.product.id);
             this.bookmark = arr.indexOf(this.product.id) >= 0;
           }
           this.$store.dispatch('updateLoading', false);
@@ -265,15 +263,13 @@ export default {
           this.$store.dispatch('updateLoading', false);
         });
     },
-    getAllProducts() {
-      this.$store.dispatch('getAllProducts');
-    },
     updateBookmark() {
       this.bookmark = !this.bookmark;
       this.$store.dispatch('updateBookmark', this.product.id);
     },
   },
   computed: {
+    ...mapGetters(['allProducts', 'cart', 'offsetWidth', 'offsetWidthData']),
     relatedProducts() {
       const newArr = this.allProducts.filter((item) => {
         const arr = item.category === this.product.category && item.id !== this.product.id;
@@ -285,15 +281,6 @@ export default {
       const newArr = this.allProducts.filter((item) => item.title === this.product.title);
       const data = newArr[0] ?? {};
       return data;
-    },
-    isLoading() {
-      return this.$store.state.isLoading;
-    },
-    allProducts() {
-      return this.$store.state.allProductsModules.allProducts;
-    },
-    cart() {
-      return this.$store.state.cartModules.cart;
     },
     data() {
       const { allProducts, cart } = this;
@@ -308,14 +295,12 @@ export default {
       handler(val) {
         if (val.allProducts.length && Object.values(val.cart).length) {
           this.view = true;
-          this.$store.dispatch('updateLoading', false);
           this.$store.dispatch('data');
         }
       },
       deep: true,
     },
     product() {
-      this.$store.dispatch('initBookmark', this.product.id);
       this.img = this.product.imgUrl;
     },
     $route() {
@@ -323,23 +308,19 @@ export default {
       this.getProduct();
     },
     offsetWidth() {
-      if (this.offsetWidth < 992 && this.offsetWidth >= 768) {
-        this.width = 2;
-      } else if (this.offsetWidth < 768) {
-        this.width = 1;
-      } else {
-        this.width = 4;
-      }
+      this.updateOffsetWidth();
     },
+  },
+  created() {
+    this.initOffsetWidth();
+    window.onresize = () => {
+      this.updateOffsetWidth();
+    };
   },
   mounted() {
     this.id = this.$route.params.id;
     this.getAllProducts();
     this.getProduct();
-    this.offsetWidth = window.innerWidth;
-    window.onresize = () => {
-      this.offsetWidth = document.body.offsetWidth;
-    };
   },
 };
 </script>

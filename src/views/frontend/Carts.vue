@@ -4,7 +4,7 @@
       <p class="bg-translucent fw-bolder px-5 py-3">購物車列表</p>
     </div>
     <div class="container mb-5">
-      <div class="row" v-if="$store.state.cartModules.cart.carts?.length">
+      <div class="row" v-if="$store.getters.cart.carts?.length">
         <div class="col-lg-8">
           <div class="text-end">
             <button
@@ -166,7 +166,7 @@
         <router-link to="/"
           ><img
             :src="
-              $store.state.cartModules.cart.carts?.length
+              $store.getters.cart.carts?.length
                 ? ''
                 : 'https://i.imgur.com/JWtbdcf.jpg'
             "
@@ -175,9 +175,6 @@
       </div>
     </div>
   </section>
-  <Loading :active="isLoading">
-    <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
-  </Loading>
 </template>
 
 <script>
@@ -193,8 +190,6 @@ export default {
         },
         message: '',
       },
-      isLoading: false,
-      test: '',
     };
   },
   methods: {
@@ -203,7 +198,7 @@ export default {
     },
     deleteAllCarts() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/carts`;
-      this.isLoading = true;
+      this.$store.dispatch('updateLoading', true);
       this.axios.delete(url)
         .then((res) => {
           if (res.data.success) {
@@ -212,54 +207,57 @@ export default {
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
-          this.isLoading = false;
+          this.$store.dispatch('updateLoading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
-          this.isLoading = false;
+          this.$store.dispatch('updateLoading', false);
         });
     },
     removeCartItem(id) {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart/${id}`;
-      this.isLoading = true;
+      this.$store.dispatch('updateLoading', true);
       this.axios.delete(url)
         .then((res) => {
           if (res.data.success) {
             this.$swal({ title: res.data.message, icon: 'success' });
-            this.isLoading = false;
             this.getCart();
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
-            this.isLoading = false;
           }
+          this.$store.dispatch('updateLoading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
-          this.isLoading = false;
+          this.$store.dispatch('updateLoading', false);
         });
     },
     updateCart(id, qty) {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart/${id}`;
-      this.isLoading = true;
+      this.$store.dispatch('updateLoading', true);
       const cart = {
         product_id: id,
         qty,
       };
-      this.axios.put(url, { data: cart }).then((res) => {
-        if (res.data.success) {
-          this.$swal({ title: res.data.message, icon: 'success' });
-          this.isLoading = false;
-          this.getCart();
-        } else {
-          this.$swal({ title: res.data.message, icon: 'error' });
-          this.isLoading = false;
-        }
-      });
+      this.axios.put(url, { data: cart })
+        .then((res) => {
+          if (res.data.success) {
+            this.$swal({ title: res.data.message, icon: 'success' });
+            this.getCart();
+          } else {
+            this.$swal({ title: res.data.message, icon: 'error' });
+          }
+          this.$store.dispatch('updateLoading', false);
+        })
+        .catch((error) => {
+          this.$swal({ title: error.data.message, icon: 'error' });
+          this.$store.dispatch('updateLoading', false);
+        });
     },
     createOrder() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/order`;
       const order = this.form;
-      this.isLoading = true;
+      this.$store.dispatch('updateLoading', true);
       this.axios.post(url, { data: order })
         .then((res) => {
           if (res.data.success) {
@@ -269,19 +267,18 @@ export default {
             this.form.message = '';
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
-            this.isLoading = false;
           }
-          this.isLoading = false;
+          this.$store.dispatch('updateLoading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
-          this.isLoading = false;
+          this.$store.dispatch('updateLoading', false);
         });
     },
   },
   computed: {
     cart() {
-      return this.$store.state.cartModules.cart;
+      return this.$store.getters.cart;
     },
   },
   mounted() {

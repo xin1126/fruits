@@ -124,7 +124,7 @@ export default {
       const formData = new FormData();
       formData.append('file', uploadedFile);
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/upload`;
-      this.$bus.emit('loading', true);
+      this.$store.dispatch('updateLoading', true);
       this.axios.post(url, formData)
         .then((res) => {
           if (res.data.success) {
@@ -137,11 +137,11 @@ export default {
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
-          this.$bus.emit('loading', false);
+          this.$store.dispatch('updateLoading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
-          this.$bus.emit('loading', false);
+          this.$store.dispatch('updateLoading', false);
         });
     },
   },

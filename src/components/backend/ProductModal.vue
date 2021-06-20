@@ -278,7 +278,6 @@ export default {
   },
   emits: {
     'get-data': () => true,
-    'is-loading': (bool) => typeof bool === 'boolean',
   },
   methods: {
     handlingProduct() {
@@ -287,7 +286,7 @@ export default {
       const api = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/product`;
       const url = this.status !== 'post' ? `${api}/${this.tempProduct.id}` : api;
       const data = this.status !== 'delete' ? { data: { ...this.tempProduct } } : '';
-      this.$emit('is-loading', true);
+      this.$store.dispatch('updateLoading', true);
       this.axios[this.status](url, data)
         .then((res) => {
           if (res.data.success) {
@@ -300,11 +299,11 @@ export default {
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
-          this.$emit('is-loading', false);
+          this.$store.dispatch('updateLoading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
-          this.$emit('is-loading', false);
+          this.$store.dispatch('updateLoading', false);
         });
     },
   },

@@ -74,21 +74,13 @@
           </tbody>
         </table>
       </div>
-      <Loading :active="isLoading">
-        <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
-      </Loading>
       <Pagination
         :category="category"
         :pagination="pagination"
         @page="getProducts"
       />
     </div>
-    <ProductModal
-      ref="modal"
-      :status="status"
-      @get-data="getAllProducts"
-      @is-loading="loading"
-    />
+    <ProductModal ref="modal" :status="status" @get-data="getAllProducts" />
   </section>
 </template>
 
@@ -104,7 +96,6 @@ export default {
       category: 'total',
       pagination: {},
       products: [],
-      isLoading: false,
     };
   },
   components: {
@@ -114,7 +105,7 @@ export default {
   },
   methods: {
     getProducts(num = 1) {
-      this.isLoading = true;
+      this.$store.dispatch('updateLoading', true);
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/admin/products?page=${num}`;
       this.axios.get(url)
         .then((res) => {
@@ -125,11 +116,11 @@ export default {
             this.$swal({ title: res.data.message, icon: 'error' });
             this.$router.push('/login');
           }
-          this.isLoading = false;
+          this.$store.dispatch('updateLoading', false);
         })
         .catch((error) => {
           this.$swal({ title: error.data.message, icon: 'error' });
-          this.isLoading = false;
+          this.$store.dispatch('updateLoading', false);
         });
     },
     statusModal(status, data) {
@@ -137,9 +128,6 @@ export default {
       this.$refs.modal.verificationStart = false;
       this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { rating: '', weight: '', origin: '' } } : JSON.parse(JSON.stringify(data));
       this.$bus.emit('tempProduct', this.$refs.modal.tempProduct);
-    },
-    loading(boolean) {
-      this.isLoading = boolean;
     },
     categoryValue(value) {
       this.category = value;
@@ -155,15 +143,9 @@ export default {
       return newArr;
     },
   },
-  created() {
-    this.$bus.on('loading', (boolean) => this.loading(boolean));
-  },
   mounted() {
     this.getProducts();
     this.$refs.category.getAllProducts();
-  },
-  unmounted() {
-    this.$bus.off('loading');
   },
 };
 </script>

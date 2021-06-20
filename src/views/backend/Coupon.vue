@@ -58,9 +58,6 @@
           </tbody>
         </table>
       </div>
-      <Loading :active="isLoading">
-        <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
-      </Loading>
     </div>
     <CouponModal ref="couponModal" :status="status" @get-data="getCoupons" />
   </section>
@@ -105,11 +102,6 @@ export default {
       this.status = status;
       this.$refs.couponModal.verificationStart = false;
       this.$refs.couponModal.tempCoupon = status === 'post' ? {} : JSON.parse(JSON.stringify(data));
-    },
-  },
-  computed: {
-    isLoading() {
-      return this.$store.state.isLoading;
     },
   },
   mounted() {

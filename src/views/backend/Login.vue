@@ -57,9 +57,6 @@
         </div>
       </div>
     </div>
-    <Loading :active="isLoading">
-      <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
-    </Loading>
   </section>
 </template>
 
@@ -71,14 +68,13 @@ export default {
         username: '',
         password: '',
       },
-      isLoading: false,
       passwordStatus: 'password',
     };
   },
   methods: {
     login() {
       const api = `${process.env.VUE_APP_APIURL}/admin/signin`;
-      this.isLoading = true;
+      this.$store.dispatch('updateLoading', true);
       this.axios.post(api, this.user).then((res) => {
         if (res.data.success) {
           const { token, expired } = res.data;
@@ -87,10 +83,10 @@ export default {
         } else {
           this.$swal({ title: res.data.message, icon: 'error' });
         }
-        this.isLoading = false;
+        this.$store.dispatch('updateLoading', false);
       }).catch((error) => {
         this.$swal({ title: error.data.message, icon: 'error' });
-        this.isLoading = false;
+        this.$store.dispatch('updateLoading', false);
       });
     },
     eyeChange(e) {
