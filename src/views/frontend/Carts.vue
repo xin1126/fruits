@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="banner d-flex-center text-white fs-2 mb-3">
+    <div class="cart-banner d-flex-center text-white fs-2 mb-3">
       <p class="bg-translucent fw-bolder px-5 py-3">購物車列表</p>
     </div>
     <div class="container mb-5">
@@ -286,12 +286,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.banner {
-  background-image: url('~@/assets/images/banner2.jpg');
-  background-position: center;
-  background-size: cover;
-  height: 300px;
-}
-</style>

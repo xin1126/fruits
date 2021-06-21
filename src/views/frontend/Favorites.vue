@@ -1,23 +1,142 @@
 <template>
   <div
-    class="content d-flex justify-content-center flex-column align-items-center"
+    class="content d-flex flex-column justify-content-between position-relative"
   >
-    <h1>我的最愛</h1>
-    <ul class="d-flex">
-      <li v-for="item in collectionData" :key="item.title">
-        {{ item.title }} 、
-      </li>
-    </ul>
-    <img src="@/assets/images/QQ.png" alt="" class="w-lg-25" />
+    <div>
+      <div class="favorites-banner d-flex-center text-white fs-2 mb-3">
+        <p class="bg-translucent fw-bolder px-5 py-3">商品收藏列表</p>
+      </div>
+      <div class="container mb-4" v-if="collectionData.length && view">
+        <nav aria-label="breadcrumb" id="topProduct">
+          <ol class="breadcrumb mb-3">
+            <li class="breadcrumb-item text-gray">首頁</li>
+            <li class="breadcrumb-item text-secondary">商品收藏列表</li>
+          </ol>
+        </nav>
+        <ul
+          class="
+            row row-cols-1 row-cols-lg-4 row-cols-md-2
+            justify-content-center
+            g-6
+            p-0
+            mt-0
+          "
+        >
+          <template v-for="item in collectionData" :key="item.id">
+            <li
+              class="
+                col
+                animate__animated animate__fadeIn
+                d-flex-center
+                mt-0
+                mb-4
+              "
+              v-if="id[item.id]"
+            >
+              <div class="card w-100 w-sm-65 w-md-100 h-100 border-0">
+                <ProductImg :item="item" ref="productImg" />
+                <AddToCart class="mx-auto" :item="item" />
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+      <div class="shopping text-center" v-else>
+        <h2 class="fw-bold">目前收藏商品列表為空</h2>
+        <h3>逛逛新鮮水果</h3>
+        <button
+          class="btn btn-primary btn-sm btn-hover"
+          @click="$router.push('/')"
+        >
+          商品列表
+        </button>
+      </div>
+    </div>
+    <Subscription />
   </div>
 </template>
 
 <script>
+import ProductImg from '@/components/frontend/ProductImg.vue';
+import AddToCart from '@/components/frontend/AddToCart.vue';
+import Subscription from '@/components/frontend/Subscription.vue';
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   data() {
     return {
       collectionData: this.$store.getters.collectionData,
+      data: [],
+      id: {},
+      view: true,
     };
+  },
+  components: {
+    ProductImg,
+    AddToCart,
+    Subscription,
+  },
+  methods: {
+    ...mapActions(['getAllProducts', 'getCart']),
+    filterData() {
+      this.collectionData.forEach((collection) => {
+        this.allProducts.forEach((productsforEach) => {
+          if (collection.id === productsforEach.id) {
+            this.data.push(collection);
+          }
+        });
+      });
+      this.collectionData.forEach((item) => {
+        this.id[item.id] = true;
+      });
+    },
+  },
+  computed: {
+    ...mapGetters(['allProducts', 'cart']),
+  },
+  watch: {
+    allProducts() {
+      this.filterData();
+    },
+    cart() {
+      this.$store.dispatch('updateCollectionData');
+    },
+  },
+  created() {
+    this.$bus.on('favorites', (id) => {
+      this.id[id] = false;
+      this.view = Object.values(this.id).some((item) => item === true);
+    });
+  },
+  mounted() {
+    if (this.collectionData.length) {
+      this.getCart();
+      this.getAllProducts();
+    }
+  },
+  unmounted() {
+    this.$bus.off('favorites');
   },
 };
 </script>
+
+<style scoped lang="scss">
+@import '@/assets/scss/all';
+.btn-hover:hover {
+  background-color: $secondary !important;
+  border: $secondary solid 1px !important;
+}
+
+.shopping {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  @include media-breakpoint-up(xl) {
+    position: static;
+    transform: initial;
+    padding: 20px;
+  }
+}
+</style>

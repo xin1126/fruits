@@ -9,6 +9,9 @@ export default {
     updateBookmark({ commit }, status) {
       commit('updateBookmark', status);
     },
+    updateCollectionData({ commit }) {
+      commit('updateCollection');
+    },
   },
   mutations: {
     initBookmark(state, id) {
@@ -19,7 +22,13 @@ export default {
         }
       }));
     },
-    updateBookmark(state, id) {
+    updateBookmark(state, status) {
+      const [id, favorites] = status;
+      if (favorites) {
+        state.collectionData = state.collectionData.filter((item) => item.id !== id);
+        localStorage.setItem('listData', JSON.stringify(state.collectionData));
+        return;
+      }
       const { allProducts } = this.state.allProductsModules;
       const data = allProducts.filter((item) => item.id === id)[0];
       allProducts.forEach((item, index) => {
@@ -32,6 +41,20 @@ export default {
       } else {
         state.collectionData = state.collectionData.filter((item) => item.id !== id);
       }
+      localStorage.setItem('listData', JSON.stringify(state.collectionData));
+    },
+    updateCollection(state) {
+      const { cart } = this.state.cartModules;
+      state.collectionData.forEach((item, index) => {
+        state.collectionData[index].joined = false;
+      });
+      cart.carts.forEach((cartsItem) => {
+        state.collectionData.forEach((collectionDItem, index) => {
+          if (cartsItem.product.id === collectionDItem.id) {
+            state.collectionData[index].joined = true;
+          }
+        });
+      });
       localStorage.setItem('listData', JSON.stringify(state.collectionData));
     },
   },

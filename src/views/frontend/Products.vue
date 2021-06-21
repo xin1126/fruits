@@ -117,7 +117,7 @@ export default {
       optionValue: '',
       search: '',
       categoryValue: 'total',
-      products: [],
+      productsSort: [],
       productsFilter: [],
       pagination: {},
       autoplay: {
@@ -140,19 +140,19 @@ export default {
       this.pagination.has_pre = num !== 1;
       this.pagination.has_next = num !== this.pagination.total_pages;
       this.pagination.current_page = num;
-      this.products = this.allProducts.filter((i, index) => index + 1 >= min && index + 1 <= max);
+      this.productsPage(min, max);
     },
     productsData(value = 'total', status = 'click') {
+      this.pageData(1);
+      this.optionValue = '';
       switch (status) {
         case 'input':
           if ((this.allProducts.filter((item) => item.title.match(value))).length > 0 && value) {
-            this.optionValue = '';
             this.categoryValue = '';
             this.productsFilter = this.allProducts.filter((item) => item.title.match(value));
           } else if (!value) {
-            this.optionValue = '';
             this.categoryValue = 'total';
-            this.productsFilter = this.products;
+            this.productsPage();
           }
           break;
         case 'select':
@@ -162,27 +162,28 @@ export default {
             this.categoryValue = '';
             this.productsFilter = this.allProducts.filter((item) => item.options.rating === value);
           } else if (value === 'highPrice') {
-            this.productsFilter = [...this.allProducts].sort((a, b) => b.price - a.price);
+            this.productsSort = [...this.allProducts].sort((a, b) => b.price - a.price);
           } else {
-            this.productsFilter = [...this.allProducts].sort((a, b) => a.price - b.price);
+            this.productsSort = [...this.allProducts].sort((a, b) => a.price - b.price);
           }
           if (!(value * 1)) {
             this.categoryValue = 'total';
-            this.productsFilter = this.productsFilter.filter((item, index) => {
-              const arr = index + 1 >= 1 && index + 1 <= 9;
-              return arr;
-            });
+            this.productsPage();
           }
           break;
         case 'click':
-          this.optionValue = '';
+          this.productsPage();
           this.search = '';
           this.categoryValue = value;
-          this.productsFilter = this.categoryValue === 'total' ? this.products : this.allProducts.filter((item) => item.category === this.categoryValue);
+          this.productsFilter = this.categoryValue === 'total' ? this.productsFilter : this.allProducts.filter((item) => item.category === this.categoryValue);
           break;
         default:
           break;
       }
+    },
+    productsPage(min = 1, max = 9) {
+      const arr = this.optionValue && !(this.optionValue * 1) ? 'productsSort' : 'allProducts';
+      this.productsFilter = this[arr].filter((i, key) => key + 1 >= min && key + 1 <= max);
     },
   },
   computed: {
@@ -204,21 +205,20 @@ export default {
       handler(val) {
         if (val.allProducts.length && Object.values(val.cart).length) {
           this.$store.dispatch('data');
+        } else {
+          this.$store.dispatch('updateLoading', true);
         }
       },
       deep: true,
     },
     allProducts() {
-      this.products = this.allProducts.filter((item, index) => index + 1 >= 1 && index + 1 <= 9);
+      this.productsPage();
       this.pagination = {
         total_pages: Math.ceil(this.allProducts.length / 9),
         current_page: 1,
         has_pre: false,
         has_next: true,
       };
-    },
-    products() {
-      this.productsData();
     },
     offsetWidth() {
       this.updateOffsetWidth();

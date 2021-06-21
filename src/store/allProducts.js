@@ -5,6 +5,7 @@ import 'sweetalert2/src/sweetalert2.scss';
 export default {
   state: {
     allProducts: [],
+    num: {},
   },
   actions: {
     getAllProducts({ commit }) {
@@ -14,7 +15,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             commit('allProducts', Object.values(res.data.products).map((item) => ({
-              ...item, num: 1, joined: false, bookmark: false,
+              ...item, joined: false, bookmark: false,
             })));
           } else {
             Swal.fire(res.data.message);
@@ -33,19 +34,21 @@ export default {
   mutations: {
     updateNum(state, data) {
       const [id, num] = data;
-      state.allProducts.forEach((item, index) => {
-        if (item.id === id) {
-          state.allProducts[index].num = num;
-        }
-      });
+      state.num[id] = num;
     },
     allProducts(state, payload) {
       state.allProducts = payload;
+      state.allProducts.forEach((item) => {
+        state.num[item.id] = 1;
+      });
     },
   },
   getters: {
     allProducts(state) {
       return state.allProducts;
+    },
+    num(state) {
+      return state.num;
     },
   },
 };

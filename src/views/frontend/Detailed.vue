@@ -253,7 +253,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.product = res.data.product;
-            this.$store.dispatch('initBookmark', res.data.product.id);
             this.bookmark = arr.indexOf(this.product.id) >= 0;
           }
           this.$store.dispatch('updateLoading', false);
@@ -283,19 +282,24 @@ export default {
       return data;
     },
     data() {
-      const { allProducts, cart } = this;
+      const { allProducts, cart, product } = this;
       return {
         allProducts,
         cart,
+        product,
       };
     },
   },
   watch: {
     data: {
       handler(val) {
-        if (val.allProducts.length && Object.values(val.cart).length) {
+        const data = val.allProducts.length && Object.values(val.cart).length;
+        if (data && Object.values(val.product).length) {
           this.view = true;
           this.$store.dispatch('data');
+          this.$store.dispatch('initBookmark', this.product.id);
+        } else {
+          this.$store.dispatch('updateLoading', true);
         }
       },
       deep: true,

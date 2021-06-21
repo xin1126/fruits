@@ -4,19 +4,19 @@
       <button
         type="button"
         class="input-group-text rounded-0 bg-light text-gray fs-8 border-end-0"
-        :class="{ 'btn-hover': !products.joined && num !== 1 }"
-        :disabled="products.joined || num === 1"
-        @click="$store.dispatch('updateProductNum', [products.id, num--])"
+        :class="{ 'btn-hover': !products.joined && num[products.id] !== 1 }"
+        :disabled="products.joined || num[products.id] === 1"
+        @click="$store.dispatch('updateProductNum', [products.id, --tempNum])"
       >
         <i class="bi bi-dash-lg"></i>
       </button>
-      <p class="form-control m-0">{{ num }}</p>
+      <p class="form-control m-0">{{ num[products.id] }}</p>
       <button
         type="button"
         class="input-group-text rounded-0 bg-light text-gray fs-8"
         :class="{ 'btn-hover': !products.joined }"
         :disabled="products.joined"
-        @click="$store.dispatch('updateProductNum', [products.id, num++])"
+        @click="$store.dispatch('updateProductNum', [products.id, ++tempNum])"
       >
         <i class="bi bi-plus-lg"></i>
       </button>
@@ -28,7 +28,7 @@
         !products.joined ? 'text-gray' : ['text-primary', 'cursor-default'],
       ]"
       :disabled="products.joined"
-      @click.prevent="addToCart(products.id, products.num)"
+      @click.prevent="addToCart(products.id, num[products.id])"
     >
       <i
         class="bi me-1"
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       products: this.item,
-      num: 1,
+      tempNum: 1,
     };
   },
   props: {
@@ -64,7 +64,7 @@ export default {
       this.axios.post(url, { data: cart })
         .then((res) => {
           if (res.data.success) {
-            this.num = 1;
+            this.$store.dispatch('updateProductNum', [id, 1]);
             this.$swal({ title: `${res.data.data.product.title}加入購物車`, icon: 'success' });
             this.$store.dispatch('getCart');
           } else {
@@ -76,6 +76,11 @@ export default {
           this.$swal({ title: error.data.message, icon: 'error' });
           this.$store.dispatch('updateLoading', false);
         });
+    },
+  },
+  computed: {
+    num() {
+      return this.$store.getters.num;
     },
   },
 };

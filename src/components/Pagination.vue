@@ -6,8 +6,9 @@
     v-if="category === 'total' && pagination.total_pages > 1"
   >
     <ul class="d-flex fs-5 m-0 p-0">
-      <li v-scroll-to="el.left">
+      <li>
         <a
+          v-scroll-to="el.left"
           class="px-1"
           :class="[
             pagination.current_page !== 1
@@ -21,16 +22,12 @@
           <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
         </a>
       </li>
-      <li
-        v-for="item in pagination.total_pages"
-        :key="item"
-        v-scroll-to="{
-          el: '#topProduct',
-          offset: -40,
-        }"
-        class="px-2"
-      >
+      <li v-for="item in pagination.total_pages" :key="item" class="px-2">
         <a
+          v-scroll-to="{
+            el: '#topProduct',
+            offset: -40,
+          }"
           class="text-dark px-2"
           :class="[
             pagination.current_page === item
@@ -42,8 +39,9 @@
           >{{ item }}</a
         >
       </li>
-      <li v-scroll-to="el.right">
+      <li>
         <a
+          v-scroll-to="el.right"
           class="px-1"
           :class="[
             pagination.current_page < pagination.total_pages
@@ -86,9 +84,9 @@ export default {
   },
   methods: {
     paginationNum(num) {
-      this.$emit('page', num);
       this.el.right = this.pagination.has_next ? { el: '#topProduct', offset: -40 } : '';
       this.el.left = this.pagination.has_pre ? { el: '#topProduct', offset: -40 } : '';
+      this.$emit('page', num);
     },
   },
 };

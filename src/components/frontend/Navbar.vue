@@ -84,18 +84,14 @@
                     ]"
                     to="/favorites"
                     ><span
-                      v-show="
-                        $store.getters.collectionData?.length
-                      "
+                      v-show="$store.getters.collectionData?.length"
                       class="
                         badge
                         rounded-circle
                         bg-secondary
                         position-absolute
                       "
-                      >{{
-                        $store.getters.collectionData?.length
-                      }}</span
+                      >{{ $store.getters.collectionData?.length }}</span
                     ><i class="bi bi-bookmark-fill fs-4 me-2 me-md-0"></i
                   ></router-link>
                 </li>
@@ -130,9 +126,16 @@
 </template>
 
 <script>
+// import { Popover } from 'bootstrap';
+
 export default {
   data() {
-    return {};
+    return {
+      popover: '',
+    };
+  },
+  mounted() {
+    // this.popover = new Popover(this.$refs.popover);
   },
 };
 </script>
