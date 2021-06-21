@@ -96,7 +96,7 @@
         :loopFillGroupWithBlank="true"
         :autoplay="autoplay"
       >
-        <SwiperSlide v-for="item in specialOffer" :key="item.id">
+        <SwiperSlide v-for="item in productsSpecialOffer" :key="item.id">
           <ProductImg :item="item" />
         </SwiperSlide>
       </Swiper>
@@ -119,6 +119,7 @@ export default {
       categoryValue: 'total',
       productsSort: [],
       productsFilter: [],
+      productsSpecialOffer: [],
       pagination: {},
       autoplay: {
         delay: 2000,
@@ -185,13 +186,12 @@ export default {
       const arr = this.optionValue && !(this.optionValue * 1) ? 'productsSort' : 'allProducts';
       this.productsFilter = this[arr].filter((i, key) => key + 1 >= min && key + 1 <= max);
     },
+    specialOffer() {
+      this.productsSpecialOffer = this.allProducts.filter((i) => i.origin_price !== i.price);
+    },
   },
   computed: {
     ...mapGetters(['allProducts', 'cart', 'offsetWidth', 'offsetWidthData']),
-    specialOffer() {
-      const newArr = this.allProducts.filter((item) => item.origin_price !== item.price);
-      return newArr;
-    },
     data() {
       const { allProducts, cart } = this;
       return {
@@ -219,6 +219,7 @@ export default {
         has_pre: false,
         has_next: true,
       };
+      this.specialOffer();
     },
     offsetWidth() {
       this.updateOffsetWidth();

@@ -264,7 +264,7 @@ export default {
     },
     updateBookmark() {
       this.bookmark = !this.bookmark;
-      this.$store.dispatch('updateBookmark', this.product.id);
+      this.$store.dispatch('updateBookmark', [this.product.id, false]);
     },
   },
   computed: {
