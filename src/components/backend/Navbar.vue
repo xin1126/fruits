@@ -45,12 +45,14 @@
           </li>
         </ul>
       </nav>
-      <button
-        class="signout btn btn-outline-light position-absolute top-0 end-0 mt-2"
-        @click="signout"
-      >
-        登出
-      </button>
+      <div class="position-absolute top-0 end-0 mt-2">
+        <router-link class="signout btn btn-outline-light me-2" to="/">
+          回到前台
+        </router-link>
+        <button class="signout btn btn-outline-light" @click="signout">
+          登出
+        </button>
+      </div>
     </div>
   </section>
 </template>

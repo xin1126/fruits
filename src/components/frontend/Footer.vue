@@ -15,18 +15,46 @@
     </p>
     <div class="d-flex-center">
       <p class="m-0">僅個人作品練習，無商業用途</p>
-      <router-link
+      <button
         class="btn btn-outline-light btn-sm ms-3 d-none d-sm-block"
-        to="/login"
-        ><i class="bi bi-person-fill me-1"></i>登入後台</router-link
+        @click="check"
       >
+        <i class="bi bi-person-fill me-1"></i>登入後台
+      </button>
     </div>
   </footer>
 </template>
 
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    check() {
+      const url = `${process.env.VUE_APP_APIURL}/api/user/check`;
+      this.$store.dispatch('updateLoading', true);
+      this.axios.post(url)
+        .then((res) => {
+          if (res.data.success) {
+            this.$router.push('/backstage/products');
+          } else {
+            this.$router.push('/login');
+          }
+          this.$store.dispatch('updateLoading', false);
+        })
+        .catch((error) => {
+          this.$swal({ title: error.data.message, icon: 'error' });
+          this.$store.dispatch('updateLoading', false);
+        });
+    },
+  },
+};
+</script>
+
 <style scoped lang="scss">
 @import '@/assets/scss/all';
-a:hover {
+button:hover {
   border: $secondary 1px solid !important;
   background-color: $primary !important;
   color: $secondary;
