@@ -89,6 +89,9 @@ export default {
       require: true,
     },
   },
+  emits: {
+    favorites: (id) => typeof id === 'string',
+  },
   methods: {
     favorites(id) {
       if (this.$route.path.indexOf('/favorites') === 0) {

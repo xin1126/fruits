@@ -88,18 +88,7 @@
         @page="pageData"
       />
       <hr class="border border-primary border-3" />
-      <h3 class="text-center text-secondary fw-bold mb-3">促銷商品</h3>
-      <Swiper
-        :slides-per-view="offsetWidthData.slidesView"
-        :space-between="30"
-        :loop="true"
-        :loopFillGroupWithBlank="true"
-        :autoplay="autoplay"
-      >
-        <SwiperSlide v-for="item in productsSpecialOffer" :key="item.id">
-          <ProductImg :item="item" />
-        </SwiperSlide>
-      </Swiper>
+      <ProductsSpecialOffer />
     </div>
   </section>
 </template>
@@ -108,8 +97,9 @@
 import ProductImg from '@/components/frontend/ProductImg.vue';
 import ProductList from '@/components/frontend/ProductList.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
+import ProductsSpecialOffer from '@/components//frontend/ProductsSpecialOffer.vue';
 import Pagination from '@/components/Pagination.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -121,10 +111,6 @@ export default {
       productsFilter: [],
       productsSpecialOffer: [],
       pagination: {},
-      autoplay: {
-        delay: 2000,
-        disableOnInteraction: false,
-      },
     };
   },
   components: {
@@ -132,9 +118,9 @@ export default {
     ProductImg,
     AddToCart,
     Pagination,
+    ProductsSpecialOffer,
   },
   methods: {
-    ...mapActions(['getAllProducts', 'initOffsetWidth', 'updateOffsetWidth']),
     pageData(num) {
       const min = (num * 9) - 9 + 1;
       const max = (num * 9);
@@ -191,7 +177,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allProducts', 'cart', 'offsetWidth', 'offsetWidthData']),
+    ...mapGetters(['allProducts', 'cart']),
     data() {
       const { allProducts, cart } = this;
       return {
@@ -221,18 +207,6 @@ export default {
       };
       this.specialOffer();
     },
-    offsetWidth() {
-      this.updateOffsetWidth();
-    },
-  },
-  created() {
-    this.initOffsetWidth();
-    window.onresize = () => {
-      this.updateOffsetWidth();
-    };
-  },
-  mounted() {
-    this.getAllProducts();
   },
 };
 </script>
@@ -244,10 +218,5 @@ export default {
 
 .position-sticky {
   z-index: 10;
-}
-
-.swiper-slide img {
-  width: 150px;
-  height: 150px;
 }
 </style>

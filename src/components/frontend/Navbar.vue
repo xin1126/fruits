@@ -75,14 +75,21 @@
                   >
                 </li>
                 <li class="nav-item position-relative">
-                  <router-link
+                  <a
+                    href="#"
                     class="nav-link fw-bold"
                     :class="[
                       $route.fullPath === '/favorites'
                         ? 'text-secondary'
                         : 'text-white',
                     ]"
-                    to="/favorites"
+                    data-bs-toggle="dropdown"
+                    @click.prevent="
+                      $store.getters.collectionData?.length
+                        ? $router.push('/favorites')
+                        : ''
+                    "
+                    ref="favoritesDropdown"
                     ><span
                       v-show="$store.getters.collectionData?.length"
                       class="
@@ -93,14 +100,36 @@
                       "
                       >{{ $store.getters.collectionData?.length }}</span
                     ><i class="bi bi-bookmark-fill fs-4 me-2 me-md-0"></i
-                  ></router-link>
+                  ></a>
+                  <div
+                    class="
+                      dropdown-menu dropdown-menu-lg-end
+                      position-absolute
+                      z-index
+                    "
+                    v-show="!$store.getters.collectionData?.length"
+                  >
+                    <p class="px-2 mb-1 text-gray text-center">
+                      目前收藏無商品
+                    </p>
+                    <div class="text-center" v-if="$route.path !== '/'">
+                      <button
+                        class="btn btn-primary btn-sm"
+                        type="button"
+                        @click="$router.push('/')"
+                      >
+                        挑選商品收藏
+                      </button>
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </nav>
-      <router-link
+      <a
+        href="#"
         class="
           nav-link
           position-relative
@@ -113,35 +142,68 @@
         :class="[
           $route.fullPath === '/carts' ? 'text-secondary' : 'text-white',
         ]"
-        to="/carts"
+        data-bs-toggle="dropdown"
+        @click.prevent="
+          $store.getters.cart.carts?.length ? $router.push('/carts') : ''
+        "
+        ref="cartDropdown"
         ><span
           v-show="$store.getters.cart.carts?.length"
           class="badge rounded-circle bg-secondary position-absolute"
           >{{ $store.getters.cart.carts?.length }}</span
         >
         <i class="bi bi-cart-fill fs-4 fw-lighter"></i>
-      </router-link>
-      <!-- <div class="dropdown">
-        <button class="btn btn-secondary" type="button" aria-expanded="false">
-          Dropdown button
-        </button>
-        <ul class="dropdown-menu mt-1" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-      </div> -->
+      </a>
+      <div
+        class="dropdown-menu dropdown-menu-lg-end"
+        v-show="!$store.getters.cart.carts?.length"
+      >
+        <p class="px-2 mb-1 text-gray text-center">目前購物車無商品</p>
+        <div class="text-center" v-if="$route.path !== '/'">
+          <button
+            class="btn btn-primary btn-sm"
+            type="button"
+            @click="$router.push('/')"
+          >
+            購物去
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
+import { Dropdown } from 'bootstrap';
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
+      cartDropdown: '',
+      favoritesDropdown: '',
     };
   },
+  computed: {
+    ...mapGetters(['cart', 'collectionData']),
+  },
+  watch: {
+    cart() {
+      this.cartDropdown.hide();
+    },
+    collectionData() {
+      this.favoritesDropdown.hide();
+    },
+    $route() {
+      if (this.$route.fullPath === '/') {
+        this.favoritesDropdown.hide();
+        this.cartDropdown.hide();
+      }
+    },
+  },
   mounted() {
+    this.cartDropdown = new Dropdown(this.$refs.cartDropdown);
+    this.favoritesDropdown = new Dropdown(this.$refs.favoritesDropdown);
   },
 };
 </script>
@@ -150,6 +212,11 @@ export default {
 @import '@/assets/scss/all';
 a:hover {
   color: $secondary !important;
+}
+
+button:hover {
+  background-color: $secondary !important;
+  border: $secondary solid 1px !important;
 }
 
 .logo {

@@ -46,7 +46,7 @@
         </ul>
       </div>
       <div class="shopping text-center" v-else>
-        <h2 class="fw-bold">目前收藏商品列表為空</h2>
+        <h2 class="fw-bold">目前商品收藏列表為空</h2>
         <h3>逛逛新鮮水果</h3>
         <button
           class="btn btn-primary btn-sm btn-hover"
@@ -101,7 +101,7 @@ export default {
       handler(val) {
         if (val.allProducts.length && Object.values(val.cart).length) {
           this.$store.dispatch('data');
-        } else {
+        } else if (this.collectionData.length) {
           this.$store.dispatch('updateLoading', true);
         }
       },

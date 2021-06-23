@@ -49,8 +49,8 @@ export default {
 
 .subscription-img {
   background-image: linear-gradient(
-      rgba(255, 255, 255, 0.3),
-      rgba(255, 255, 255, 0.3)
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2)
     ),
     url('~@/assets/images/subscription.jpg');
   background-position: bottom;
