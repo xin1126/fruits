@@ -35,20 +35,6 @@
         </div>
       </div>
     </div>
-    <a
-      href="#"
-      class="position-absolute top-0 end-0 mt-1 me-2"
-      @click.prevent="favorites(products.id)"
-    >
-      <i
-        class="bi fs-3"
-        :class="[
-          products.bookmark
-            ? ['text-primary', 'bi-bookmark-heart-fill']
-            : ['text-gray', 'bi-bookmark-heart'],
-        ]"
-      ></i>
-    </a>
     <h5 class="card-title text-center fw-bold mb-0 mb-2">
       {{ products.title
       }}{{ products.options.origin !== '台灣' ? '(進口)' : '' }}
@@ -73,6 +59,20 @@
       </p>
     </div>
   </div>
+  <a
+    href="#"
+    class="position-absolute top-0 end-0 mt-1 me-2"
+    @click.prevent="favorites(products.id)"
+  >
+    <i
+      class="bi fs-3"
+      :class="[
+        products.bookmark
+          ? ['text-primary', 'bi-bookmark-heart-fill']
+          : ['text-gray', 'bi-bookmark-heart'],
+      ]"
+    ></i>
+  </a>
 </template>
 
 <script>
