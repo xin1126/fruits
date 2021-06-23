@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <div class="mb-3" @click="$router.push(`/detailed/${products.id}`)">
+  <div
+    class="product-content cursor-pointer"
+    @click="$router.push(`/detailed/${products.id}`)"
+  >
+    <div class="mb-3">
       <div
         class="
-          img-content
+          product-img
           position-relative
           d-flex-center
           bg-light
-          cursor-pointer
           w-100
           pt-4
           pb-3
@@ -20,7 +22,7 @@
             :alt="products.title"
           />
         </div>
-        <p class="position-absolute text-white fw-bold fs-4">查看更多</p>
+        <p class="position-absolute text text-white fw-bold fs-4">查看更多</p>
         <div class="position-absolute text-warning top-0 mt-1 ms-3 w-100">
           <i
             class="bi"
@@ -90,7 +92,7 @@ export default {
   methods: {
     favorites(id) {
       if (this.$route.path.indexOf('/favorites') === 0) {
-        this.$bus.emit('favorites', id);
+        this.$emit('favorites', id);
         this.pageFavorites = true;
       }
       this.$store.dispatch('updateBookmark', [id, this.pageFavorites]);
@@ -105,11 +107,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.img-content {
+.product-content {
   &:hover {
-    transition: 0.5s;
-    background-color: rgba(0, 0, 0, 0.4) !important;
-    p {
+    .text {
       display: block;
     }
     img {
@@ -117,12 +117,16 @@ export default {
       filter: grayscale(50%);
       transform: scale(1.2, 1.2);
     }
+    .product-img {
+      transition: 0.5s;
+      background-color: rgba(0, 0, 0, 0.4) !important;
+    }
   }
   .img {
     width: 180px;
     height: 140px;
   }
-  p {
+  .text {
     display: none;
   }
 }

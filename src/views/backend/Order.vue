@@ -141,10 +141,7 @@
                   :id="'dropdownEditButton' + (index + 1)"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
-                  @click="
-                    ;(editOrder = { total: item.total, is_paid: item.is_paid }),
-                      (verificationStart = true)
-                  "
+                  @click="edit(item.total, item.is_paid)"
                 >
                   編輯
                 </button>
@@ -290,7 +287,12 @@ export default {
           this.$store.dispatch('updateLoading', false);
         });
     },
+    edit(total, paid) {
+      this.editOrder = { total, is_paid: paid };
+      this.verificationStart = true;
+    },
   },
+
   mounted() {
     this.getOrders();
   },

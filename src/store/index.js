@@ -22,6 +22,7 @@ export default createStore({
       state.isLoading = status;
     },
     data(state) {
+      const { title } = state.allProductsModules;
       const { allProducts } = state.allProductsModules;
       const { cart } = state.cartModules;
       cart.carts.forEach((cartsItem) => {
@@ -29,6 +30,7 @@ export default createStore({
           if (cartsItem.product.id === productsItem.id) {
             allProducts[index].joined = true;
             allProducts[index].num = 1;
+            title[productsItem.title] = '已加入購物車';
           }
         });
       });

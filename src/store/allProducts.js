@@ -6,6 +6,7 @@ export default {
   state: {
     allProducts: [],
     num: {},
+    title: {},
   },
   actions: {
     getAllProducts({ commit }) {
@@ -40,6 +41,7 @@ export default {
       state.allProducts = payload;
       state.allProducts.forEach((item) => {
         state.num[item.id] = 1;
+        state.title[item.title] = '加入購物車';
       });
     },
   },
@@ -49,6 +51,9 @@ export default {
     },
     num(state) {
       return state.num;
+    },
+    title(state) {
+      return state.title;
     },
   },
 };

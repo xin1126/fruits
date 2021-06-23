@@ -45,6 +45,10 @@
   cursor: pointer; 
 }
 
+.cursor-allowed {
+  cursor: not-allowed;
+}
+
 .content {
   padding-top: 55px;
   min-height: calc(100vh - 63px);

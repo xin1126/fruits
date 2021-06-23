@@ -4,7 +4,11 @@
       <button
         type="button"
         class="input-group-text rounded-0 bg-light text-gray fs-8 border-end-0"
-        :class="{ 'btn-hover': !products.joined && num[products.id] !== 1 }"
+        :class="[
+          !products.joined && num[products.id] !== 1
+            ? ['btn-hover']
+            : 'cursor-allowed',
+        ]"
         :disabled="products.joined || num[products.id] === 1"
         @click="$store.dispatch('updateProductNum', [products.id, --tempNum])"
       >
@@ -14,7 +18,7 @@
       <button
         type="button"
         class="input-group-text rounded-0 bg-light text-gray fs-8"
-        :class="{ 'btn-hover': !products.joined }"
+        :class="[!products.joined ? 'btn-hover' : 'cursor-allowed']"
         :disabled="products.joined"
         @click="$store.dispatch('updateProductNum', [products.id, ++tempNum])"
       >
@@ -29,6 +33,10 @@
       ]"
       :disabled="products.joined"
       @click.prevent="addToCart(products.id, num[products.id])"
+      data-bs-toggle="tooltip"
+      data-bs-placement="bottom"
+      :data-bs-original-title="title[products.title]"
+      ref="tooltip"
     >
       <i
         class="bi me-1"
@@ -39,11 +47,15 @@
 </template>
 
 <script>
+import { Tooltip } from 'bootstrap';
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
       products: this.item,
       tempNum: 1,
+      tooltip: '',
     };
   },
   props: {
@@ -79,9 +91,15 @@ export default {
     },
   },
   computed: {
-    num() {
-      return this.$store.getters.num;
+    ...mapGetters(['num', 'title', 'cart']),
+  },
+  watch: {
+    cart() {
+      this.tooltip.hide();
     },
+  },
+  mounted() {
+    this.tooltip = new Tooltip(this.$refs.tooltip);
   },
 };
 </script>

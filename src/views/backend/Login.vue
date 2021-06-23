@@ -38,7 +38,6 @@
               <div class="d-flex">
                 <button
                   class="btn btn-dark fw-bold w-100 me-3"
-                  id="signin"
                   type="submit"
                   @click="$router.push('/')"
                 >
@@ -46,7 +45,6 @@
                 </button>
                 <button
                   class="btn btn-dark fw-bold w-100"
-                  id="signin"
                   type="submit"
                 >
                   登入
