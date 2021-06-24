@@ -16,8 +16,9 @@
             v-model="email"
           ></Field>
           <button
+            type="button"
             class="btn btn-primary btn-hover"
-            @click="code = Object.values(errors).length !== 1 && email"
+            @click.prevent="code = Object.values(errors).length !== 1 && email"
           >
             訂閱
           </button>

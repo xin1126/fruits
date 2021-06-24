@@ -30,6 +30,10 @@ const routes = [
         component: () => import('../views/frontend/CartFrom.vue'),
       },
       {
+        path: 'checkout',
+        component: () => import('../views/frontend/CheckoutPayment.vue'),
+      },
+      {
         path: 'favorites',
         component: () => import('../views/frontend/Favorites.vue'),
       },

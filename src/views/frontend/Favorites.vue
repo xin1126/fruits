@@ -4,7 +4,9 @@
   >
     <div>
       <div class="favorites-banner d-flex-center text-white fs-2 mb-3">
-        <p class="bg-translucent fw-bolder px-5 py-3">商品收藏列表</p>
+        <p class="bg-translucent fw-bolder px-lg-5 py-lg-3 px-4 py-2 m-0">
+          商品收藏列表
+        </p>
       </div>
       <div class="container mb-4" v-if="collectionData.length && view">
         <nav aria-label="breadcrumb">

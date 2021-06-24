@@ -19,6 +19,9 @@
     .w#{$infix}-25 {
       width: 25% !important;
     }
+    .w#{$infix}-auto {
+      width: auto !important;
+    }
     .h#{$infix}-100 {
       height: 100% !important;
     }
@@ -46,7 +49,9 @@
 }
 
 .cursor-allowed {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
+  pointer-events: initial !important;
+  opacity: 0.65
 }
 
 .content {
