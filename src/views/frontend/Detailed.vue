@@ -83,17 +83,15 @@
             <ul class="p-0 mb-2">
               <li class="d-flex mb-1">
                 <i class="bi bi-hand-thumbs-up me-1"></i>
-                <p class="mb-0">果肉細緻、多汁美味超人氣</p>
+                <p>果肉細緻、多汁美味超人氣</p>
               </li>
               <li class="d-flex mb-1">
                 <i class="bi bi-hand-thumbs-up me-1"></i>
-                <p class="mb-0">
-                  濃濃{{ product.title }}香氣，香氣濃郁、果香清爽、滋味香甜
-                </p>
+                <p>濃濃{{ product.title }}香氣，香氣濃郁、果香清爽、滋味香甜</p>
               </li>
               <li class="mb-1 d-xl-flex d-lg-none d-flex">
                 <i class="bi bi-hand-thumbs-up me-1"></i>
-                <p class="mb-0">營養元素豐富價值高，老少皆宜，大人小孩全都愛</p>
+                <p>營養元素豐富價值高，老少皆宜，大人小孩全都愛</p>
               </li>
               <li class="mb-1">
                 <i class="bi bi-hand-thumbs-up me-1"></i>精心栽培，自然熟成
@@ -110,14 +108,14 @@
               </li>
               <li class="d-flex mb-1">
                 <i class="bi bi-cash-coin me-1"></i>
-                <p class="mb-0">消費滿 NT $2,000，享有免運費優惠</p>
+                <p>消費滿 NT $2,000，享有免運費優惠</p>
               </li>
               <li class="mb-1">
                 <i class="bi bi-truck me-1"></i>宅配-廠商出貨
               </li>
               <li class="d-flex">
                 <i class="bi bi-credit-card-2-back me-1"></i>
-                <p class="mb-0">信用卡(一次付清)、貨到付款、ATM 轉帳</p>
+                <p>信用卡(一次付清)、貨到付款、ATM 轉帳</p>
               </li>
             </ul>
             <div class="d-sm-flex justify-content-between align-items-center">
@@ -148,7 +146,7 @@
                   原價:NT${{ product.origin_price }}
                 </small>
               </div>
-              <AddToCart :item="singleProduct" />
+              <AddToCart :item="productFilter" ref="product" />
             </div>
           </div>
         </div>
@@ -178,34 +176,32 @@
             <ul class="col-sm-9">
               <li class="d-flex mb-1">
                 ※
-                <p class="ms-1 mb-0">
+                <p class="ms-1">
                   農產品重量差異，圖片僅供參考，商品依實際供貨為準。
                 </p>
               </li>
               <li class="d-flex mb-1">
                 ※
-                <p class="ms-1 mb-0">
+                <p class="ms-1">
                   製造日期與有效期限，商品成分與適用注意事項皆標示於包裝或產品中。
                 </p>
               </li>
               <li class="d-flex mb-1">
                 ※
-                <p class="ms-1 mb-0">
+                <p class="ms-1">
                   本產品網頁因拍攝關係，圖檔略有差異，實際以廠商出貨為主
                 </p>
               </li>
               <li class="d-flex">
                 ※
-                <p class="ms-1 mb-0">
-                  本產品文案若有變動敬請參照實際商品為準。
-                </p>
+                <p class="ms-1">本產品文案若有變動敬請參照實際商品為準。</p>
               </li>
             </ul>
           </div>
         </div>
       </div>
       <hr class="border border-primary border-3" />
-      <h2 class="fw-bold mt-4 text-center text-secondary pb-3">相關商品</h2>
+      <h2 class="fw-bold mt-4 text-center text-dark pb-3">相關商品</h2>
       <Swiper
         :slides-per-view="offsetWidthData.slidesView"
         :space-between="30"
@@ -231,6 +227,7 @@ export default {
       id: '',
       img: '',
       bookmark: '',
+      productFilter: {},
       product: {},
       autoplay: {
         delay: 2000,
@@ -266,6 +263,10 @@ export default {
       this.bookmark = !this.bookmark;
       this.$store.dispatch('updateBookmark', [this.product.id, false]);
     },
+    singleProduct() {
+      const newArr = this.allProducts.filter((item) => item.title === this.product.title);
+      [this.productFilter] = newArr;
+    },
   },
   computed: {
     ...mapGetters(['allProducts', 'cart', 'offsetWidth', 'offsetWidthData']),
@@ -275,11 +276,6 @@ export default {
         return arr;
       });
       return newArr;
-    },
-    singleProduct() {
-      const newArr = this.allProducts.filter((item) => item.title === this.product.title);
-      const data = newArr[0] ?? {};
-      return data;
     },
     data() {
       const { allProducts, cart, product } = this;
@@ -297,6 +293,7 @@ export default {
         if (data && Object.values(val.product).length) {
           this.view = true;
           this.$store.dispatch('data');
+          this.singleProduct();
           this.$store.dispatch('initBookmark', this.product.id);
         } else {
           this.$store.dispatch('updateLoading', true);
@@ -306,10 +303,14 @@ export default {
     },
     product() {
       this.img = this.product.imgUrl;
+      if (this.allProducts.length) {
+        this.singleProduct();
+      }
     },
     $route() {
       this.id = this.$route.params.id;
       this.getProduct();
+      this.$watch(() => this.product, () => { this.$refs.product.products = this.productFilter; });
     },
     offsetWidth() {
       this.updateOffsetWidth();

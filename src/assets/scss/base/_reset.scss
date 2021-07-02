@@ -1,3 +1,7 @@
+body {
+      background: url('~@/assets/images/body-wallpaper.jpg') no-repeat center center fixed transparent;
+}
+
 td,
 th {
   vertical-align: middle;
@@ -10,6 +14,11 @@ th {
 a {
   text-decoration: none !important;
   display: block;
+}
+
+p {
+  margin: 0;
+  text-align: justify;
 }
 
 ul {

@@ -1,9 +1,10 @@
 @import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/mixins';
 @import './helpers/variables.scss';
+@import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/bootstrap';
 
 @import'./base/reset';
+@import './helpers/swiper';
 @import './helpers/swal';
 @import './helpers/utilities';
 @import './helpers/banner';

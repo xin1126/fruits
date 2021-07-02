@@ -4,7 +4,17 @@
   >
     <div>
       <div class="favorites-banner d-flex-center text-white fs-2 mb-3">
-        <p class="bg-translucent fw-bolder px-lg-5 py-lg-3 px-4 py-2 m-0">
+        <p
+          class="
+            bg-translucent
+            fw-bolder
+            rounded-3 rounded
+            px-lg-5
+            py-lg-3
+            px-4
+            py-2
+          "
+        >
           商品收藏列表
         </p>
       </div>
@@ -35,7 +45,15 @@
               "
               v-if="id[item.id]"
             >
-              <div class="card w-100 w-sm-65 w-md-100 h-100 border-0">
+              <div
+                class="
+                  card
+                  bg-transparent
+                  w-100 w-sm-65 w-md-100
+                  h-100
+                  border-0
+                "
+              >
                 <ProductImg
                   :item="item"
                   @favorites="removeFavorites"
@@ -52,7 +70,7 @@
         <h3>逛逛新鮮水果</h3>
         <button
           class="btn btn-primary btn-sm btn-hover"
-          @click="$router.push('/')"
+          @click="$router.push('/products')"
         >
           商品列表
         </button>

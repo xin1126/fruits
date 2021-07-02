@@ -6,11 +6,11 @@ const routes = [
     component: () => import('../views/frontend/Layout.vue'),
     children: [
       {
-        path: 'home',
+        path: '',
         component: () => import('../views/frontend/Home.vue'),
       },
       {
-        path: '',
+        path: 'products',
         component: () => import('../views/frontend/Products.vue'),
       },
       {
@@ -36,6 +36,10 @@ const routes = [
       {
         path: 'favorites',
         component: () => import('../views/frontend/Favorites.vue'),
+      },
+      {
+        path: 'activity',
+        component: () => import('../views/frontend/Activity.vue'),
       },
       {
         path: 'detailed/:id',

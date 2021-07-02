@@ -86,15 +86,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/scss/all';
-a:hover {
-  color: $secondary !important;
-}
-.signout:hover {
-  border: $secondary 1px solid !important;
-  background-color: $primary !important;
-  color: $secondary;
-}
-</style>

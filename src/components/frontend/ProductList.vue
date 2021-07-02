@@ -39,7 +39,7 @@
           ></label>
           <input
             type="email"
-            class="form-control w-50 rounded-0"
+            class="form-control w-50"
             id="exampleFormControlInput2"
             placeholder="請輸入產品"
             v-model="search"
@@ -67,9 +67,9 @@
           >商品類別<i class="bi bi-chevron-down"></i>
         </a>
       </li>
-      <li class="list-group fs-6 p-0 rounded-0" id="collapseExample">
+      <li class="list-group fs-6 p-0" id="collapseExample">
         <ul
-          class="accordion-collapse p-0"
+          class="accordion-collapse p-0 rounded"
           :class="{ collapse: offsetWidthData.list }"
           id="flush-collapseOne"
           data-bs-parent="#accordionFlushExample"
@@ -251,7 +251,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -269,9 +269,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['offsetWidthData', 'allProducts']),
+    ...mapGetters(['allProducts', 'offsetWidth', 'offsetWidthData']),
   },
   methods: {
+    ...mapActions(['initOffsetWidth', 'updateOffsetWidth']),
     productsData(value, status) {
       this.$emit('emitData', value, status);
       this.search = status !== 'input' ? '' : value;
@@ -283,6 +284,15 @@ export default {
         this.totalNum[item.category] = (this.totalNum[item.category] || 0) + 1;
       });
     },
+    offsetWidth() {
+      this.updateOffsetWidth();
+    },
+  },
+  created() {
+    this.initOffsetWidth();
+    window.onresize = () => {
+      this.updateOffsetWidth();
+    };
   },
 };
 </script>

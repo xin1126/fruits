@@ -4,11 +4,11 @@
     <router-view></router-view>
     <transition>
       <a
-        class="top fs-1 text-primary"
+        class="top fs-2 text-dark bg-primary border rounded-circle px-2"
         href="javascript:void(0);"
         v-show="top"
         v-scroll-to="{ el: 'body' }"
-        ><i class="bi bi-arrow-up-square-fill"></i
+        ><i class="bi bi-arrow-up-short"></i
       ></a>
     </transition>
     <Footer />
@@ -36,6 +36,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
+    this.$store.dispatch('getCart', this.$route.path.length !== 1);
   },
 };
 </script>
@@ -44,10 +45,7 @@ export default {
 @import '@/assets/scss/all';
 .top {
   position: fixed;
-  bottom: 15%;
-  @include media-breakpoint-up(sm) {
-    bottom: 10%;
-  }
+  bottom: 5px;
   right: 3%;
   z-index: 1;
   &:hover {

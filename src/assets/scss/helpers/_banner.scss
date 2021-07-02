@@ -3,6 +3,7 @@
   background-position: center;
   background-size: cover;
   height: 100px;
+  margin-top:15px;
   @media screen and (min-width:300px) { 
     height: 150px;
   }
@@ -14,22 +15,70 @@
   }
 }
 
+@mixin home-banner() {
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+}
 .products-banner {
-  background-image: url('~@/assets/images/banner1.jpg');
+  background-image: url('~@/assets/images/banner/banner1.jpg');
   @include banner()
 }
 
 .cart-banner {
-  background-image: url('~@/assets/images/banner2.jpg');
+  background-image: url('~@/assets/images/banner/banner2.jpg');
   @include banner()
 }
 
 .detailed-banner {
-  background-image: url('~@/assets/images/banner3.jpg');
+  background-image: url('~@/assets/images/banner/banner3.jpg');
   @include banner()
 }
 
 .favorites-banner {
-  background-image: url('~@/assets/images/banner4.jpg');
+  background-image: url('~@/assets/images/banner/banner4.jpg');
   @include banner()
+}
+
+.about-banner {
+  background-image: url('~@/assets/images/banner/banner5.jpg');
+  @include banner()
+}
+
+.activity-banner {
+  background-image: url('~@/assets/images/banner/banner6.jpg');
+  @include banner()
+}
+
+.problem-banner {
+  background-image: url('~@/assets/images/banner/banner7.jpg');
+  @include banner()
+}
+
+.home-banner1 {
+  background-image: url('~@/assets/images/banner/home-banner1.jpg');
+  background-position: right;
+  @include home-banner();
+  @include media-breakpoint-up(md){
+    background-position: center;
+  }
+}
+
+.home-banner2 {
+  background-image: url('~@/assets/images/banner/home-banner2.jpg');
+  background-position: center;
+  @include home-banner();
+  @include media-breakpoint-up(md){
+    background-position: top;
+  }
+}
+
+.home-banner3 {
+  background-image: url('~@/assets/images/banner/home-banner3.jpg');
+  background-position: right;
+  @include home-banner();
+  @include media-breakpoint-up(md){
+    background-position: center;
+  }
 }

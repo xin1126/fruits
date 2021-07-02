@@ -3,7 +3,7 @@
     <div class="input-group text-center">
       <button
         type="button"
-        class="input-group-text rounded-0 bg-light text-gray fs-8 border-end-0"
+        class="input-group-text bg-light text-gray fs-8 border-end-0"
         :class="[
           !products.joined && num[products.id] !== 1
             ? ['btn-hover']
@@ -14,10 +14,10 @@
       >
         <i class="bi bi-dash-lg"></i>
       </button>
-      <p class="form-control m-0">{{ num[products.id] }}</p>
+      <p class="form-control text-center">{{ num[products.id] }}</p>
       <button
         type="button"
-        class="input-group-text rounded-0 bg-light text-gray fs-8"
+        class="input-group-text bg-light text-gray fs-8"
         :class="[!products.joined ? 'btn-hover' : 'cursor-allowed']"
         :disabled="products.joined"
         @click="$store.dispatch('updateProductNum', [products.id, ++tempNum])"

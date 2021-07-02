@@ -31,16 +31,16 @@ export default {
     ProductImg,
   },
   methods: {
-    ...mapActions(['getAllProducts', 'initOffsetWidth', 'updateOffsetWidth']),
+    ...mapActions(['initOffsetWidth', 'updateOffsetWidth']),
+    getAllProducts() {
+      this.$store.dispatch('getAllProducts', this.$route.path.length !== 1);
+    },
     specialOffer() {
       this.productsSpecialOffer = this.allProducts.filter((i) => i.origin_price !== i.price);
     },
   },
   computed: {
     ...mapGetters(['allProducts', 'offsetWidth', 'offsetWidthData']),
-    allProducts() {
-      return this.$store.getters.allProducts;
-    },
   },
   watch: {
     allProducts() {

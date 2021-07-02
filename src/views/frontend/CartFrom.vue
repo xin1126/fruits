@@ -1,5 +1,5 @@
 <template>
-  <section class="content bg-light">
+  <section class="content">
     <div class="cart-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
       <p class="bg-translucent fw-bolder px-5 py-3">填寫訂購資料</p>
     </div>
@@ -15,7 +15,7 @@
               >
                 <i class="bi bi-caret-left-fill"></i>回上一步
               </button>
-              <p class="mb-0 text-danger d-none d-sm-block">*為必填欄位</p>
+              <p class="text-danger d-none d-sm-block">*為必填欄位</p>
               <button
                 :type="[
                   Object.values(errors).length ||
@@ -44,7 +44,7 @@
                 送出訂單<i class="bi bi-caret-right-fill"></i>
               </button>
             </div>
-            <p class="mb-0 text-danger d-sm-none">*為必填欄位</p>
+            <p class="text-danger d-sm-none">*為必填欄位</p>
             <div class="row mb-3">
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <label for="name" class="form-label"

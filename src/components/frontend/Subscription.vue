@@ -2,7 +2,7 @@
   <div class="subscription-img d-flex flex-column justify-content-center">
     <div class="ms-sm-8 px-3 px-sm-0">
       <h2 class="fw-bold">訂閱電子報</h2>
-      <h4 class="fw-bold">獲取九折優惠折扣代碼!</h4>
+      <h4 class="fw-bold">獲取九折優惠折扣券!</h4>
       <Form v-slot="{ errors }">
         <div class="input-group w-xl-25 w-lg-30 w-md-50 w-sm-75 w-100">
           <Field
@@ -18,13 +18,15 @@
           <button
             type="button"
             class="btn btn-primary btn-hover"
-            @click.prevent="code = Object.values(errors).length !== 1 && email"
+            @click.prevent="
+              subscription(Object.values(errors).length !== 1 && email)
+            "
           >
             訂閱
           </button>
         </div>
         <Message name="email" class="invalid-feedback"></Message>
-        <p v-show="code" class="text-danger mt-1 fs-7 mb-0">折扣碼：9999</p>
+        <p class="text-danger" v-if="verification">此信箱已訂閱過了哦</p>
       </Form>
     </div>
   </div>
@@ -35,8 +37,29 @@ export default {
   data() {
     return {
       email: '',
-      code: false,
+      couponNum: JSON.parse(localStorage.getItem('couponNum')) || {},
+      subscriptionEmail: JSON.parse(localStorage.getItem('subscriptionEmail')) || [],
+      verification: false,
     };
+  },
+  methods: {
+    subscription(status) {
+      this.verification = false;
+      if (this.subscriptionEmail.length) {
+        this.subscriptionEmail.forEach((item) => {
+          if (item === this.email) {
+            this.verification = true;
+          }
+        });
+      }
+      if (status && !this.verification) {
+        this.couponNum[9] = this.couponNum[9] + 1 || 1;
+        this.subscriptionEmail.push(this.email);
+        localStorage.setItem('couponNum', JSON.stringify(this.couponNum));
+        localStorage.setItem('subscriptionEmail', JSON.stringify(this.subscriptionEmail));
+        this.$swal({ title: '訂閱成功，恭喜獲得9折優惠券', icon: 'success' });
+      }
+    },
   },
 };
 </script>

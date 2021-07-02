@@ -9,6 +9,7 @@
           product-img
           position-relative
           d-flex-center
+          rounded rounded-3
           bg-light
           w-100
           pt-4
@@ -22,8 +23,11 @@
             :alt="products.title"
           />
         </div>
-        <p class="position-absolute text text-white fw-bold fs-4">查看更多</p>
-        <div class="position-absolute text-warning top-0 mt-1 ms-3 w-100">
+        <div class="more position-absolute top-0"></div>
+        <p class="more-text position-absolute text-white fw-bold fs-4">
+          查看更多
+        </p>
+        <div class="position-absolute text-warning top-0 pt-1 ms-3 w-100">
           <i
             class="bi"
             :class="[
@@ -112,24 +116,29 @@ export default {
 <style scoped lang="scss">
 .product-content {
   &:hover {
-    .text {
-      display: block;
-    }
     img {
       transition: 0.5s;
       filter: grayscale(50%);
       transform: scale(1.2, 1.2);
     }
     .product-img {
-      transition: 0.5s;
+      background-color: white !important;
+    }
+    .more {
       background-color: rgba(0, 0, 0, 0.4) !important;
+      border-radius: 0.3rem;
+      width: 100%;
+      height: 100%;
+    }
+    .more-text {
+      display: block;
     }
   }
   .img {
     width: 180px;
     height: 140px;
   }
-  .text {
+  .more-text {
     display: none;
   }
 }

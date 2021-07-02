@@ -9,9 +9,9 @@ export default {
     title: {},
   },
   actions: {
-    getAllProducts({ commit }) {
+    getAllProducts({ commit }, status = true) {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/products/all`;
-      commit('loading', true);
+      commit('loading', status);
       axios.get(url)
         .then((res) => {
           if (res.data.success) {

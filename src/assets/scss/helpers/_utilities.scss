@@ -34,10 +34,25 @@
     .h#{$infix}-25 {
       height: 25% !important;
     }
+    .vh#{$infix}-100 {
+      height: 100vh !important;
+    }
+    .border#{$infix}-0 {
+      border: 0 !important;
+    }
   }
 }
+
+.list-style {
+  list-style-type: disc;
+}
+
 .z-index{
   z-index: 999;
+}
+
+.logo {
+  font-family: 'Sigmar One', cursive;
 }
 
 .cursor-default{ 
@@ -61,6 +76,10 @@
 
 .img-transparent {
   mix-blend-mode: multiply;
+}
+
+.bg-linear-right {
+  background: linear-gradient(90deg, #00000000 0%, #ffffff 120%);
 }
 
 .bg-translucent {

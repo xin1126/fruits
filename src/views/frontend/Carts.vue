@@ -1,11 +1,18 @@
 <template>
-  <section
-    class="content d-flex flex-column justify-content-between"
-    :class="{ 'bg-light': $store.getters.cart.carts?.length }"
-  >
+  <section class="content d-flex flex-column justify-content-between">
     <div>
       <div class="cart-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
-        <p class="bg-translucent fw-bolder px-lg-5 py-lg-3 px-4 py-2 m-0">
+        <p
+          class="
+            bg-translucent
+            fw-bolder
+            rounded-3 rounded
+            px-lg-5
+            py-lg-3
+            px-4
+            py-2
+          "
+        >
           購物車列表
         </p>
       </div>
@@ -93,7 +100,7 @@
                     >
                       <i class="bi bi-dash-lg"></i>
                     </button>
-                    <p class="form-control text-center m-0">{{ item.qty }}</p>
+                    <p class="form-control text-center">{{ item.qty }}</p>
                     <button
                       type="button"
                       class="
@@ -128,14 +135,16 @@
             </tbody>
           </table>
           <div class="mt-3">
-            <div class="d-flex justify-content-between align-items-center">
-              <button
-                class="btn btn-outline-gray btn-sm d-none d-sm-block"
-                type="button"
-                @click="deleteAllCarts"
-              >
-                刪除全部
-              </button>
+            <div class="d-flex justify-content-between">
+              <div>
+                <button
+                  class="btn btn-outline-gray btn-sm"
+                  type="button"
+                  @click="deleteAllCarts"
+                >
+                  刪除全部
+                </button>
+              </div>
               <div
                 class="
                   d-flex
@@ -143,26 +152,29 @@
                   flex-sm-row
                   align-items-end
                   flex-column
-                  w-sm-auto w-100
                 "
               >
                 <div class="input-group w-sm-65 me-sm-3 mb-2">
                   <button
                     type="button"
-                    class="input-group-text bg-primary text-white btn-hover"
+                    class="
+                      input-group-text
+                      btn
+                      bg-primary
+                      text-white
+                      btn-hover
+                      ms-auto
+                    "
                     id="basic-addon1"
-                    @click="coupon"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    @click="couponTarget = ''"
+                    :disabled="couponPrice !== ''"
                   >
-                    套用優惠券
+                    選擇優惠券
                   </button>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="請輸入折扣代碼"
-                    v-model="code"
-                  />
                 </div>
-                <p class="mb-0 fw-bold">
+                <p class="fw-bold d-flex w-100">
                   總價：<span
                     class="text-end fw-bold"
                     :class="{
@@ -174,11 +186,64 @@
                 </p>
               </div>
             </div>
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">
+                      優惠券
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div
+                    class="modal-body pb-0"
+                    v-if="Object.keys(couponNum).length"
+                  >
+                    <ul
+                      class="list-style d-flex flex-column align-items-center"
+                    >
+                      <li
+                        class="coupon text-start mb-2 fs-5 cursor-pointer"
+                        :class="[
+                          key === couponTarget ? 'text-primary' : 'text-dark',
+                        ]"
+                        v-for="(item, key) in couponNum"
+                        @click="couponTarget = key"
+                        :key="key"
+                      >
+                        {{ key }}折優惠折扣券：{{ item }}張
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="modal-body" v-else>
+                    <h2 class="fw-bold text-center">目前無優惠券</h2>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      class="btn btn-primary d-block mx-auto"
+                      data-bs-dismiss="modal"
+                      @click="coupon(couponTarget)"
+                      :disabled="couponTarget && couponTarget < 0"
+                    >
+                      確認
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="mt-2 me-sm-3">
-              <p
-                class="text-end text-danger fw-bold pt-0 mb-0"
-                v-if="couponPrice"
-              >
+              <p class="text-end text-danger fw-bold pt-0" v-if="couponPrice">
                 折扣總價：NT${{ Math.floor(couponPrice).toLocaleString() }}
               </p>
             </div>
@@ -190,7 +255,7 @@
             <h3>逛逛新鮮水果</h3>
             <button
               class="btn btn-primary btn-sm btn-hover"
-              @click="$router.push('/')"
+              @click="$router.push('/products')"
             >
               商品列表
             </button>
@@ -211,8 +276,9 @@ import Subscription from '@/components/frontend/Subscription.vue';
 export default {
   data() {
     return {
-      code: '',
       couponPrice: '',
+      couponTarget: '',
+      couponNum: JSON.parse(localStorage.getItem('couponNum')) || {},
     };
   },
   components: {
@@ -281,13 +347,23 @@ export default {
           this.$store.dispatch('updateLoading', false);
         });
     },
-    coupon() {
+    coupon(num) {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/coupon`;
-      this.axios.post(url, { data: { code: this.code } })
+      this.$store.dispatch('updateLoading', true);
+      this.axios.post(url, { data: { code: num } })
         .then((res) => {
           if (res.data.success) {
             this.couponPrice = res.data.data.final_total;
-            this.$swal({ title: res.data.message, icon: 'success' });
+            this.$swal({
+              title: `成功套用${num}折優惠折扣券
+            `,
+              icon: 'success',
+            });
+            this.couponNum[num] -= 1;
+            if (this.couponNum[num] === 0) {
+              delete this.couponNum[num];
+            }
+            localStorage.setItem('couponNum', JSON.stringify(this.couponNum));
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
@@ -358,5 +434,9 @@ tbody > tr {
   &:last-child > td {
     border-bottom: $primary 1px solid !important;
   }
+}
+
+.coupon:hover {
+  color: $primary !important;
 }
 </style>

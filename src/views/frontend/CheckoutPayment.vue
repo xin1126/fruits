@@ -1,5 +1,5 @@
 <template>
-  <section class="content bg-light">
+  <section class="content">
     <div class="cart-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
       <p class="bg-translucent fw-bolder px-5 py-3">結帳付款</p>
     </div>
@@ -9,7 +9,7 @@
           <table class="table align-middle mb-0">
             <thead>
               <tr>
-                <th colspan="5">購物清單</th>
+                <th colspan="5" class="fs-4">購物清單</th>
               </tr>
             </thead>
             <tbody>
@@ -26,15 +26,15 @@
                 </td>
                 <td style="width: 200px" height="75px">x{{ item.qty }}</td>
                 <td height="75px">
-                  NT${{ item.final_total.toLocaleString() }}
+                  NT${{ Math.floor(item.final_total).toLocaleString() }}
                 </td>
               </tr>
             </tbody>
           </table>
-          <p class="mt-3 mb-0 text-end text-danger fw-bold" v-if="price">
+          <p class="mt-3 text-end text-danger fw-bold" v-if="price">
             折扣總價：NT${{ Math.floor(user.total).toLocaleString() }}
           </p>
-          <p class="mt-3 mb-0 text-end fw-bold" v-else>
+          <p class="mt-3 text-end fw-bold" v-else>
             總價：NT${{ user.total?.toLocaleString() }}
           </p>
         </div>
@@ -42,7 +42,7 @@
           <table class="table">
             <thead>
               <tr>
-                <th colspan="5">訂購人資訊</th>
+                <th colspan="5" class="fs-4">訂購人資訊</th>
               </tr>
             </thead>
             <tbody>

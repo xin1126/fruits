@@ -49,8 +49,8 @@
                     border-bottom border-2
                   "
                 >
-                  <p class="mb-0 me-5">姓名：</p>
-                  <p class="mb-0">{{ item.user.name }}</p>
+                  <p class="me-5">姓名：</p>
+                  <p>{{ item.user.name }}</p>
                 </li>
                 <li
                   class="
@@ -60,8 +60,8 @@
                     border-bottom border-2
                   "
                 >
-                  <p class="mb-0 me-5">email</p>
-                  <p class="mb-0">{{ item.user.email }}</p>
+                  <p class="me-5">email</p>
+                  <p>{{ item.user.email }}</p>
                 </li>
                 <li
                   class="
@@ -71,8 +71,8 @@
                     border-bottom border-2
                   "
                 >
-                  <p class="mb-0 me-5">電話：</p>
-                  <p class="mb-0">{{ item.user.tel }}</p>
+                  <p class="me-5">電話：</p>
+                  <p>{{ item.user.tel }}</p>
                 </li>
                 <li
                   class="
@@ -82,8 +82,8 @@
                     border-bottom border-2
                   "
                 >
-                  <p class="mb-0 me-5">住址：</p>
-                  <p class="mb-0">{{ item.user.address }}</p>
+                  <p class="me-5">住址：</p>
+                  <p>{{ item.user.address }}</p>
                 </li>
                 <li
                   class="
@@ -93,8 +93,8 @@
                     border-bottom border-2
                   "
                 >
-                  <p class="mb-0 me-5">留言：</p>
-                  <p class="mb-0">
+                  <p class="me-5">留言：</p>
+                  <p>
                     {{ item.message ? item.message : '未留言' }}
                   </p>
                 </li>

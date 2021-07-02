@@ -1,12 +1,29 @@
 <template>
   <section class="content">
-    <div class="products-banner d-flex-center text-white fs-2 mb-lg-4 mb-2">
-      <p class="bg-translucent fw-bolder px-lg-5 py-lg-3 px-4 py-2 m-0">
-        商品列表
-      </p>
+    <div class="products-banner text-dark fs-2 mb-lg-4 mb-2">
+      <div class="bg-linear-right w-100 h-100">
+        <p
+          class="
+            container
+            fw-bolder
+            d-flex
+            flex-column
+            justify-content-center
+            align-items-end
+            rounded-3 rounded
+            h-100
+          "
+        >
+          品種多味美<span class="me-5">生活要領鮮</span>
+        </p>
+      </div>
     </div>
     <div class="container mb-5">
-      <nav aria-label="breadcrumb" id="topProduct" class="bg-white mb-lg-3">
+      <nav
+        aria-label="breadcrumb"
+        id="topProduct"
+        class="bg-transparent mb-lg-3"
+      >
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
           <li class="breadcrumb-item text-gray">商品列表</li>
@@ -24,7 +41,7 @@
           <div class="row justify-content-between">
             <div class="col-lg-4 d-lg-block d-none">
               <select
-                class="form-select rounded-0"
+                class="form-select bg-white"
                 aria-label="Default select example"
                 v-model="optionValue"
                 @change="productsData(optionValue, 'select')"
@@ -43,16 +60,22 @@
                 <label
                   for="exampleFormControlInput1"
                   class="form-label mb-0 me-2"
-                  ><i class="bi bi-search"></i
                 ></label>
-                <input
-                  type="email"
-                  class="form-control w-50 rounded-0"
-                  id="exampleFormControlInput1"
-                  placeholder="請輸入產品"
-                  v-model="search"
-                  @input="productsData(search, 'input')"
-                />
+                <div class="position-relative">
+                  <input
+                    type="email"
+                    class="form-control bg-white"
+                    :class="{ search: !search }"
+                    id="exampleFormControlInput1"
+                    placeholder="請輸入產品"
+                    v-model="search"
+                    @input="productsData(search, 'input')"
+                  />
+                  <i
+                    class="bi bi-search position-absolute"
+                    v-show="!search"
+                  ></i>
+                </div>
               </div>
             </div>
           </div>
@@ -74,7 +97,15 @@
               v-for="item in productsFilter"
               :key="item.id"
             >
-              <div class="card w-100 w-sm-65 w-md-100 h-100 border-0">
+              <div
+                class="
+                  card
+                  w-100 w-sm-65 w-md-100
+                  h-100
+                  border-0
+                  bg-transparent
+                "
+              >
                 <ProductImg :item="item" />
                 <AddToCart class="mx-auto" :item="item" />
               </div>
@@ -87,8 +118,6 @@
         :pagination="pagination"
         @page="pageData"
       />
-      <hr class="border border-primary border-3" />
-      <ProductsSpecialOffer />
     </div>
   </section>
 </template>
@@ -97,7 +126,6 @@
 import ProductImg from '@/components/frontend/ProductImg.vue';
 import ProductList from '@/components/frontend/ProductList.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
-import ProductsSpecialOffer from '@/components//frontend/ProductsSpecialOffer.vue';
 import Pagination from '@/components/Pagination.vue';
 import { mapGetters } from 'vuex';
 
@@ -118,9 +146,11 @@ export default {
     ProductImg,
     AddToCart,
     Pagination,
-    ProductsSpecialOffer,
   },
   methods: {
+    getAllProducts() {
+      this.$store.dispatch('getAllProducts');
+    },
     pageData(num) {
       const min = (num * 9) - 9 + 1;
       const max = (num * 9);
@@ -208,6 +238,9 @@ export default {
       this.specialOffer();
     },
   },
+  mounted() {
+    this.getAllProducts();
+  },
 };
 </script>
 
@@ -218,5 +251,14 @@ export default {
 
 .position-sticky {
   z-index: 10;
+}
+
+.search {
+  text-indent: 20px;
+}
+
+.bi-search {
+  top: 19%;
+  left: 5%;
 }
 </style>
