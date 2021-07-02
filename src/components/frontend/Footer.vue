@@ -82,5 +82,6 @@ footer {
   background-image: url('~@/assets/images/footer.jpg');
   background-position: bottom -100px right 0px;
   background-size: cover;
+  height: 40px;
 }
 </style>
