@@ -20,7 +20,7 @@
             "
           >
             <div class="title-banner p-4 p-md-0 rounded rounded-3">
-              <h2 class="fw-bold" data-aos="zoom-in" data-aos-duration="1500">
+              <h2 class="fw-bold" data-aos="zoom-in" data-aos-duration="1000">
                 每日新鮮水果<span class="title-comma">，</span
                 ><span class="title-content">健康天天有</span>
               </h2>
@@ -75,7 +75,7 @@
   <div class="container mb-5" id="content">
     <div class="row article justify-content-center mb-4">
       <img class="col-md-6" src="@/assets/images/benefit1.jpg" alt="" />
-      <div class="col-md-6 col-sm-10" data-aos="fade" data-aos-duration="3000">
+      <div class="col-md-6 col-sm-10" data-aos="fade" data-aos-duration="2000">
         <div class="article-content right shadow py-4 w-100">
           <h4 class="fw-bold pe-4 text-end">為什麼每日需攝取水果?</h4>
           <p class="text-dark px-4">
@@ -97,7 +97,7 @@
       <div
         class="col-md-6 col-sm-10"
         data-aos="fade"
-        data-aos-duration="3000"
+        data-aos-duration="2000"
         data-aos-delay="300"
       >
         <div class="article-content left shadow py-4 w-100">
@@ -126,24 +126,28 @@
         align-items-center
       "
     >
-      <li class="wow fadeInUp text mb-3" data-wow-duration="1.5s">
+      <li class="wow fadeInUp text mb-3" data-wow-duration="1s">
         三餐在外，大魚大肉，水果攝取不足嗎?
       </li>
       <li
         class="wow fadeInUp text mb-3"
-        data-wow-duration="1.5s"
+        data-wow-duration="1s"
         data-wow-delay="0.2s"
       >
         上班忙碌苦惱沒時間逛果菜市場？
       </li>
       <li
         class="wow fadeInUp text mb-3"
-        data-wow-duration="1.5s"
+        data-wow-duration="1s"
         data-wow-delay="0.4s"
       >
         疫情期間不出門是否擔心水果攝取不足？
       </li>
-      <li class="wow fadeIn title" data-wow-duration="2s" data-wow-delay="0.8s">
+      <li
+        class="wow fadeIn title"
+        data-wow-duration="1.5s"
+        data-wow-delay="0.8s"
+      >
         <span class="logo text-primary text-center d-block d-md-inline me-1"
           >Fresh Fruits</span
         >
@@ -188,7 +192,7 @@
         <div class="col-md-7">
           <h3 class="fw-bold text-center">新鮮、健康，宅配到家</h3>
           <ul class="p-0">
-            <li class="wow fadeInUp d-flex mb-3" data-wow-duration="2s">
+            <li class="wow fadeInUp d-flex mb-3" data-wow-duration="1s">
               <i class="bi bi-award fs-2 text-primary me-3"></i>
               <div>
                 <p class="fs-5 fw-bold text-primary">有機認證</p>
@@ -199,8 +203,8 @@
             </li>
             <li
               class="wow fadeInUp d-flex mb-3"
-              data-wow-duration="2s"
-              data-wow-delay="0.5s"
+              data-wow-duration="1s"
+              data-wow-delay="0.3s"
             >
               <i
                 class="
@@ -221,8 +225,8 @@
             </li>
             <li
               class="wow fadeInUp d-flex mb-3"
-              data-wow-duration="2s"
-              data-wow-delay="1s"
+              data-wow-duration="1s"
+              data-wow-delay="0.6s"
             >
               <i class="bi bi-truck d-block fs-2 text-primary me-3"></i>
               <div>
@@ -234,8 +238,8 @@
             </li>
             <li
               class="wow fadeInUp d-flex mb-3"
-              data-wow-duration="2s"
-              data-wow-delay="1.5s"
+              data-wow-duration="1s"
+              data-wow-delay="0.9s"
             >
               <i
                 class="bi bi-clock text-center d-block fs-2 text-primary me-3"
@@ -297,9 +301,7 @@
           alt="promotion"
         />
       </div>
-      <div class="wow fadeInUp" data-wow-duration="2s">
-        <ProductsSpecialOffer />
-      </div>
+      <ProductsSpecialOffer />
     </div>
     <Subscription />
   </main>

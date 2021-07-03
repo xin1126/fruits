@@ -1,6 +1,6 @@
 <template>
   <div class="group d-flex-center mt-1">
-    <div class="input-group text-center">
+    <div class="input-group input-group-sm text-center">
       <button
         type="button"
         class="input-group-text bg-light text-gray fs-8 border-end-0"
@@ -27,7 +27,7 @@
     </div>
     <a
       href="#"
-      class="fs-2 ms-4 mb-1"
+      class="fs-3 ms-4 mb-1"
       :class="[
         !products.joined ? 'text-gray' : ['text-primary', 'cursor-default'],
       ]"
@@ -119,5 +119,9 @@ export default {
 
 a:hover {
   color: $primary !important;
+}
+
+.input-group-sm {
+  width: 120px;
 }
 </style>

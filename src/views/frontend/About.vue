@@ -1,19 +1,23 @@
 <template>
   <div class="content">
-    <div class="about-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
-      <p
-        class="
-          bg-translucent
-          fw-bolder
-          rounded-3 rounded
-          px-lg-5
-          py-lg-3
-          px-4
-          py-2
-        "
-      >
-        關於我們
-      </p>
+    <div class="about-banner d-flex-center text-dark fs-2 mb-lg-4 mb-3">
+      <div class="bg-linear-right w-100 h-100">
+        <p
+          class="
+            container
+            fw-bolder
+            d-flex
+            flex-column
+            justify-content-center
+            align-items-end
+            rounded-3 rounded
+            h-100
+            fst-italic
+          "
+        >
+          <span class="me-8">用完美的品質</span><span>打造常青的品牌</span>
+        </p>
+      </div>
     </div>
     <div class="container">
       <nav

@@ -1,16 +1,13 @@
 <template>
   <section
     class="transition position-fixed z-index w-100"
-    :class="{ 'bg-white': top, 'shadow-sm': top }"
+    :class="{ 'bg-navbar': top, shadow: top }"
   >
     <div class="container d-flex justify-content-between align-items-center">
       <router-link
         class="navbar-brand text-primary logo order-2 order-lg-0 mt-lg-0 mt-2"
         to="/"
-        ><h1
-          class="h1 pt-1 text-shadow transition"
-          :class="[top ? 'h2' : 'h1']"
-        >
+        ><h1 class="h1 pt-1 transition" :class="[top ? 'h2' : 'h1']">
           Fresh Fruits
         </h1></router-link
       >
@@ -43,7 +40,6 @@
                   nav-link
                   fw-bold
                   fs-5
-                  text-shadow
                   border-bottom border-lg-0
                   px-3 px-lg-0
                 "
@@ -60,7 +56,6 @@
                   nav-link
                   fw-bold
                   fs-5
-                  text-shadow
                   border-bottom border-lg-0
                   px-3 px-lg-0
                 "
@@ -77,7 +72,6 @@
                   nav-link
                   fw-bold
                   fs-5
-                  text-shadow
                   border-bottom border-lg-0
                   px-3 px-lg-0
                 "
@@ -96,7 +90,6 @@
                   nav-link
                   fw-bold
                   fs-5
-                  text-shadow
                   border-bottom border-lg-0
                   px-3 px-lg-0
                 "
@@ -115,7 +108,6 @@
                   nav-link
                   fw-bold
                   fs-5
-                  text-shadow
                   border-bottom border-lg-0
                   px-3 px-lg-0
                 "
@@ -133,7 +125,6 @@
                   nav-link
                   fw-bold
                   fs-5
-                  text-shadow
                   border-bottom border-lg-0
                   px-3 px-lg-0
                 "
@@ -315,12 +306,17 @@ export default {
 
 <style scoped lang="scss">
 @import '@/assets/scss/all';
-a:hover {
-  color: $secondary !important;
+.bg-navbar {
+  background-image: url('~@/assets/images/footer.jpg');
+  height: 60px;
 }
 
-.text-shadow {
+h1 {
   text-shadow: 2px 3px 5px #cccccc;
+}
+
+a:hover {
+  color: $secondary !important;
 }
 
 button:hover {

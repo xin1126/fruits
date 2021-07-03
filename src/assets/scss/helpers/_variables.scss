@@ -14,6 +14,7 @@ $danger: #dc3545;
 $light: #eeeeee;
 $dark: #212529;
 $gray: #6c757d;
+$black:    #000 !default;
 
 $theme-colors: (
   'primary': $primary,
@@ -71,3 +72,5 @@ $spacers: (
   7: $spacer * 4.5,
   8: $spacer * 5,
 ) !default;
+
+$box-shadow: 0 .25rem 0.5rem rgba($black, .10)

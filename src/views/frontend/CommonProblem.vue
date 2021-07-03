@@ -1,19 +1,21 @@
 <template>
   <div class="content">
-    <div class="problem-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
-      <p
-        class="
-          bg-translucent
-          fw-bolder
-          rounded-3 rounded
-          px-lg-5
-          py-lg-3
-          px-4
-          py-2
-        "
-      >
-        常見問題
-      </p>
+    <div class="problem-banner d-flex-center text-dark fs-2 mb-lg-4 mb-3">
+      <div class="bg-linear-left w-100 h-100">
+        <p
+          class="
+            container
+            fw-bolder
+            d-flex
+            flex-column
+            justify-content-center
+            rounded-3 rounded
+            h-100
+          "
+        >
+          <span>常見問與答</span>
+        </p>
+      </div>
     </div>
     <div class="container mb-4">
       <nav
@@ -23,14 +25,14 @@
       >
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
-          <li class="breadcrumb-item text-secondary">常見問與答</li>
+          <li class="breadcrumb-item text-secondary">常見問題</li>
         </ol>
       </nav>
       <h3
         class="fs-5 fw-bold title text-primary bg-secondary rounded-3 rounded"
       >
         需要協助？有任何問題？
-        歡迎先看看我們的【常見問題】，讓你快速、方便得找到答案！
+        歡迎先看看我們的【常見問題】，讓您快速、方便得找到答案！
       </h3>
       <ul class="accordion p-0 mb-5" id="accordionExample">
         <li class="accordion-item bg-transparent">
@@ -419,7 +421,7 @@
       <h3
         class="fs-5 fw-bold title text-primary bg-secondary rounded-3 rounded"
       >
-        如果你有更進一步的問題，歡迎透過以下方式與我們聯繫，我們會儘快回覆你！
+        如果您有更進一步的問題，請與我們聯絡將由專人為您服務，我們會儘快回覆您！
       </h3>
       <div class="row">
         <div class="col-12">

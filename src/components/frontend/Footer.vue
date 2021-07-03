@@ -4,10 +4,9 @@
     class="
       d-flex
       flex-column flex-sm-row
-      justify-content-sm-center
+      justify-content-center
       align-items-center
       text-dark
-      py-5
     "
   >
     <p class="mb-1">
@@ -80,8 +79,9 @@ button:hover {
 
 footer {
   background-image: url('~@/assets/images/footer.jpg');
-  background-position: bottom -100px right 0px;
-  background-size: cover;
-  height: 40px;
+  height: 80px;
+  @include media-breakpoint-up(sm) {
+    height: 70px;
+  }
 }
 </style>

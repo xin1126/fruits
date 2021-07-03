@@ -12,9 +12,10 @@
             align-items-end
             rounded-3 rounded
             h-100
+            fst-italic
           "
         >
-          品種多味美<span class="me-5">生活要領鮮</span>
+          <span class="me-5">品種多味美</span><span>生活要領鮮</span>
         </p>
       </div>
     </div>

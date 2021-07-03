@@ -24,7 +24,7 @@
           />
         </div>
         <div class="more position-absolute top-0"></div>
-        <p class="more-text position-absolute text-white fw-bold fs-4">
+        <p class="more-text position-absolute text-white fw-bold fs-5">
           查看更多
         </p>
         <div class="position-absolute text-warning top-0 pt-1 ms-3 w-100">
@@ -51,7 +51,7 @@
         原價:NT${{ products.origin_price }}
       </small>
       <p
-        class="fw-bold mb-0"
+        class="mb-0"
         :class="[
           products.origin_price !== products.price
             ? 'text-danger'

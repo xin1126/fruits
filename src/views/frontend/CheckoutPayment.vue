@@ -1,7 +1,9 @@
 <template>
   <section class="content">
     <div class="cart-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
-      <p class="bg-translucent fw-bolder px-5 py-3">結帳付款</p>
+      <p class="bg-translucent fw-bolder rounded-3 rounded px-5 py-3">
+        結帳付款
+      </p>
     </div>
     <div class="container pb-lg-4 pb-3">
       <div class="row justify-content-center mb-3">
@@ -93,7 +95,11 @@
             <button class="btn btn-primary" @click="pay" v-if="!user.is_paid">
               付款結帳
             </button>
-            <button class="btn btn-primary" @click="$router.push('/')" v-else>
+            <button
+              class="btn btn-primary"
+              @click="$router.push('/products')"
+              v-else
+            >
               繼續購物
             </button>
           </div>
@@ -165,6 +171,7 @@ button:hover {
 }
 
 .img {
+  background-color: rgb(244, 244, 244) !important;
   width: 75px;
   height: 75px;
 }

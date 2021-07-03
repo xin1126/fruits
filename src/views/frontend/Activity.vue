@@ -1,19 +1,22 @@
 <template>
   <div class="content">
-    <div class="activity-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
-      <p
-        class="
-          bg-translucent
-          fw-bolder
-          rounded-3 rounded
-          px-lg-5
-          py-lg-3
-          px-4
-          py-2
-        "
-      >
-        優惠活動
-      </p>
+    <div class="activity-banner d-flex-center text-dark fs-2 mb-lg-4 mb-3">
+      <div class="bg-linear-left w-100 h-100">
+        <p
+          class="
+            container
+            fw-bolder
+            d-flex
+            flex-column
+            justify-content-center
+            rounded-3 rounded
+            h-100
+          "
+        >
+          <span>歡慶十週年加碼活動 </span
+          ><span class="ms-5">玩遊戲試手氣拿優惠</span>
+        </p>
+      </div>
     </div>
     <div class="container pb-5">
       <nav
@@ -28,16 +31,17 @@
       </nav>
       <div class="row">
         <div class="col-md-6 mb-4 mb-md-0">
-          <h3 class="text-center fw-bold">猜猜水果</h3>
+          <h3 class="text-center fw-bold">四選一猜水果</h3>
+          <p class="text-center mb-2">連續答對三題即可獲得幸運轉盤抽獎券</p>
           <div class="d-flex-center mb-3">
-            <img src="@/assets/images/guessing.png" alt="" />
+            <img class="game" src="@/assets/images/guessing.png" alt="" />
           </div>
           <button
             type="button"
             class="btn btn-primary mx-auto d-block"
             data-bs-toggle="modal"
             data-bs-target="#staticBackdrop"
-            @click="guess = false"
+            @click="play(1, true)"
           >
             開始遊戲
           </button>
@@ -51,10 +55,13 @@
             aria-hidden="true"
           >
             <div class="modal-dialog modal-dialog-centered" ref="modal">
-              <div class="modal-content" v-if="!guess">
+              <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title fw-bold fs-4" id="staticBackdropLabel">
-                    遊戲規則
+                  <h5
+                    class="modal-title fw-bold fs-4 ms-auto"
+                    id="staticBackdropLabel"
+                  >
+                    第{{ game.num }}題
                   </h5>
                   <button
                     type="button"
@@ -63,59 +70,11 @@
                     aria-label="Close"
                   ></button>
                 </div>
-                <div class="modal-body">
-                  <ul class="ps-4 list-style">
-                    <li class="mb-1 fs-5">遊玩猜水果獲得幸運轉盤抽獎券</li>
-                    <li class="mb-1 fs-5">連續答對三題將可獲得抽獎券</li>
-                    <li class="mb-1 fs-5">答錯一題需重頭開始遊戲</li>
-                    <li class="mb-1 fs-5">
-                      猜謎內容為商品列表的圖片
-                      <p class="d-flex">
-                        如不熟商品可先逛逛<a
-                          href="#"
-                          class="fw-bold"
-                          data-bs-dismiss="modal"
-                          @click.prevent="$router.push('/products')"
-                          >商品列表</a
-                        >
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-gray"
-                    data-bs-dismiss="modal"
-                  >
-                    離開
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    @click="play(1, true)"
-                  >
-                    開始遊戲
-                  </button>
-                </div>
-              </div>
-              <div class="modal-content" v-if="guess">
-                <div class="modal-header">
-                  <h5 class="modal-title fw-bold fs-4" id="staticBackdropLabel">
-                    第{{ game.num }}關
-                  </h5>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body">
+                <div class="modal-body d-flex flex-column">
                   <div v-html="game?.title"></div>
                   <img
-                    :src="allProducts[randomNum[0]].imgUrl"
-                    :alt="allProducts[randomNum[0]].title"
+                    :src="allProducts[randomNum[0]]?.imgUrl"
+                    :alt="allProducts[randomNum[0]]?.title"
                     class="blurry"
                     :class="{ blurryRemove: blurryRemove }"
                   />
@@ -133,8 +92,8 @@
                         class="btn w-100 mb-3"
                         :class="[
                           game?.targetProduct === allProducts[item]?.title
-                            ? 'btn-outline-info'
-                            : 'btn-outline-gray',
+                            ? ['bg-dark', 'text-white']
+                            : 'btn-outline-dark',
                         ]"
                         :disabled="
                           game?.targetProduct !== allProducts[item]?.title &&
@@ -170,7 +129,7 @@
                         class="btn btn-primary d-block w-100 me-2"
                         @click="$router.push('/products')"
                       >
-                        逛逛商品列表
+                        查看更多水果圖片
                       </button>
                       <button
                         type="button"
@@ -188,7 +147,7 @@
         </div>
         <div class="col-md-6">
           <h3 class="fw-bold text-center position-relative">
-            幸運轉盤<span
+            幸運轉盤抽折扣卷<span
               v-if="lotteryTicketNum > 0"
               class="
                 position-absolute
@@ -196,13 +155,14 @@
                 text-gray
                 fs-6
                 ms-2
-                d-none d-sm-inline
+                d-none d-xl-inline
               "
               >目前共有{{ lotteryTicketNum }}張抽獎券</span
             >
           </h3>
+          <p class="text-center mb-2">有機會抽中下殺一折優惠券</p>
           <p
-            class="text-gray fs-6 d-sm-none text-center mb-2"
+            class="text-gray fs-6 d-xl-none text-center mb-2"
             v-if="lotteryTicketNum > 0"
           >
             目前共有{{ lotteryTicketNum }}張抽獎券
@@ -247,12 +207,15 @@
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
-              <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-dialog modal-dialog-centered w-auto">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="exampleModalLabel">
+                    <h4
+                      class="modal-title fw-bold ms-auto"
+                      id="exampleModalLabel"
+                    >
                       優惠券
-                    </h5>
+                    </h4>
                     <button
                       type="button"
                       class="btn-close"
@@ -260,21 +223,54 @@
                       aria-label="Close"
                     ></button>
                   </div>
-                  <div class="modal-body" v-if="Object.keys(couponNum).length">
-                    <ul
-                      class="list-style d-flex flex-column align-items-center"
-                    >
+                  <div
+                    class="modal-body pb-0"
+                    v-if="Object.keys(couponNum).length"
+                  >
+                    <ul class="p-0">
                       <li
-                        class="text-start mb-2 fs-5"
+                        class="
+                          coupon
+                          d-flex
+                          flex-column flex-sm-row
+                          align-items-center
+                          justify-content-center
+                          mb-4
+                        "
                         v-for="(item, key) in couponNum"
                         :key="key"
                       >
-                        {{ key }}折優惠折扣券：{{ item }}張
+                        <div
+                          class="
+                            position-relative
+                            coupon-style
+                            bg-danger
+                            d-inline-block
+                            me-sm-5
+                            mb-1 mb-sm-0
+                            px-4
+                            py-4
+                          "
+                        >
+                          <span
+                            class="
+                              border
+                              w-auto
+                              fs-5
+                              px-3
+                              py-2
+                              text-warning
+                              fw-bold
+                            "
+                            >{{ key }}折優惠折扣券</span
+                          >
+                        </div>
+                        <p class="fs-4">x{{ item }}</p>
                       </li>
                     </ul>
                   </div>
                   <div class="modal-body" v-else>
-                    <h2 class="fw-bold">目前無優惠券</h2>
+                    <h2 class="fw-bold">目前無折扣優惠券</h2>
                   </div>
                 </div>
               </div>
@@ -304,7 +300,6 @@ export default {
       randomNum: [],
       randomOptions: [],
       tempProducts: [],
-      guess: false,
       blurryRemove: false,
       lotteryTicketNum: localStorage.getItem('lotteryTicketNum') || 0,
       couponNum: JSON.parse(localStorage.getItem('couponNum')) || {},
@@ -323,6 +318,7 @@ export default {
           for (let i = 0; i <= 360; i += 45) {
             if (this.rotate > i && this.rotate < i + 45) {
               this.lotteryTicketNum -= 1;
+              this.num = this.num === 0 ? 8 : this.num;
               this.couponNum[this.num] = this.couponNum[this.num] + 1 || 1;
               localStorage.setItem('couponNum', JSON.stringify(this.couponNum));
               localStorage.setItem('lotteryTicketNum', this.lotteryTicketNum);
@@ -330,7 +326,7 @@ export default {
             }
             this.num -= 1;
           }
-        }, 1800);
+        }, Math.floor(Math.random() * (1800 - 1200 + 1)) + 1200);
       }
     },
     rotateTurntable() {
@@ -344,7 +340,6 @@ export default {
       }
     },
     play(num, status) {
-      this.guess = true;
       this.blurryRemove = false;
       this.game = { num };
       if (status) {
@@ -390,7 +385,7 @@ export default {
           this.lotteryTicketNum = Number(this.lotteryTicketNum) + 1;
           localStorage.setItem('lotteryTicketNum', this.lotteryTicketNum);
         }
-      }, 2000);
+      }, 1000);
     },
     updateTopic() {
       this.game.num += 1;
@@ -468,12 +463,16 @@ export default {
   filter: blur(30px);
 }
 .blurryRemove {
-  transition: 2s;
+  transition: 1s;
   filter: blur(0);
 }
 
 .turntable {
   writing-mode: vertical-lr;
   padding: 50px 50px;
+}
+
+.coupon:last-child {
+  margin-bottom: 0 !important;
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
   <section class="content">
     <div class="cart-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
-      <p class="bg-translucent fw-bolder px-5 py-3">填寫訂購資料</p>
+      <p class="bg-translucent fw-bolder rounded-3 rounded px-5 py-3">
+        填寫訂購資料
+      </p>
     </div>
     <div class="container pb-lg-4 pb-3 mb-0">
       <div class="row justify-content-center">

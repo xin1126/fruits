@@ -79,7 +79,11 @@
 }
 
 .bg-linear-right {
-  background: linear-gradient(90deg, #00000000 0%, #ffffff 120%);
+  background: linear-gradient(90deg, #00000000 0%, rgb(244, 244, 244) 90%);
+}
+
+.bg-linear-left {
+  background: linear-gradient(270deg, #00000000 0%, rgb(244, 244, 244) 90%);
 }
 
 .bg-translucent {
@@ -107,5 +111,28 @@
     transition: 0.5s;
     color: $primary !important;
     font-size: 35px !important;
+  }
+}
+
+.coupon-style {
+  ::before {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: -15px;
+    background-color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+  }
+  ::after {
+    content: '';
+    position: absolute;
+    top: 35%;
+    right: -15px;
+    background-color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
   }
 }
