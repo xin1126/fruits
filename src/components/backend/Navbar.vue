@@ -33,16 +33,6 @@
               >優惠券列表</router-link
             >
           </li>
-          <li class="nav-item">
-            <router-link
-              class="nav-link fw-bold"
-              :class="[
-                $route.fullPath === '/faq' ? 'text-secondary' : 'text-white',
-              ]"
-              to="/backstage/article"
-              >文章列表</router-link
-            >
-          </li>
         </ul>
       </nav>
       <div class="position-absolute top-0 end-0 mt-2">

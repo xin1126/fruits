@@ -3,7 +3,7 @@
     class="content d-flex flex-column justify-content-between position-relative"
   >
     <div>
-      <div class="favorites-banner d-flex-center text-white fs-2 mb-3">
+      <div class="favorites-banner d-flex-center text-white fs-2 mb-md-4 mb-3">
         <p
           class="
             bg-translucent
@@ -20,7 +20,7 @@
       </div>
       <div class="container mb-4" v-if="collectionData.length && view">
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb mb-3">
+          <ol class="breadcrumb mb-md-4 mb-3">
             <li class="breadcrumb-item text-gray">首頁</li>
             <li class="breadcrumb-item text-secondary">商品收藏列表</li>
           </ol>

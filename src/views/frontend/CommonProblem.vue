@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="problem-banner d-flex-center text-dark fs-2 mb-lg-4 mb-3">
+    <div class="problem-banner d-flex-center text-dark fs-2 mb-md-4 mb-3">
       <div class="bg-linear-left w-100 h-100">
         <p
           class="
@@ -17,11 +17,11 @@
         </p>
       </div>
     </div>
-    <div class="container mb-4">
+    <div class="container mb-md-5 mb-4">
       <nav
         aria-label="breadcrumb"
         id="topProduct"
-        class="bg-transparent mb-lg-3"
+        class="bg-transparent mb-md-4 mb-3"
       >
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
@@ -29,7 +29,15 @@
         </ol>
       </nav>
       <h3
-        class="fs-5 fw-bold title text-primary bg-secondary rounded-3 rounded"
+        class="
+          fs-5
+          fw-bold
+          title
+          text-primary
+          bg-secondary
+          rounded-3 rounded
+          m-0
+        "
       >
         需要協助？有任何問題？
         歡迎先看看我們的【常見問題】，讓您快速、方便得找到答案！
@@ -519,9 +527,7 @@
               >
                 確認送出
               </button>
-              <p class="text text-danger d-none d-sm-block ms-2" v-if="!ask">
-                *為必填欄位
-              </p>
+              <p class="text text-danger ms-2" v-if="!ask">*為必填欄位</p>
               <p class="text text-success ms-2" v-if="ask">
                 <i class="bi bi-check-circle-fill me-1"></i>已成功送出
               </p>

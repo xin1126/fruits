@@ -1,7 +1,7 @@
 <template>
   <section class="content d-flex flex-column justify-content-between">
     <div>
-      <div class="cart-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
+      <div class="cart-banner d-flex-center text-white fs-2 mb-md-4 mb-3">
         <p
           class="
             bg-translucent
@@ -16,7 +16,7 @@
           購物車列表
         </p>
       </div>
-      <div class="container-lg mb-lg-4 mb-3">
+      <div class="container-lg mb-md-5 mb-4">
         <div v-if="$store.getters.cart.carts?.length">
           <div class="d-flex justify-content-between mb-2">
             <button
@@ -155,7 +155,7 @@
                 "
               >
                 <button
-                  v-if="Object.keys(couponNum).length"
+                  v-if="Object.keys(couponNum).length && !couponPrice"
                   type="button"
                   class="
                     input-group-text
@@ -303,13 +303,13 @@
 <script>
 import ProductsSpecialOffer from '@/components/frontend/ProductsSpecialOffer.vue';
 import Subscription from '@/components/frontend/Subscription.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       couponPrice: '',
       couponTarget: '',
-      couponNum: JSON.parse(localStorage.getItem('couponNum')) || {},
     };
   },
   components: {
@@ -317,9 +317,7 @@ export default {
     Subscription,
   },
   methods: {
-    getCart() {
-      this.$store.dispatch('getCart');
-    },
+    ...mapActions(['getCart', 'removeCoupon']),
     deleteAllCarts() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/carts`;
       this.$store.dispatch('updateLoading', true);
@@ -390,11 +388,7 @@ export default {
             `,
               icon: 'success',
             });
-            this.couponNum[num] -= 1;
-            if (this.couponNum[num] === 0) {
-              delete this.couponNum[num];
-            }
-            localStorage.setItem('couponNum', JSON.stringify(this.couponNum));
+            this.removeCoupon(num);
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
@@ -413,9 +407,7 @@ export default {
     },
   },
   computed: {
-    cart() {
-      return this.$store.getters.cart;
-    },
+    ...mapGetters(['cart', 'couponNum']),
   },
   mounted() {
     this.getCart();

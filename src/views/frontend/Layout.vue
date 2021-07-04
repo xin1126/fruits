@@ -4,11 +4,11 @@
     <router-view></router-view>
     <transition>
       <a
-        class="top fs-2 text-dark bg-primary border rounded-circle px-2"
+        class="top fs-2"
         href="javascript:void(0);"
         v-show="top"
         v-scroll-to="{ el: 'body' }"
-        ><i class="bi bi-arrow-up-short"></i
+        ><i class="bi bi-arrow-up-square-fill"></i
       ></a>
     </transition>
     <Footer />

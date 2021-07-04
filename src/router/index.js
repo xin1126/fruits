@@ -63,10 +63,6 @@ const routes = [
         path: 'coupon',
         component: () => import('../views/backend/Coupon.vue'),
       },
-      {
-        path: 'article',
-        component: () => import('../views/backend/Article.vue'),
-      },
     ],
   },
   {
@@ -79,7 +75,7 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('../views/frontend/Products.vue'),
+        component: () => import('../views/frontend/Home.vue'),
       },
     ],
   },

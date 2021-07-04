@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="about-banner d-flex-center text-dark fs-2 mb-lg-4 mb-3">
+    <div class="about-banner d-flex-center text-dark fs-2 mb-md-4 mb-3">
       <div class="bg-linear-right w-100 h-100">
         <p
           class="
@@ -23,7 +23,7 @@
       <nav
         aria-label="breadcrumb"
         id="topProduct"
-        class="bg-transparent mb-lg-3"
+        class="bg-transparent mb-md-4 mb-3"
       >
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
@@ -86,7 +86,7 @@
           </div>
         </div>
       </div>
-      <div class="row mb-4">
+      <div class="row mb-md-5 mb-4">
         <div
           class="
             col-lg-6 col-md-7
@@ -140,8 +140,8 @@
         ></iframe>
       </div>
     </div>
-    <div class="row justify-content-center mb-4">
-      <div class="col-sm-5 col-6">
+    <div class="row justify-content-center mb-md-5 mb-4">
+      <div class="col-sm-5 col-12">
         <h3 class="fw-bold text-center mb-3">《合作廠商》</h3>
         <Swiper
           :slides-per-view="offsetWidthData.slidesView"

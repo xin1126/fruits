@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="activity-banner d-flex-center text-dark fs-2 mb-lg-4 mb-3">
+    <div class="activity-banner d-flex-center text-dark fs-2 mb-md-4 mb-3">
       <div class="bg-linear-left w-100 h-100">
         <p
           class="
@@ -18,11 +18,11 @@
         </p>
       </div>
     </div>
-    <div class="container pb-5">
+    <div class="container mb-md-8 mb-5">
       <nav
         aria-label="breadcrumb"
         id="topProduct"
-        class="bg-transparent mb-lg-3"
+        class="bg-transparent mb-md-4 mb-3"
       >
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>
@@ -30,7 +30,7 @@
         </ol>
       </nav>
       <div class="row">
-        <div class="col-md-6 mb-4 mb-md-0">
+        <div class="col-md-6 mb-5 mb-md-0">
           <h3 class="text-center fw-bold">四選一猜水果</h3>
           <p class="text-center mb-2">連續答對三題即可獲得幸運轉盤抽獎券</p>
           <div class="d-flex-center mb-3">
@@ -191,7 +191,7 @@
               data-bs-toggle="modal"
               data-bs-target="#exampleModal2"
             >
-              查看折扣優惠券
+              查看優惠折扣券
             </button>
             <button
               class="btn btn-primary"
@@ -284,8 +284,9 @@
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
 import Subscription from '@/components/frontend/Subscription.vue';
+import { Modal } from 'bootstrap';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -302,36 +303,38 @@ export default {
       tempProducts: [],
       blurryRemove: false,
       lotteryTicketNum: localStorage.getItem('lotteryTicketNum') || 0,
-      couponNum: JSON.parse(localStorage.getItem('couponNum')) || {},
     };
   },
   components: {
     Subscription,
   },
   methods: {
+    updateCoupon(num) {
+      this.$store.dispatch('updateCoupon', num);
+    },
     turn() {
       if (this.lotteryTicketNum) {
         this.num = 8;
+        this.speed = 20;
         this.startRotate = setInterval(this.rotateTurntable, 15);
-        setTimeout(() => {
-          clearInterval(this.startRotate);
-          for (let i = 0; i <= 360; i += 45) {
-            if (this.rotate > i && this.rotate < i + 45) {
-              this.lotteryTicketNum -= 1;
-              this.num = this.num === 0 ? 8 : this.num;
-              this.couponNum[this.num] = this.couponNum[this.num] + 1 || 1;
-              localStorage.setItem('couponNum', JSON.stringify(this.couponNum));
-              localStorage.setItem('lotteryTicketNum', this.lotteryTicketNum);
-              this.$swal({ title: `恭喜獲得${this.num}折優惠券`, icon: 'success' });
-            }
-            this.num -= 1;
-          }
-        }, Math.floor(Math.random() * (1800 - 1200 + 1)) + 1200);
       }
     },
     rotateTurntable() {
-      if (this.speed <= 15) {
-        this.speed += 0.3;
+      if (this.speed > 0 && this.speed <= 20) {
+        this.speed -= Math.floor(Math.random() * (0.1 - 0.05 + 1)) + 0.05;
+      } else {
+        clearInterval(this.startRotate);
+        for (let i = 0; i <= 360; i += 45) {
+          if (this.rotate > i && this.rotate < i + 45) {
+            this.lotteryTicketNum -= 1;
+            this.num = this.num === 0 ? 8 : this.num;
+            this.updateCoupon(this.num);
+            localStorage.setItem('couponNum', JSON.stringify(this.couponNum));
+            localStorage.setItem('lotteryTicketNum', this.lotteryTicketNum);
+            this.$swal({ title: `恭喜獲得${this.num}折優惠券`, icon: 'success' });
+          }
+          this.num -= 1;
+        }
       }
       if (this.rotate < 360) {
         this.rotate += this.speed;
@@ -394,9 +397,7 @@ export default {
     },
   },
   computed: {
-    allProducts() {
-      return this.$store.getters.allProducts;
-    },
+    ...mapGetters(['allProducts', 'couponNum']),
   },
   mounted() {
     this.getAllProducts();

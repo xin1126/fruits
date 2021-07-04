@@ -3,6 +3,7 @@ import allProductsModules from './allProducts';
 import bookmarkModules from './bookmark';
 import cartModules from './cart';
 import offsetWidthModules from './offsetWidth';
+import couponModules from './coupon';
 
 export default createStore({
   strict: true,
@@ -46,5 +47,6 @@ export default createStore({
     bookmarkModules,
     cartModules,
     offsetWidthModules,
+    couponModules,
   },
 });

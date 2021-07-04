@@ -1,11 +1,11 @@
 <template>
   <section class="content">
-    <div class="cart-banner d-flex-center text-white fs-2 mb-lg-4 mb-3">
+    <div class="cart-banner d-flex-center text-white fs-2 mb-md-4 mb-3">
       <p class="bg-translucent fw-bolder rounded-3 rounded px-5 py-3">
         結帳付款
       </p>
     </div>
-    <div class="container pb-lg-4 pb-3">
+    <div class="container mb-md-5 mb-4">
       <div class="row justify-content-center mb-3">
         <div class="col-md-6">
           <table class="table align-middle mb-0">

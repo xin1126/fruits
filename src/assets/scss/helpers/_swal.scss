@@ -3,7 +3,7 @@
   z-index: 9999;
   top: 0;
   height: auto !important;
-  @include media-breakpoint-up(lg){
+  @include media-breakpoint-up(sm){
     width: auto !important;
   }
 }
@@ -21,6 +21,10 @@
 }
 
 .swal2-title{
-  font-size: 25px !important;
+  font-size: 20px !important;
+  @include media-breakpoint-up(lg){
+    font-size: 24px !important;
+  }
+  
   margin: 16px !important;
 }

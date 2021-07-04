@@ -1,13 +1,13 @@
 <template>
   <div class="content pb-5">
-    <div class="detailed-banner d-flex-center text-white fs-2 mb-lg-4 mb-2">
+    <div class="detailed-banner d-flex-center text-white fs-2 mb-md-4 mb-3">
       <p class="bg-translucent fw-bolder rounded-3 rounded px-5 py-3">
         商品介紹
       </p>
     </div>
     <div class="container animate__animated animate__fadeIn" v-if="view">
-      <nav aria-label="breadcrumb mb-3 mt-5">
-        <ol class="breadcrumb">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-md-4 mb-3">
           <li class="breadcrumb-item text-gray">首頁</li>
           <li class="breadcrumb-item text-gray">商品列表</li>
           <li class="breadcrumb-item text-gray">

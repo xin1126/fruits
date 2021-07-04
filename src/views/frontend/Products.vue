@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="products-banner text-dark fs-2 mb-lg-4 mb-2">
+    <div class="products-banner text-dark fs-2 mb-md-4 mb-3">
       <div class="bg-linear-right w-100 h-100">
         <p
           class="
@@ -23,7 +23,7 @@
       <nav
         aria-label="breadcrumb"
         id="topProduct"
-        class="bg-transparent mb-lg-3"
+        class="bg-transparent mb-md-4 mb-3"
       >
         <ol class="breadcrumb">
           <li class="breadcrumb-item text-gray">首頁</li>

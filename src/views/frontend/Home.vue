@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative vh-100 bg-white mb-5">
+  <div class="position-relative vh-100 bg-white mb-md-8 mb-5">
     <Swiper
       effect="fade"
       :loop="true"
@@ -73,7 +73,7 @@
     </div>
   </div>
   <div class="container mb-5" id="content">
-    <div class="row article justify-content-center mb-4">
+    <div class="row article justify-content-center mb-5">
       <img class="col-md-6" src="@/assets/images/benefit1.jpg" alt="" />
       <div class="col-md-6 col-sm-10" data-aos="fade" data-aos-duration="2000">
         <div class="article-content right shadow py-4 w-100">
@@ -91,7 +91,7 @@
         article
         justify-content-center
         flex-column-reverse flex-sm-row
-        mb-7
+        mb-md-8 mb-5
       "
     >
       <div
@@ -112,7 +112,10 @@
       <img class="col-md-6" src="@/assets/images/benefit2.jpg" alt="" />
     </div>
   </div>
-  <div class="parallax position-relative" :class="{ 'mb-5': view }">
+  <div
+    class="parallax position-relative"
+    :class="{ 'mb-5': view, 'mb-md-8': view }"
+  >
     <ul
       class="
         position-absolute
@@ -180,7 +183,7 @@
     </ul>
   </div>
   <main v-if="view" id="main">
-    <div class="container mb-5">
+    <div class="container mb-md-8 mb-5">
       <div class="row">
         <div class="col-5 d-flex justify-content-center d-none d-md-flex">
           <img
@@ -254,7 +257,7 @@
           </ul>
         </div>
       </div>
-      <div class="about-img w-100 mb-5">
+      <div class="about-img w-100 mb-md-8 mb-5">
         <div class="row g-1 mb-1 cursor-pointer">
           <div
             v-for="item in 6"
@@ -271,7 +274,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row mb-md-4 mb-3">
         <div class="col-lg-6">
           <h3 class="text-center fw-bold">歡慶十周年開幕，限時促銷優惠</h3>
           <p class="text-center text-gray mb-lg-4 mb-2">
@@ -332,7 +335,7 @@ export default {
       timer: 0,
       time: {},
       autoplay: {
-        delay: 2500,
+        delay: 25022220,
         disableOnInteraction: false,
       },
       view: false,
@@ -370,7 +373,6 @@ export default {
       if (scrollTop + windowHeight >= scrollHeight - 200) {
         setTimeout(() => {
           this.view = true;
-          this.$bus.emit('view', true);
         }, 1200);
       }
     },
@@ -379,7 +381,11 @@ export default {
     top() {
       if (this.top > 1800) {
         this.arrow = false;
+        window.removeEventListener('scroll', this.handleScroll);
       }
+    },
+    view() {
+      this.$bus.emit('view', true);
     },
   },
   mounted() {
@@ -475,7 +481,6 @@ export default {
 .arrow {
   z-index: 1;
   height: 100px;
-  width: 100px;
 }
 
 .article {
@@ -530,11 +535,13 @@ export default {
 .title-banner {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
+  width: 100%;
   @include media-breakpoint-up(md) {
     background-color: transparent;
   }
   @media screen and (min-width: 400px) {
     text-align: initial;
+    width: auto;
   }
   .title-comma {
     display: none;
