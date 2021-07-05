@@ -226,7 +226,7 @@
                       >
                         <label
                           :for="key"
-                          class="d-flex align-items-center cursor-pointer"
+                          class="d-sm-flex align-items-center cursor-pointer"
                           @click="couponTarget = key"
                         >
                           <div
@@ -256,7 +256,9 @@
                               >
                             </div>
                           </div>
-                          <p class="fs-4 me-sm-3 mb-1 mb-sm-0">x{{ item }}</p>
+                          <p class="text-center fs-4 me-sm-3 mb-1 mb-sm-0">
+                            x{{ item }}
+                          </p>
                         </label>
                         <input
                           type="radio"
