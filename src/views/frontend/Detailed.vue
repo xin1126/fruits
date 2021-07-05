@@ -1,7 +1,17 @@
 <template>
   <div class="content pb-5">
     <div class="detailed-banner d-flex-center text-white fs-2 mb-md-4 mb-3">
-      <p class="bg-translucent fw-bolder rounded-3 rounded px-5 py-3">
+      <p
+        class="
+          bg-translucent
+          fw-bolder
+          rounded-3 rounded
+          px-lg-5
+          py-lg-3
+          px-4
+          py-2
+        "
+      >
         商品介紹
       </p>
     </div>
@@ -18,7 +28,7 @@
           </li>
         </ol>
       </nav>
-      <div class="row gx-6 mb-lg-5 mb-4 align-items-center">
+      <div class="row mb-lg-5 mb-4 align-items-center">
         <div class="col-xl-7 col-lg-6 mb-4 mb-lg-0">
           <div class="row g-0 flex-xl-row flex-column-reverse">
             <div
@@ -148,7 +158,9 @@
                   原價:NT${{ product.origin_price }}
                 </small>
               </div>
-              <AddToCart :item="productFilter" ref="product" />
+              <div class="d-flex-center">
+                <AddToCart :item="productFilter" ref="product" />
+              </div>
             </div>
           </div>
         </div>
@@ -175,30 +187,32 @@
             <div class="col-sm-3">
               <h5 class="text-primary fw-bold">購物須知</h5>
             </div>
-            <ul class="col-sm-9">
-              <li class="d-flex mb-1">
-                ※
-                <p class="ms-1">
-                  農產品重量差異，圖片僅供參考，商品依實際供貨為準。
-                </p>
-              </li>
-              <li class="d-flex mb-1">
-                ※
-                <p class="ms-1">
-                  製造日期與有效期限，商品成分與適用注意事項皆標示於包裝或產品中。
-                </p>
-              </li>
-              <li class="d-flex mb-1">
-                ※
-                <p class="ms-1">
-                  本產品網頁因拍攝關係，圖檔略有差異，實際以廠商出貨為主
-                </p>
-              </li>
-              <li class="d-flex">
-                ※
-                <p class="ms-1">本產品文案若有變動敬請參照實際商品為準。</p>
-              </li>
-            </ul>
+            <div class="col-sm-9">
+              <ul>
+                <li class="d-flex mb-1">
+                  ※
+                  <p class="ms-1">
+                    農產品重量差異，圖片僅供參考，商品依實際供貨為準。
+                  </p>
+                </li>
+                <li class="d-flex mb-1">
+                  ※
+                  <p class="ms-1">
+                    製造日期與有效期限，商品成分與適用注意事項皆標示於包裝或產品中。
+                  </p>
+                </li>
+                <li class="d-flex mb-1">
+                  ※
+                  <p class="ms-1">
+                    本產品網頁因拍攝關係，圖檔略有差異，實際以廠商出貨為主
+                  </p>
+                </li>
+                <li class="d-flex">
+                  ※
+                  <p class="ms-1">本產品文案若有變動敬請參照實際商品為準。</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

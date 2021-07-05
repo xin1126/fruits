@@ -164,6 +164,7 @@
                     text-white
                     btn-hover
                     me-sm-2
+                    mb-1
                   "
                   id="basic-addon1"
                   data-bs-toggle="modal"

@@ -1,5 +1,6 @@
 <template>
   <div
+    class="mb-7"
     :class="[
       offsetWidthData.list
         ? 'position-relative'

@@ -38,8 +38,8 @@
             @emitData="productsData"
           />
         </div>
-        <div class="col-lg-9 mb-4">
-          <div class="row justify-content-between">
+        <div class="col-lg-9">
+          <div class="row justify-content-between mb-4">
             <div class="col-lg-4 d-lg-block d-none">
               <select
                 class="form-select bg-white"
@@ -80,20 +80,14 @@
               </div>
             </div>
           </div>
-          <ul
-            class="
-              row row-cols-1 row-cols-lg-3 row-cols-md-2
-              g-5
-              p-0
-              mt-5 mt-lg-0
-            "
-          >
+          <ul class="row row-cols-1 row-cols-lg-3 row-cols-md-2 g-md-5">
             <li
               class="
                 col
                 animate__animated animate__fadeIn
                 d-flex-center
                 mt-lg-4
+                mb-4 mb-md-0
               "
               v-for="item in productsFilter"
               :key="item.id"

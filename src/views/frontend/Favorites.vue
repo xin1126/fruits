@@ -28,9 +28,8 @@
         <ul
           class="
             row row-cols-1 row-cols-lg-4 row-cols-md-2
+            g-md-5
             justify-content-center
-            g-6
-            p-0
             mt-0
           "
         >

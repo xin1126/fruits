@@ -5,7 +5,14 @@
   >
     <div class="container d-flex justify-content-between align-items-center">
       <router-link
-        class="navbar-brand text-primary logo order-2 order-lg-0 mt-lg-0 mt-2"
+        class="
+          navbar-brand
+          text-primary
+          logo
+          order-2 order-lg-0
+          mt-lg-0 mt-2
+          me-0
+        "
         to="/"
         ><h1 class="h1 pt-1 transition" :class="[top ? 'h2' : 'h1']">
           Fresh Fruits

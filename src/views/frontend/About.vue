@@ -140,7 +140,7 @@
         ></iframe>
       </div>
     </div>
-    <div class="row justify-content-center mb-md-5 mb-4">
+    <div class="row justify-content-center g-0 mb-md-5 mb-4">
       <div class="col-sm-5 col-12">
         <h3 class="fw-bold text-center mb-3">《合作廠商》</h3>
         <Swiper
