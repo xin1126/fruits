@@ -486,7 +486,7 @@ export default {
 }
 
 .banner-arrow {
-  bottom: 200px;
+  bottom: 100px;
   @include media-breakpoint-up(sm) {
     bottom: 0;
   }
