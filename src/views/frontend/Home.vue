@@ -335,7 +335,7 @@ export default {
       timer: 0,
       time: {},
       autoplay: {
-        delay: 25022220,
+        delay: 2500,
         disableOnInteraction: false,
       },
       view: false,
