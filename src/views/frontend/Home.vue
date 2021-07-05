@@ -49,7 +49,7 @@
       >
     </Swiper>
     <div
-      class="arrow position-absolute bottom-0 end-50 cursor-pointer mb-4"
+      class="arrow banner-arrow position-absolute end-50 cursor-pointer mb-4"
       v-scroll-to="{
         el: '#content',
         offset: -100,
@@ -143,6 +143,7 @@
         class="wow fadeInUp text mb-3"
         data-wow-duration="1s"
         data-wow-delay="0.4s"
+        data-wow-offset="-150"
       >
         疫情期間不出門是否擔心水果攝取不足？
       </li>
@@ -150,6 +151,7 @@
         class="wow fadeIn title"
         data-wow-duration="1.5s"
         data-wow-delay="0.8s"
+        data-wow-offset="-200"
       >
         <span class="logo text-primary text-center d-block d-md-inline me-1"
           >Fresh Fruits</span
@@ -481,6 +483,13 @@ export default {
 .arrow {
   z-index: 1;
   height: 100px;
+}
+
+.banner-arrow {
+  bottom: 200px;
+  @include media-breakpoint-up(sm) {
+    bottom: 0;
+  }
 }
 
 .article {

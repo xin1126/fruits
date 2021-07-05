@@ -40,8 +40,8 @@ export default {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
         })
-        .catch((error) => {
-          this.$swal({ title: error.data.message, icon: 'error' });
+        .catch(() => {
+          this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
         });
     },
   },

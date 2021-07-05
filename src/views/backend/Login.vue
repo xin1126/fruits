@@ -43,10 +43,7 @@
                 >
                   回到前台
                 </button>
-                <button
-                  class="btn btn-dark fw-bold w-100"
-                  type="submit"
-                >
+                <button class="btn btn-dark fw-bold w-100" type="submit">
                   登入
                 </button>
               </div>
@@ -82,8 +79,8 @@ export default {
           this.$swal({ title: res.data.message, icon: 'error' });
         }
         this.$store.dispatch('updateLoading', false);
-      }).catch((error) => {
-        this.$swal({ title: error.data.message, icon: 'error' });
+      }).catch(() => {
+        this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
         this.$store.dispatch('updateLoading', false);
       });
     },

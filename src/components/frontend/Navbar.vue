@@ -54,6 +54,7 @@
                   $route.fullPath === '/' ? 'text-secondary' : 'text-gray',
                 ]"
                 to="/"
+                @click.prevent="collapseHide"
                 >首頁</router-link
               >
             </li>
@@ -70,6 +71,7 @@
                   $route.fullPath === '/about' ? 'text-secondary' : 'text-gray',
                 ]"
                 to="/about"
+                @click.prevent="collapseHide"
                 >關於我們</router-link
               >
             </li>
@@ -88,6 +90,7 @@
                     : 'text-gray',
                 ]"
                 to="/activity"
+                @click.prevent="collapseHide"
                 >優惠活動</router-link
               >
             </li>
@@ -106,6 +109,7 @@
                     : 'text-gray',
                 ]"
                 to="/products"
+                @click.prevent="collapseHide"
                 >商品列表</router-link
               >
             </li>
@@ -122,6 +126,7 @@
                   $route.fullPath === '/faq' ? 'text-secondary' : 'text-gray',
                 ]"
                 to="/faq"
+                @click.prevent="collapseHide"
                 >常見問題</router-link
               >
             </li>
@@ -141,12 +146,8 @@
                     : 'text-gray',
                 ]"
                 data-bs-toggle="dropdown"
-                @click.prevent="
-                  $store.getters.collectionData?.length
-                    ? $router.push('/favorites')
-                    : ''
-                "
-                ref="favoritesDropdown"
+                ref="mobileFavoritesDropdown"
+                @click.prevent="favorites"
               >
                 我的收藏<span v-show="$store.getters.collectionData?.length"
                   >({{ $store.getters.collectionData?.length }})</span
@@ -165,7 +166,7 @@
                   <button
                     class="btn btn-primary btn-sm"
                     type="button"
-                    @click="$router.push('/products')"
+                    @click="products"
                   >
                     挑選商品收藏
                   </button>
@@ -271,15 +272,30 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      cartDropdown: '',
       collapse: '',
+      cartDropdown: '',
       favoritesDropdown: '',
+      mobileFavoritesDropdown: '',
       top: '',
     };
   },
   methods: {
     handleScroll() {
       this.top = document.documentElement.scrollTop > 0;
+    },
+    collapseHide() {
+      this.collapse = new Collapse(this.$refs.collapse);
+      this.collapse.hide();
+    },
+    favorites() {
+      if (this.$store.getters.collectionData?.length) {
+        this.$router.push('/favorites');
+        this.collapseHide();
+      }
+    },
+    products() {
+      this.$router.push('/products');
+      this.collapseHide();
     },
   },
   computed: {
@@ -291,13 +307,12 @@ export default {
     },
     collectionData() {
       this.favoritesDropdown.hide();
+      this.mobileFavoritesDropdown.hide();
     },
     $route() {
-      if (Object.keys(this.collapse).length === 0) {
-        this.collapse = new Collapse(this.$refs.collapse);
-      }
-      this.collapse.hide();
-      if (this.$route.fullPath === '/') {
+      this.collapse = '';
+      if (this.$route.fullPath === '/products') {
+        this.mobileFavoritesDropdown.hide();
         this.favoritesDropdown.hide();
         this.cartDropdown.hide();
       }
@@ -306,6 +321,7 @@ export default {
   mounted() {
     this.cartDropdown = new Dropdown(this.$refs.cartDropdown);
     this.favoritesDropdown = new Dropdown(this.$refs.favoritesDropdown);
+    this.mobileFavoritesDropdown = new Dropdown(this.$refs.mobileFavoritesDropdown);
     window.addEventListener('scroll', this.handleScroll);
   },
 };

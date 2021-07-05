@@ -194,8 +194,15 @@
               查看優惠折扣券
             </button>
             <button
+              ref="tooltip"
+              type="button"
               class="btn btn-primary"
-              :disabled="Number(lotteryTicketNum) === 0"
+              :class="{ 'cursor-allowed': Number(lotteryTicketNum) === 0 }"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              :data-bs-original-title="[
+                Number(lotteryTicketNum) === 0 ? '猜水果獲得抽獎券哦' : '',
+              ]"
               @click="turn"
             >
               開始轉盤
@@ -285,13 +292,14 @@
 
 <script>
 import Subscription from '@/components/frontend/Subscription.vue';
-import { Modal } from 'bootstrap';
+import { Modal, Tooltip } from 'bootstrap';
 import { mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
       modal: '',
+      tooltip: '',
       startRotate: '',
       rotate: 0,
       speed: 0,
@@ -313,7 +321,7 @@ export default {
       this.$store.dispatch('updateCoupon', num);
     },
     turn() {
-      if (this.lotteryTicketNum) {
+      if (this.lotteryTicketNum > 0) {
         this.num = 8;
         this.speed = 20;
         this.startRotate = setInterval(this.rotateTurntable, 15);
@@ -332,6 +340,7 @@ export default {
             localStorage.setItem('couponNum', JSON.stringify(this.couponNum));
             localStorage.setItem('lotteryTicketNum', this.lotteryTicketNum);
             this.$swal({ title: `恭喜獲得${this.num}折優惠券`, icon: 'success' });
+            this.$refs.tooltip.blur();
           }
           this.num -= 1;
         }
@@ -402,6 +411,7 @@ export default {
   mounted() {
     this.getAllProducts();
     this.modal = new Modal(this.$refs.modal);
+    this.tooltip = new Tooltip(this.$refs.tooltip);
   },
 };
 </script>

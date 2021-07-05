@@ -6,20 +6,33 @@
           <h2 class="fw-bold">訂閱電子報</h2>
           <h4 class="fw-bold">獲取九折優惠折扣券!</h4>
           <Form v-slot="{ errors }">
-            <div class="input-group">
+            <div class="input-group mb-1">
               <Field
                 id="email"
                 name="email"
                 type="email"
                 class="form-control"
-                :class="{ 'is-invalid': errors['email'] }"
+                :class="{ 'is-invalid': errors['email'] && verificationStart }"
                 placeholder="請輸入電子信箱"
                 rules="email|required"
                 v-model="email"
               ></Field>
               <button
+                ref="tooltip"
                 type="button"
                 class="btn btn-primary btn-hover"
+                :class="{
+                  'cursor-allowed': Object.values(errors).length || !email,
+                }"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                :data-bs-original-title="[
+                  !email
+                    ? '請輸入電子信箱哦'
+                    : Object.values(errors).length
+                    ? '信箱格式錯誤哦'
+                    : '',
+                ]"
                 @click.prevent="
                   subscription(Object.values(errors).length !== 1 && email)
                 "
@@ -37,12 +50,15 @@
 </template>
 
 <script>
+import { Tooltip } from 'bootstrap';
+
 export default {
   data() {
     return {
       email: '',
       subscriptionEmail: JSON.parse(localStorage.getItem('subscriptionEmail')) || [],
       verification: false,
+      verificationStart: true,
     };
   },
   methods: {
@@ -60,11 +76,23 @@ export default {
         this.subscriptionEmail.push(this.email);
         localStorage.setItem('subscriptionEmail', JSON.stringify(this.subscriptionEmail));
         this.$swal({ title: '訂閱成功恭喜獲得9折優惠券', icon: 'success' });
+        this.email = '';
+        this.verificationStart = false;
       }
     },
     updateCoupon(num) {
       this.$store.dispatch('updateCoupon', num);
     },
+  },
+  watch: {
+    email() {
+      if (this.email) {
+        this.verificationStart = true;
+      }
+    },
+  },
+  mounted() {
+    this.tooltip = new Tooltip(this.$refs.tooltip);
   },
 };
 </script>

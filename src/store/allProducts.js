@@ -2,6 +2,13 @@ import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss';
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'content',
+  showConfirmButton: false,
+  timer: 2500,
+});
+
 export default {
   state: {
     allProducts: [],
@@ -25,7 +32,7 @@ export default {
         })
         .catch(() => {
           commit('loading', false);
-          Swal.fire('請求API失敗');
+          Toast.fire({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
         });
     },
     updateProductNum({ commit }, data) {

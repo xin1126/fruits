@@ -1,7 +1,7 @@
 .swal2-container{
   position: fixed;
   z-index: 9999;
-  top: 0;
+  top: 35% !important;
   height: auto !important;
   @include media-breakpoint-up(sm){
     width: auto !important;
