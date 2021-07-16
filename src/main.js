@@ -18,7 +18,6 @@ import VueScrollTo from 'vue-scrollto';
 import animated from 'animate.css';
 import VueEasyLightbox from 'vue-easy-lightbox';
 import 'default-passive-events';
-// import 'bootstrap';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Wow from 'wow.js';
