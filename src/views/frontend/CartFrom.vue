@@ -1,7 +1,17 @@
 <template>
   <section class="content">
     <div class="cart-banner d-flex-center text-white fs-2 mb-md-4 mb-3">
-      <p class="bg-translucent fw-bolder rounded-3 rounded px-5 py-3">
+      <p
+        class="
+          bg-translucent
+          fw-bolder
+          rounded-3 rounded
+          px-lg-5
+          py-lg-3
+          px-4
+          py-2
+        "
+      >
         填寫訂購資料
       </p>
     </div>

@@ -342,6 +342,7 @@ import ProductsSpecialOffer from '@/components/frontend/ProductsSpecialOffer.vue
 import Subscription from '@/components/frontend/Subscription.vue';
 import Process from '@/components/frontend/Process.vue';
 import { mapGetters, mapActions } from 'vuex';
+import 'bootstrap/js/dist/modal';
 import Tooltip from 'bootstrap/js/dist/tooltip';
 
 export default {
@@ -494,7 +495,7 @@ export default {
 }
 
 .img {
-  background-color: rgb(244, 244, 244);
+  background-color: rgb(244, 244, 244) !important;
   width: 70px;
   height: 70px;
   @include media-breakpoint-up(lg) {
