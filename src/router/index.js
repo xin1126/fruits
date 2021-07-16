@@ -70,6 +70,10 @@ const routes = [
     component: () => import('../views/backend/Login.vue'),
   },
   {
+    path: '/payment',
+    component: () => import('../views/frontend/PaymentSuccessful.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('../views/frontend/Layout.vue'),
     children: [

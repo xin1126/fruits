@@ -4,6 +4,7 @@ import bookmarkModules from './bookmark';
 import cartModules from './cart';
 import offsetWidthModules from './offsetWidth';
 import couponModules from './coupon';
+import viewModule from './view';
 
 export default createStore({
   strict: true,
@@ -48,5 +49,6 @@ export default createStore({
     cartModules,
     offsetWidthModules,
     couponModules,
+    viewModule,
   },
 });

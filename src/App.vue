@@ -1,6 +1,14 @@
 <template>
   <Loading :active="isLoading">
-    <img src="https://i.imgur.com/lTfnxVN.gif" alt="loading" />
+    <div class="loadingio-spinner-ellipsis-b21vu21j2qh">
+      <div class="ldio-pww1fsb7x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </Loading>
   <router-view />
 </template>

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 <template>
   <section
     class="transition position-fixed z-index w-100"
@@ -266,7 +267,8 @@
 </template>
 
 <script>
-import { Dropdown, Collapse } from 'bootstrap';
+import Dropdown from 'bootstrap/js/dist/dropdown';
+import Collapse from 'bootstrap/js/dist/collapse';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -332,10 +334,6 @@ export default {
 .bg-navbar {
   background-image: url('~@/assets/images/footer.jpg');
   height: 60px;
-}
-
-h1 {
-  text-shadow: 2px 3px 5px #cccccc;
 }
 
 a:hover {

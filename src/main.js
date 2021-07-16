@@ -18,12 +18,11 @@ import VueScrollTo from 'vue-scrollto';
 import animated from 'animate.css';
 import VueEasyLightbox from 'vue-easy-lightbox';
 import 'default-passive-events';
-import 'bootstrap';
+// import 'bootstrap';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Wow from 'wow.js';
 import 'wow.js/css/libs/animate.css';
-import bus from './bus';
 import App from './App.vue';
 import store from './store';
 import router from './router';
@@ -32,12 +31,6 @@ AOS.init({
   once: true,
 });
 new Wow().init();
-const options = {
-  toast: true,
-  position: 'center',
-  showConfirmButton: false,
-  timer: 2000,
-};
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule]);
 });
@@ -47,7 +40,6 @@ configure({
 });
 setLocale('zh_TW');
 const app = createApp(App);
-app.config.globalProperties.$bus = bus;
 SwiperCore.use([Autoplay, EffectFade]);
 app.use(router);
 app.use(VueAxios, axios);
@@ -55,7 +47,9 @@ app.use(VueLoading);
 app.use(animated);
 app.use(VueEasyLightbox);
 app.use(VueScrollTo, { duration: 0 });
-app.use(VueSweetalert2, options);
+app.use(VueSweetalert2, {
+  toast: true, position: 'center', showConfirmButton: false, timer: 2000,
+});
 app.use(store);
 app.component('Swiper', Swiper);
 app.component('SwiperSlide', SwiperSlide);

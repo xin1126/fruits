@@ -104,6 +104,17 @@ export default {
       displayInputs: {},
     };
   },
+  props: {
+    img: {
+      typeof: Object,
+      require: true,
+    },
+  },
+  watch: {
+    img() {
+      this.tempProduct = { ...this.img };
+    },
+  },
   methods: {
     addImg(index) {
       const verification = this.tempProduct.imagesUrl.map((item) => item.indexOf('https://'));
@@ -144,17 +155,6 @@ export default {
           this.$store.dispatch('updateLoading', false);
         });
     },
-  },
-  created() {
-    this.$bus.on('tempProduct', (data) => {
-      this.tempProduct = { ...data };
-      if (Object.keys(this.tempProduct).indexOf('imagesUrl') < 0) {
-        this.tempProduct.imagesUrl = [];
-      }
-    });
-  },
-  unmounted() {
-    this.$bus.off('tempProduct');
   },
 };
 </script>

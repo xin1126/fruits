@@ -34,7 +34,7 @@
           <h3 class="text-center fw-bold">四選一猜水果</h3>
           <p class="text-center mb-2">連續答對三題即可獲得幸運轉盤抽獎券</p>
           <div class="d-flex-center mb-3">
-            <img class="game" src="@/assets/images/guessing.png" alt="" />
+            <img class="game" src="@/assets/images/guessing.png" alt="猜水果" />
           </div>
           <button
             type="button"
@@ -71,14 +71,28 @@
                   ></button>
                 </div>
                 <div class="modal-body d-flex flex-column">
-                  <div v-html="game?.title"></div>
+                  <p class="text-center fs-3 fw-bold">{{ game?.title }}</p>
                   <img
                     :src="allProducts[randomNum[0]]?.imgUrl"
                     :alt="allProducts[randomNum[0]]?.title"
                     class="blurry"
                     :class="{ blurryRemove: blurryRemove }"
                   />
-                  <div v-html="game?.answer"></div>
+                  <p
+                    v-if="game?.continue"
+                    class="text-center text-success fs-5 fw-bold"
+                    :class="[game?.answer ? 'text-success' : 'text-danger']"
+                  >
+                    <i
+                      class="bi me-1"
+                      :class="[
+                        game?.answer
+                          ? 'bi-check-circle-fill'
+                          : 'bi-x-circle-fill',
+                      ]"
+                    ></i
+                    >{{ game?.answer ? '恭喜正確答案' : '很可惜答錯了' }}
+                  </p>
                 </div>
                 <div class="modal-footer px-0 pb-0 pt-3">
                   <div class="row w-100">
@@ -109,7 +123,7 @@
                 <div class="modal-footer py-3">
                   <div v-if="game?.continue" class="w-100">
                     <button
-                      v-if="game?.answerBtn && game.num !== 3"
+                      v-if="game?.answer && game.num !== 3"
                       type="button"
                       class="btn btn-primary d-block w-100"
                       @click="updateTopic"
@@ -117,7 +131,7 @@
                       下一題
                     </button>
                     <p
-                      v-else-if="game.num === 3 && game.answerBtn"
+                      v-else-if="game.num === 3 && game.answer"
                       class="text-success text-center fw-bold fs-5"
                     >
                       <i class="bi bi-award"></i>恭喜獲得幸運轉盤抽獎券一張
@@ -187,6 +201,7 @@
           </div>
           <div class="text-center">
             <button
+              type="button"
               class="btn btn-dark me-3"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal2"
@@ -292,8 +307,9 @@
 
 <script>
 import Subscription from '@/components/frontend/Subscription.vue';
-import { Modal, Tooltip } from 'bootstrap';
 import { mapGetters } from 'vuex';
+import Tooltip from 'bootstrap/js/dist/tooltip';
+import Modal from 'bootstrap/js/dist/modal';
 
 export default {
   data() {
@@ -384,16 +400,10 @@ export default {
       this.game.targetProduct = title;
       this.blurryRemove = true;
       setTimeout(() => {
-        if (title === this.allProducts[this.randomNum[0]].title) {
-          this.game.answer = '<p class="text-center text-success fs-5 fw-bold"><i class="bi bi-check-circle-fill me-1"></i>恭喜正確答案</p>';
-          this.game.answerBtn = true;
-        } else {
-          this.game.answer = '<p class="text-center text-danger fs-5 fw-bold"><i class="bi bi-x-circle-fill me-1"></i>很可惜答錯了</p>';
-          this.game.answerBtn = false;
-        }
-        this.game.title = `<p class="text-center fs-3 fw-bold">${this.allProducts[this.randomNum[0]].title}</p>`;
+        this.game.answer = title === this.allProducts[this.randomNum[0]].title;
+        this.game.title = this.allProducts[this.randomNum[0]].title;
         this.game.continue = true;
-        if (this.game.num === 3 && this.game.answerBtn) {
+        if (this.game.num === 3 && this.game.answer) {
           this.lotteryTicketNum = Number(this.lotteryTicketNum) + 1;
           localStorage.setItem('lotteryTicketNum', this.lotteryTicketNum);
         }

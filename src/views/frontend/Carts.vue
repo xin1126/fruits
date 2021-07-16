@@ -1,7 +1,16 @@
 <template>
   <section class="content d-flex flex-column justify-content-between">
     <div>
-      <div class="cart-banner d-flex-center text-white fs-2 mb-md-4 mb-3">
+      <div
+        class="
+          cart-banner
+          position-relative
+          d-flex-center
+          text-white
+          fs-2
+          mb-md-4 mb-3
+        "
+      >
         <p
           class="
             bg-translucent
@@ -18,14 +27,20 @@
       </div>
       <div class="container-lg mb-md-5 mb-4">
         <div v-if="$store.getters.cart.carts?.length">
-          <div class="d-flex justify-content-between mb-2">
+          <div class="row">
+            <Process class="col mb-3 d-sm-none" />
+          </div>
+          <div class="d-flex justify-content-between align-items-end mb-2">
             <button
+              type="button"
               class="btn btn-primary btn-hover"
               @click="$router.push('/products')"
             >
               <i class="bi bi-caret-left-fill"></i>繼續購物
             </button>
+            <Process class="d-none d-sm-block" />
             <button
+              type="button"
               class="btn btn-primary btn-hover"
               @click="$router.push('/from')"
             >
@@ -306,6 +321,7 @@
             <h2 class="fw-bold">目前購物車列表為空</h2>
             <h3>逛逛新鮮水果</h3>
             <button
+              type="button"
               class="btn btn-primary btn-sm btn-hover"
               @click="$router.push('/products')"
             >
@@ -324,8 +340,9 @@
 <script>
 import ProductsSpecialOffer from '@/components/frontend/ProductsSpecialOffer.vue';
 import Subscription from '@/components/frontend/Subscription.vue';
+import Process from '@/components/frontend/Process.vue';
 import { mapGetters, mapActions } from 'vuex';
-import { Tooltip } from 'bootstrap';
+import Tooltip from 'bootstrap/js/dist/tooltip';
 
 export default {
   data() {
@@ -339,6 +356,7 @@ export default {
   components: {
     ProductsSpecialOffer,
     Subscription,
+    Process,
   },
   methods: {
     ...mapActions(['getCart', 'removeCoupon']),
@@ -476,7 +494,7 @@ export default {
 }
 
 .img {
-  background-color: rgb(244, 244, 244) !important;
+  background-color: rgb(244, 244, 244);
   width: 70px;
   height: 70px;
   @include media-breakpoint-up(lg) {

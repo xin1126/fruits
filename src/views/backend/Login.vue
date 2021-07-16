@@ -38,7 +38,7 @@
               <div class="d-flex">
                 <button
                   class="btn btn-dark fw-bold w-100 me-3"
-                  type="submit"
+                  type="button"
                   @click="$router.push('/')"
                 >
                   回到前台

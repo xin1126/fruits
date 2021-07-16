@@ -3,6 +3,7 @@
     <div class="container py-5">
       <div class="d-flex">
         <button
+          type="button"
           class="btn btn-primary text-white btn-sm"
           data-bs-toggle="modal"
           data-bs-target="#productModal"
@@ -53,6 +54,7 @@
               <td align="right">
                 <div class="btn-group">
                   <button
+                    type="button"
                     class="btn btn-outline-gray btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target="#productModal"
@@ -61,6 +63,7 @@
                     編輯
                   </button>
                   <button
+                    type="button"
                     class="btn btn-outline-danger btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target="#deleteModal"
@@ -80,7 +83,11 @@
         @page="getProducts"
       />
     </div>
-    <ProductModal ref="modal" :status="status" @get-data="getAllProducts" />
+    <ProductModal
+      :status="status"
+      :product="tempProduct"
+      @get-data="getAllProducts"
+    />
   </section>
 </template>
 
@@ -95,6 +102,15 @@ export default {
       status: '',
       category: 'total',
       pagination: {},
+      tempProduct: {
+        imgUrl: '',
+        imagesUrl: [],
+        options: {
+          weight: '',
+          rating: '',
+          origin: '',
+        },
+      },
       products: [],
     };
   },
@@ -125,9 +141,7 @@ export default {
     },
     statusModal(status, data) {
       this.status = status;
-      this.$refs.modal.verificationStart = false;
-      this.$refs.modal.tempProduct = status === 'post' ? { imagesUrl: [], options: { rating: '', weight: '', origin: '' } } : JSON.parse(JSON.stringify(data));
-      this.$bus.emit('tempProduct', this.$refs.modal.tempProduct);
+      this.tempProduct = status === 'post' ? { imgUrl: '', imagesUrl: [], options: { rating: '', weight: '', origin: '' } } : JSON.parse(JSON.stringify(data));
     },
     categoryValue(value) {
       this.category = value;
@@ -139,8 +153,7 @@ export default {
   },
   computed: {
     categoryProducts() {
-      const newArr = this.category === 'total' ? this.products : this.$refs.category.allProducts.filter((item) => item.category === this.category);
-      return newArr;
+      return this.category === 'total' ? this.products : this.$refs.category.allProducts.filter((item) => item.category === this.category);
     },
   },
   mounted() {

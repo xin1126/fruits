@@ -1,6 +1,6 @@
 <template>
   <footer
-    v-if="view"
+    v-if="footerView"
     class="
       d-flex
       flex-column flex-sm-row
@@ -15,6 +15,7 @@
     <div class="d-flex-center">
       <p>僅個人作品練習，無商業用途</p>
       <button
+        type="button"
         class="btn btn-outline-dark btn-sm ms-3 d-none d-sm-block"
         @click="check"
       >
@@ -28,7 +29,7 @@
 export default {
   data() {
     return {
-      view: '',
+      footerView: '',
     };
   },
   methods: {
@@ -50,21 +51,21 @@ export default {
         });
     },
   },
-  watch: {
-    $route() {
-      this.view = this.$route.path.length !== 1;
+  computed: {
+    view() {
+      return this.$store.getters.view;
     },
   },
-  created() {
-    this.$bus.on('view', (status) => {
-      this.view = status;
-    });
-  },
-  unmounted() {
-    this.$bus.off('view');
+  watch: {
+    $route() {
+      this.footerView = this.$route.path.length !== 1;
+    },
+    view() {
+      this.footerView = this.view;
+    },
   },
   mounted() {
-    this.view = this.$route.path.length !== 1;
+    this.footerView = this.$route.path.length !== 1;
   },
 };
 </script>

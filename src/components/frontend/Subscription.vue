@@ -5,7 +5,7 @@
         <div class="col-xl-4 col-md-5 col-sm-8">
           <h2 class="fw-bold">訂閱電子報</h2>
           <h4 class="fw-bold">獲取九折優惠折扣券!</h4>
-          <Form v-slot="{ errors }">
+          <Form v-slot="{ errors }" @submit="subscription">
             <div class="input-group mb-1">
               <Field
                 id="email"
@@ -19,7 +19,7 @@
               ></Field>
               <button
                 ref="tooltip"
-                type="button"
+                type="submit"
                 class="btn btn-primary btn-hover"
                 :class="{
                   'cursor-allowed': Object.values(errors).length || !email,
@@ -33,9 +33,6 @@
                     ? '信箱格式錯誤哦'
                     : '',
                 ]"
-                @click.prevent="
-                  subscription(Object.values(errors).length !== 1 && email)
-                "
               >
                 訂閱
               </button>
@@ -50,7 +47,7 @@
 </template>
 
 <script>
-import { Tooltip } from 'bootstrap';
+import Tooltip from 'bootstrap/js/dist/tooltip';
 
 export default {
   data() {
@@ -62,7 +59,7 @@ export default {
     };
   },
   methods: {
-    subscription(status) {
+    subscription() {
       this.verification = false;
       if (this.subscriptionEmail.length) {
         this.subscriptionEmail.forEach((item) => {
@@ -71,11 +68,11 @@ export default {
           }
         });
       }
-      if (status && !this.verification) {
+      if (!this.verification) {
         this.updateCoupon(9);
         this.subscriptionEmail.push(this.email);
         localStorage.setItem('subscriptionEmail', JSON.stringify(this.subscriptionEmail));
-        this.$swal({ title: '訂閱成功恭喜獲得9折優惠券', icon: 'success' });
+        this.$swal({ title: '訂閱成功，恭喜獲得9折優惠券', icon: 'success' });
         this.email = '';
         this.verificationStart = false;
       }

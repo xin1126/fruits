@@ -7,9 +7,19 @@
     </div>
     <div class="container mb-md-5 mb-4">
       <div class="row justify-content-center">
+        <div class="row">
+          <Process class="col mb-3 d-sm-none" />
+        </div>
         <div class="col-lg-8">
           <Form v-slot="{ errors }" @submit="createOrder" ref="form">
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div
+              class="
+                d-flex
+                justify-content-between
+                align-items-center
+                mb-2 mb-sm-0
+              "
+            >
               <button
                 type="button"
                 class="btn btn-primary btn-hover"
@@ -17,7 +27,7 @@
               >
                 <i class="bi bi-caret-left-fill"></i>回上一步
               </button>
-              <p class="text-danger d-none d-sm-block">*為必填欄位</p>
+              <Process class="d-none d-sm-block" />
               <button
                 :type="[
                   Object.values(errors).length ||
@@ -46,7 +56,7 @@
                 送出訂單<i class="bi bi-caret-right-fill"></i>
               </button>
             </div>
-            <p class="text-danger d-sm-none">*為必填欄位</p>
+            <p class="text-danger mb-2">*為必填欄位</p>
             <div class="row mb-3">
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <label for="name" class="form-label"
@@ -152,7 +162,8 @@
 </template>
 
 <script>
-import { Tooltip } from 'bootstrap';
+import Process from '@/components/frontend/Process.vue';
+import Tooltip from 'bootstrap/js/dist/tooltip';
 
 export default {
   data() {
@@ -169,6 +180,9 @@ export default {
         tooltip: '',
       },
     };
+  },
+  components: {
+    Process,
   },
   methods: {
     createOrder() {

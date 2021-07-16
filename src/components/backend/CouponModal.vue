@@ -180,19 +180,23 @@
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
+import Modal from 'bootstrap/js/dist/modal';
 
 export default {
   data() {
     return {
       modal: '',
-      tempCoupon: {},
+      tempCoupon: this.coupon,
       verificationStart: false,
     };
   },
   props: {
     status: {
       typeof: String,
+      require: true,
+    },
+    coupon: {
+      typeof: Object,
       require: true,
     },
   },
@@ -225,6 +229,12 @@ export default {
           this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
           this.$store.dispatch('updateLoading', false);
         });
+    },
+  },
+  watch: {
+    coupon() {
+      this.tempCoupon = this.coupon;
+      this.verificationStart = false;
     },
   },
   mounted() {

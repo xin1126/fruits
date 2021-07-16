@@ -6,6 +6,9 @@
       </p>
     </div>
     <div class="container mb-md-5 mb-4">
+      <div class="row">
+        <Process class="col-lg-4 col-sm-5 mx-auto" />
+      </div>
       <div class="row justify-content-center mb-3">
         <div class="col-md-6">
           <table class="table align-middle mb-0">
@@ -92,10 +95,16 @@
             </tbody>
           </table>
           <div class="text-center">
-            <button class="btn btn-primary" @click="pay" v-if="!user.is_paid">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="pay"
+              v-if="!user.is_paid"
+            >
               付款結帳
             </button>
             <button
+              type="button"
               class="btn btn-primary"
               @click="$router.push('/products')"
               v-else
@@ -110,6 +119,8 @@
 </template>
 
 <script>
+import Process from '@/components/frontend/Process.vue';
+
 export default {
   data() {
     return {
@@ -117,6 +128,9 @@ export default {
       products: [],
       price: '',
     };
+  },
+  components: {
+    Process,
   },
   methods: {
     getOrders() {
@@ -145,7 +159,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.getOrders();
-            this.$swal({ title: res.data.message, icon: 'success' });
+            this.$router.push('/payment');
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
@@ -171,7 +185,7 @@ button:hover {
 }
 
 .img {
-  background-color: rgb(244, 244, 244) !important;
+  background-color: rgb(244, 244, 244);
   width: 75px;
   height: 75px;
 }

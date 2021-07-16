@@ -39,7 +39,7 @@
         <router-link class="signout btn btn-outline-light me-2" to="/">
           回到前台
         </router-link>
-        <button class="signout btn btn-outline-light" @click="signout">
+        <button type="button" class="signout btn btn-outline-light" @click="signout">
           登出
         </button>
       </div>

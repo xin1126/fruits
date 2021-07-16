@@ -153,7 +153,7 @@
           <SwiperSlide v-for="item in 6" :key="item">
             <img
               class="logo"
-              :src="require('@/assets/images/logo/' + `logo${item}` + '.png')"
+              :src="require(`@/assets/images/logo/logo${item}.png`)"
               alt="logo"
             />
           </SwiperSlide>

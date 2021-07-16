@@ -287,11 +287,7 @@ export default {
   computed: {
     ...mapGetters(['allProducts', 'cart', 'offsetWidth', 'offsetWidthData']),
     relatedProducts() {
-      const newArr = this.allProducts.filter((item) => {
-        const arr = item.category === this.product.category && item.id !== this.product.id;
-        return arr;
-      });
-      return newArr;
+      return this.allProducts.filter((item) => item.category === this.product.category && item.id !== this.product.id);
     },
     data() {
       const { allProducts, cart, product } = this;

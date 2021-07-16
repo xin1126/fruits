@@ -21,7 +21,7 @@
             d-lg-none
             bg-white
             pt-md-4
-            py-3
+            p-3
             border-bottom border-4 border-lg-0
             text-gray
           "
@@ -34,15 +34,15 @@
         class="collapse border-bottom border-4 py-3 bg-white"
         id="collapseExample"
       >
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center ps-3">
           <label for="exampleFormControlInput2" class="form-label mb-0 me-2"
             ><i class="bi bi-search"></i
           ></label>
           <input
-            type="email"
+            type="text"
             class="form-control w-50"
             id="exampleFormControlInput2"
-            placeholder="請輸入產品"
+            placeholder="請輸入商品"
             v-model="search"
             @input="productsData(search, 'input')"
           />
@@ -58,7 +58,7 @@
             justify-content-between
             d-lg-none
             bg-white
-            py-3
+            p-3
             border-bottom border-4
             text-gray
           "
@@ -141,7 +141,7 @@
             justify-content-between
             d-lg-none
             bg-white
-            py-3
+            p-3
             border-bottom border-4
             text-gray
           "

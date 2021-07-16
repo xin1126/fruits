@@ -28,17 +28,7 @@
           <li class="breadcrumb-item text-secondary">常見問題</li>
         </ol>
       </nav>
-      <h3
-        class="
-          fs-5
-          fw-bold
-          title
-          text-primary
-          bg-secondary
-          rounded-3 rounded
-          m-0
-        "
-      >
+      <h3 class="fs-5 fw-bold title text-primary rounded-3 rounded m-0">
         需要協助？有任何問題？
         歡迎先看看我們的【常見問題】，讓您快速、方便得找到答案！
       </h3>
@@ -426,9 +416,7 @@
           </div>
         </li>
       </ul>
-      <h3
-        class="fs-5 fw-bold title text-primary bg-secondary rounded-3 rounded"
-      >
+      <h3 class="fs-5 fw-bold title text-primary rounded-3 rounded">
         如果您有更進一步的問題，請與我們聯絡將由專人為您服務，我們會儘快回覆您！
       </h3>
       <div class="row">
@@ -540,7 +528,7 @@
 </template>
 
 <script>
-import { Tooltip } from 'bootstrap';
+import Tooltip from 'bootstrap/js/dist/tooltip';
 
 export default {
   data() {
@@ -595,7 +583,7 @@ textarea {
 
 .title {
   font-size: 18px !important;
-  background-color: #dee4d4 !important;
+  background-color: #dee4d4;
   padding: 10px;
 }
 

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { Tooltip } from 'bootstrap';
+import Tooltip from 'bootstrap/js/dist/tooltip';
 import { mapGetters } from 'vuex';
 
 export default {

@@ -177,7 +177,7 @@
                   v-model="tempProduct.content"
                 ></textarea>
               </div>
-              <ProductImg ref="img" />
+              <ProductImg :img="image" ref="img" />
             </form>
           </div>
           <div class="modal-footer">
@@ -248,23 +248,16 @@
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
+import Modal from 'bootstrap/js/dist/modal';
 import ProductImg from '@/components/backend/ProductImg.vue';
 
 export default {
   data() {
     return {
       modal: '',
-      tempProduct: {
-        imgUrl: '',
-        imagesUrl: [],
-        options: {
-          weight: '',
-          rating: '',
-          origin: '',
-        },
-      },
       verificationStart: false,
+      tempProduct: this.product,
+      image: {},
     };
   },
   components: {
@@ -273,6 +266,10 @@ export default {
   props: {
     status: {
       typeof: String,
+      require: true,
+    },
+    product: {
+      typeof: Object,
       require: true,
     },
   },
@@ -305,6 +302,13 @@ export default {
           this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
           this.$store.dispatch('updateLoading', false);
         });
+    },
+  },
+  watch: {
+    product() {
+      this.tempProduct = this.product;
+      this.image = { imagesUrl: this.tempProduct.imagesUrl ?? [], imgUrl: this.tempProduct.imgUrl };
+      this.verificationStart = false;
     },
   },
   mounted() {

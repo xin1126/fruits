@@ -47,7 +47,7 @@
                 v-model="optionValue"
                 @change="productsData(optionValue, 'select')"
               >
-                <option value="" disabled>搜尋產品價格、星級</option>
+                <option value="" disabled>搜尋商品價格、星級</option>
                 <option value="highPrice">商品價格由高到低</option>
                 <option value="lowPrice">商品價格由低到高</option>
                 <option value="2">二星級商品</option>
@@ -68,7 +68,7 @@
                     class="form-control bg-white"
                     :class="{ search: !search }"
                     id="exampleFormControlInput1"
-                    placeholder="請輸入產品"
+                    placeholder="請輸入商品"
                     v-model="search"
                     @input="productsData(search, 'input')"
                   />
@@ -132,6 +132,7 @@ export default {
       categoryValue: 'total',
       productsSort: [],
       productsFilter: [],
+      tempSearchFilter: [],
       productsSpecialOffer: [],
       pagination: {},
     };
@@ -147,8 +148,8 @@ export default {
       this.$store.dispatch('getAllProducts');
     },
     pageData(num) {
-      const min = (num * 9) - 9 + 1;
-      const max = (num * 9);
+      const min = (num * 9 - 9) + 1;
+      const max = num * 9;
       this.pagination.has_pre = num !== 1;
       this.pagination.has_next = num !== this.pagination.total_pages;
       this.pagination.current_page = num;
@@ -159,9 +160,10 @@ export default {
       this.optionValue = '';
       switch (status) {
         case 'input':
-          if ((this.allProducts.filter((item) => item.title.match(value))).length > 0 && value) {
+          this.tempSearchFilter = this.allProducts.filter((item) => item.title.match(value));
+          if (this.tempSearchFilter.length && value) {
             this.categoryValue = '';
-            this.productsFilter = this.allProducts.filter((item) => item.title.match(value));
+            this.productsFilter = this.tempSearchFilter;
           } else if (!value) {
             this.categoryValue = 'total';
             this.productsPage();
@@ -239,7 +241,7 @@ export default {
 };
 </script>
 
-<style scoped  lang="scss">
+<style scoped lang="scss">
 .title-top {
   top: 56px;
 }

@@ -74,7 +74,11 @@
   </div>
   <div class="container mb-5" id="content">
     <div class="row article justify-content-center mb-5">
-      <img class="col-md-6" src="@/assets/images/benefit1.jpg" alt="" />
+      <img
+        class="col-md-6"
+        src="@/assets/images/benefit1.jpg"
+        alt="水果圖檔1"
+      />
       <div class="col-md-6 col-sm-10" data-aos="fade" data-aos-duration="2000">
         <div class="article-content right shadow py-4 w-100">
           <h4 class="fw-bold pe-4 text-end">為什麼每日需攝取水果?</h4>
@@ -109,7 +113,11 @@
           </p>
         </div>
       </div>
-      <img class="col-md-6" src="@/assets/images/benefit2.jpg" alt="" />
+      <img
+        class="col-md-6"
+        src="@/assets/images/benefit2.jpg"
+        alt="水果圖檔2"
+      />
     </div>
   </div>
   <div
@@ -269,8 +277,8 @@
           >
             <img
               class="w-100"
-              :src="require('@/assets/images/about/about' + item + '.jpg')"
-              alt=""
+              :src="require(`@/assets/images/about/about${item}.jpg`)"
+              alt="水果優惠"
             />
             <i class="bi bi-eye text-white position-absolute d-flex-center"></i>
           </div>
@@ -315,7 +323,7 @@
     escDisabled
     moveDisabled
     :visible="visible"
-    :imgs="require('@/assets/images/about/' + imgs + '.jpg')"
+    :imgs="require(`@/assets/images/about/${imgs}.jpg`)"
     :index="index"
     @hide="visible = !visible"
     v-if="index"
@@ -340,7 +348,6 @@ export default {
         delay: 2500,
         disableOnInteraction: false,
       },
-      view: false,
       visible: false,
       arrow: true,
       str: '研究指出每日攝取160克水果為健康長壽的最佳方式',
@@ -374,9 +381,14 @@ export default {
       this.top = scrollTop;
       if (scrollTop + windowHeight >= scrollHeight - 200) {
         setTimeout(() => {
-          this.view = true;
+          this.$store.dispatch('updateView', true);
         }, 1200);
       }
+    },
+  },
+  computed: {
+    view() {
+      return this.$store.getters.view;
     },
   },
   watch: {
@@ -386,12 +398,9 @@ export default {
         window.removeEventListener('scroll', this.handleScroll);
       }
     },
-    view() {
-      this.$bus.emit('view', true);
-    },
   },
   mounted() {
-    this.view = false;
+    this.$store.dispatch('updateView', false);
     window.addEventListener('scroll', this.handleScroll);
     setInterval(() => {
       this.time = {
@@ -410,7 +419,6 @@ export default {
       }
     }, 1000);
     this.typeing();
-    this.$bus.emit('view', false);
   },
 };
 </script>

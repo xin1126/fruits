@@ -1,16 +1,12 @@
 <template>
   <div>
     <Navbar />
-    <router-view></router-view>
-    <transition>
-      <a
-        class="top fs-2"
-        href="javascript:void(0);"
-        v-show="top"
-        v-scroll-to="{ el: 'body' }"
+    <router-view />
+    <Transition>
+      <a class="top fs-2" href="#" v-show="top" v-scroll-to="{ el: 'body' }"
         ><i class="bi bi-arrow-up-square-fill"></i
       ></a>
-    </transition>
+    </Transition>
     <Footer />
   </div>
 </template>

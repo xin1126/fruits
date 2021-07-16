@@ -3,6 +3,7 @@
     <div class="container py-5">
       <div class="d-flex">
         <button
+          type="button"
           class="btn btn-primary text-white btn-sm"
           data-bs-toggle="modal"
           data-bs-target="#productModal"
@@ -37,6 +38,7 @@
               <td align="right">
                 <div class="btn-group">
                   <button
+                    type="button"
                     class="btn btn-outline-gray btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target="#productModal"
@@ -45,6 +47,7 @@
                     編輯
                   </button>
                   <button
+                    type="button"
                     class="btn btn-outline-danger btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target="#deleteModal"
@@ -59,18 +62,16 @@
         </table>
       </div>
     </div>
-    <CouponModal ref="couponModal" :status="status" @get-data="getCoupons" />
+    <CouponModal :status="status" :coupon="tempCoupon" @get-data="getCoupons" />
   </section>
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
 import CouponModal from '@/components/backend/CouponModal.vue';
 
 export default {
   data() {
     return {
-      modal: '',
       status: '',
       coupons: [],
       tempCoupon: {},
@@ -100,12 +101,10 @@ export default {
     },
     statusModal(status, data) {
       this.status = status;
-      this.$refs.couponModal.verificationStart = false;
-      this.$refs.couponModal.tempCoupon = status === 'post' ? {} : JSON.parse(JSON.stringify(data));
+      this.tempCoupon = status === 'post' ? {} : JSON.parse(JSON.stringify(data));
     },
   },
   mounted() {
-    this.modal = new Modal(this.$refs.modal);
     this.getCoupons();
   },
 };

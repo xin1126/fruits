@@ -191,6 +191,7 @@
                   </div>
                 </form>
                 <button
+                  type="button"
                   class="btn btn-outline-danger btn-sm"
                   :id="'dropdownDeleteButton' + (index + 1)"
                   data-bs-toggle="dropdown"
@@ -225,6 +226,7 @@
 </template>
 
 <script>
+import 'bootstrap/js/dist/dropdown';
 import Pagination from '@/components/Pagination.vue';
 
 export default {

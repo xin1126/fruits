@@ -68,6 +68,7 @@
         <h2 class="fw-bold">目前商品收藏列表為空</h2>
         <h3>逛逛新鮮水果</h3>
         <button
+          type="button"
           class="btn btn-primary btn-sm btn-hover"
           @click="$router.push('/products')"
         >
