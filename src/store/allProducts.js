@@ -12,7 +12,6 @@ const Toast = Swal.mixin({
 export default {
   state: {
     allProducts: [],
-    num: {},
     title: {},
   },
   actions: {
@@ -35,19 +34,11 @@ export default {
           Toast.fire({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
         });
     },
-    updateProductNum({ commit }, data) {
-      commit('updateNum', data);
-    },
   },
   mutations: {
-    updateNum(state, data) {
-      const [id, num] = data;
-      state.num[id] = num;
-    },
     allProducts(state, payload) {
       state.allProducts = payload;
       state.allProducts.forEach((item) => {
-        state.num[item.id] = 1;
         state.title[item.title] = '加入購物車';
       });
     },
@@ -55,9 +46,6 @@ export default {
   getters: {
     allProducts(state) {
       return state.allProducts;
-    },
-    num(state) {
-      return state.num;
     },
     title(state) {
       return state.title;

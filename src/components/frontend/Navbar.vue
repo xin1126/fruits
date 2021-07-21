@@ -229,11 +229,13 @@
             ]"
             data-bs-toggle="dropdown"
             @click.prevent="
-              $store.getters.cart.carts?.length ? $router.push('/carts') : ''
+              Object.keys($store.getters.storageCart)?.length
+                ? $router.push('/carts')
+                : ''
             "
             ref="cartDropdown"
             ><span
-              v-show="$store.getters.cart.carts?.length"
+              v-show="Object.keys($store.getters.storageCart)?.length"
               class="
                 badge
                 card-badge
@@ -241,13 +243,13 @@
                 bg-secondary
                 position-absolute
               "
-              >{{ $store.getters.cart.carts?.length }}</span
+              >{{ Object.keys($store.getters.storageCart)?.length }}</span
             >
             <i class="bi bi-cart-fill fs-4 fw-lighter"></i>
           </a>
           <div
             class="dropdown-menu dropdown-menu-lg-end"
-            v-show="!$store.getters.cart.carts?.length"
+            v-show="!Object.keys($store.getters.storageCart)?.length"
           >
             <p class="px-2 mb-1 text-gray text-center">目前購物車無商品</p>
             <div class="text-center" v-if="$route.path !== '/products'">
@@ -301,10 +303,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['cart', 'collectionData']),
+    ...mapGetters(['storageCart', 'collectionData']),
   },
   watch: {
-    cart() {
+    storageCart() {
       this.cartDropdown.hide();
     },
     collectionData() {
@@ -313,7 +315,7 @@ export default {
     },
     $route() {
       this.collapse = '';
-      if (this.$route.fullPath === '/products') {
+      if (this.$route.fullPath === '/products' || this.$route.fullPath === '/checkout') {
         this.mobileFavoritesDropdown.hide();
         this.favoritesDropdown.hide();
         this.cartDropdown.hide();

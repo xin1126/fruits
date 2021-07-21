@@ -1,38 +1,30 @@
 <template>
-  <div class="group d-flex-center mt-1">
-    <div class="input-group input-group-sm text-center">
+  <div class="group d-flex justify-content-between align-items-center mt-1">
+    <div class="input-group input-group-sm text-center py-2">
       <button
         type="button"
         class="input-group-text bg-light text-gray fs-8 border-end-0"
-        :class="[
-          !products.joined && num[products.id] !== 1
-            ? ['btn-hover']
-            : 'cursor-allowed',
-        ]"
-        :disabled="products.joined || num[products.id] === 1"
-        @click="$store.dispatch('updateProductNum', [products.id, --tempNum])"
+        :class="[tempNum !== 1 ? ['btn-hover'] : 'cursor-allowed']"
+        :disabled="tempNum === 1"
+        @click="$store.dispatch('updateCart', [products.id, --tempNum])"
       >
         <i class="bi bi-dash-lg"></i>
       </button>
-      <p class="form-control text-center">{{ num[products.id] }}</p>
+      <p class="form-control text-center">{{ tempNum }}</p>
       <button
         type="button"
-        class="input-group-text bg-light text-gray fs-8"
-        :class="[!products.joined ? 'btn-hover' : 'cursor-allowed']"
-        :disabled="products.joined"
-        @click="$store.dispatch('updateProductNum', [products.id, ++tempNum])"
+        class="input-group-text bg-light btn-hover text-gray fs-8"
+        @click="$store.dispatch('updateCart', [products.id, ++tempNum])"
       >
         <i class="bi bi-plus-lg"></i>
       </button>
     </div>
     <a
+      v-show="!addCart"
       href="#"
-      class="fs-3 ms-4 mb-1"
-      :class="[
-        !products.joined ? 'text-gray' : ['text-primary', 'cursor-default'],
-      ]"
-      :disabled="products.joined"
-      @click.prevent="addToCart(products.id, num[products.id])"
+      class="fs-3 mb-1"
+      :class="[!products.joined ? 'text-gray' : 'text-primary']"
+      @click.prevent="addToCart(products.id, tempNum, products.title)"
       data-bs-toggle="tooltip"
       data-bs-placement="bottom"
       :data-bs-original-title="title[products.title]"
@@ -43,6 +35,9 @@
         :class="[!products.joined ? 'bi-cart-plus-fill' : 'bi-cart-check-fill']"
       ></i>
     </a>
+    <div v-show="addCart" class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 </template>
 
@@ -56,6 +51,7 @@ export default {
       products: this.item,
       tempNum: 1,
       tooltip: '',
+      addCart: false,
     };
   },
   props: {
@@ -65,38 +61,24 @@ export default {
     },
   },
   methods: {
-    addToCart(id, qty) {
-      if (this.products.joined) return;
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
-      this.$store.dispatch('updateLoading', true);
-      const cart = {
-        product_id: id,
-        qty,
-      };
-      this.axios.post(url, { data: cart })
-        .then((res) => {
-          if (res.data.success) {
-            this.$store.dispatch('updateProductNum', [id, 1]);
-            this.$swal({ title: `${res.data.data.product.title}加入購物車`, icon: 'success' });
-            this.$store.dispatch('getCart');
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.$store.dispatch('updateLoading', false);
-        })
-        .catch(() => {
-          this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
-          this.$store.dispatch('updateLoading', false);
-        });
+    addToCart(id, qty, title) {
+      this.tempNum = 1;
+      this.addCart = true;
+      this.tooltip.hide();
+      setTimeout(() => {
+        this.addCart = false;
+        this.$store.dispatch('updateCart', { id, qty });
+        if (!this.repeat) {
+          this.$swal({ title: `${title}加入購物車`, icon: 'success' });
+        } else {
+          this.$swal({ title: `${title}加購成功`, icon: 'success' });
+        }
+        this.$store.dispatch('data');
+      }, 1000);
     },
   },
   computed: {
-    ...mapGetters(['num', 'title', 'cart']),
-  },
-  watch: {
-    cart() {
-      this.tooltip.hide();
-    },
+    ...mapGetters(['title', 'repeat']),
   },
   mounted() {
     this.tooltip = new Tooltip(this.$refs.tooltip);

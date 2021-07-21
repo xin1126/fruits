@@ -5,6 +5,7 @@ import cartModules from './cart';
 import offsetWidthModules from './offsetWidth';
 import couponModules from './coupon';
 import viewModule from './view';
+import storageCartModules from './storageCart';
 
 export default createStore({
   strict: true,
@@ -26,13 +27,12 @@ export default createStore({
     data(state) {
       const { title } = state.allProductsModules;
       const { allProducts } = state.allProductsModules;
-      const { cart } = state.cartModules;
-      cart.carts.forEach((cartsItem) => {
+      const { storageCart } = state.storageCartModules;
+      Object.entries(storageCart).forEach((cartsItem) => {
         allProducts.forEach((productsItem, index) => {
-          if (cartsItem.product.id === productsItem.id) {
+          if (cartsItem[0] === productsItem.id) {
             allProducts[index].joined = true;
-            allProducts[index].num = 1;
-            title[productsItem.title] = '已加入購物車';
+            title[productsItem.title] = '已加入購物車，點擊繼續加購';
           }
         });
       });
@@ -50,5 +50,6 @@ export default createStore({
     offsetWidthModules,
     couponModules,
     viewModule,
+    storageCartModules,
   },
 });

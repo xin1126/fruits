@@ -21,7 +21,7 @@
           <Process class="col mb-3 d-sm-none" />
         </div>
         <div class="col-lg-8">
-          <Form v-slot="{ errors }" @submit="createOrder" ref="form">
+          <Form v-slot="{ errors }" @submit="cart" ref="form">
             <div
               class="
                 d-flex
@@ -172,6 +172,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import Process from '@/components/frontend/Process.vue';
 import Tooltip from 'bootstrap/js/dist/tooltip';
 
@@ -195,6 +196,54 @@ export default {
     Process,
   },
   methods: {
+    ...mapActions(['updateDiscount', 'deleteCart']),
+    cart() {
+      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart`;
+      Object.entries(this.storageCart).forEach((item) => {
+        const cart = {
+          product_id: item[0],
+          qty: item[1],
+        };
+        this.$store.dispatch('updateLoading', true);
+        this.axios.post(url, { data: cart })
+          .then((res) => {
+            if (res.data.success) {
+              this.deleteCart(item[0]);
+              if (Object.values(this.storageCart).length === 0) {
+                setTimeout(() => this.coupon(), 100);
+              }
+            } else {
+              this.$swal({ title: res.data.message, icon: 'error' });
+            }
+          })
+          .catch(() => {
+            this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
+            this.$store.dispatch('updateLoading', false);
+          });
+      });
+    },
+    coupon() {
+      if (this.discount.status) {
+        const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/coupon`;
+        this.$store.dispatch('updateLoading', true);
+        this.axios.post(url, { data: { code: this.discount.num } })
+          .then((res) => {
+            if (res.data.success) {
+              this.couponPrice = res.data.data.final_total;
+              this.updateDiscount({ status: 0 });
+              this.createOrder();
+            } else {
+              this.$swal({ title: res.data.message, icon: 'error' });
+            }
+          })
+          .catch(() => {
+            this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
+            this.$store.dispatch('updateLoading', false);
+          });
+      } else {
+        this.createOrder();
+      }
+    },
     createOrder() {
       const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/order`;
       const order = this.form;
@@ -210,6 +259,7 @@ export default {
           } else {
             this.$swal({ title: res.data.message, icon: 'error' });
           }
+          this.$store.dispatch('updateLoading', false);
         })
         .catch(() => {
           this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
@@ -218,6 +268,16 @@ export default {
     },
     getCart() {
       this.$store.dispatch('getCart');
+    },
+  },
+  computed: {
+    ...mapGetters(['storageCart', 'discount']),
+    data() {
+      const { allProducts, storageCart } = this;
+      return {
+        allProducts,
+        storageCart,
+      };
     },
   },
   mounted() {

@@ -26,7 +26,7 @@
         </p>
       </div>
       <div class="container-lg mb-md-5 mb-4">
-        <div v-if="$store.getters.cart.carts?.length">
+        <div v-if="Object.keys($store.getters.storageCart)?.length">
           <div class="row">
             <Process class="col mb-3 d-sm-none" />
           </div>
@@ -67,7 +67,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in cart.carts" :key="item.id">
+              <tr v-for="item in products" :key="item.id">
                 <td class="d-md-none">
                   <a
                     href="#"
@@ -79,25 +79,23 @@
                 </td>
                 <td class="img d-none d-lg-table-cell position-relative">
                   <img
-                    :src="item.product.imgUrl"
-                    :alt="item.product.title"
+                    :src="item.imgUrl"
+                    :alt="item.title"
                     class="img-transparent"
                   />
                 </td>
                 <td class="d-none d-sm-table-cell">
-                  {{ item.product.title }}
+                  {{ item.title }}
                   <span class="d-md-none d-sm-inline d-none"
-                    >{{ item.product.unit }}({{
-                      item.product.options.weight
-                    }})</span
+                    >{{ item.unit }}({{ item.options.weight }})</span
                   >
                 </td>
                 <td class="d-none d-md-table-cell">
-                  {{ item.product.unit }}({{ item.product.options.weight }})
+                  {{ item.unit }}({{ item.options.weight }})
                 </td>
                 <td>
                   <p class="d-sm-none mb-1 text-center">
-                    {{ item.product.title }}
+                    {{ item.title }}
                   </p>
                   <div class="input-group update-num w-lg-75 w-sm-65 mx-auto">
                     <button
@@ -110,14 +108,14 @@
                         border-end-0
                       "
                       :class="[
-                        item.qty !== 1 ? ['upade-hover'] : 'cursor-allowed',
+                        item.newNum !== 1 ? ['upade-hover'] : 'cursor-allowed',
                       ]"
-                      :disabled="item.qty === 1"
-                      @click="updateCart(item.id, item.qty - 1)"
+                      :disabled="item.newNum === 1"
+                      @click="updateCart(item.id, -1)"
                     >
                       <i class="bi bi-dash-lg"></i>
                     </button>
-                    <p class="form-control text-center">{{ item.qty }}</p>
+                    <p class="form-control text-center">{{ item.newNum }}</p>
                     <button
                       type="button"
                       class="
@@ -127,24 +125,18 @@
                         text-gray
                         fs-8
                       "
-                      @click="updateCart(item.id, item.qty + 1)"
+                      @click="updateCart(item.id, +1)"
                     >
                       <i class="bi bi-plus-lg"></i>
                     </button>
                   </div>
                 </td>
-                <td class="d-none d-sm-table-cell">
-                  NT${{ item.product.price }}
-                </td>
+                <td class="d-none d-sm-table-cell">NT${{ item.price }}</td>
                 <td class="text-end">
-                  NT${{ item.final_total.toLocaleString() }}
+                  NT${{ (item.price * item.newNum).toLocaleString() }}
                 </td>
                 <td class="text-end d-none d-md-table-cell">
-                  <a
-                    href="#"
-                    class="fs-4"
-                    @click.prevent="removeCartItem(item.id)"
-                  >
+                  <a href="#" class="fs-4" @click.prevent="deleteOne(item.id)">
                     <i class="bi bi-trash text-gray icon"></i>
                   </a>
                 </td>
@@ -157,7 +149,7 @@
                 <button
                   class="btn btn-outline-gray btn-sm"
                   type="button"
-                  @click="deleteAllCarts"
+                  @click="deleteAll"
                 >
                   刪除全部
                 </button>
@@ -172,7 +164,7 @@
                 "
               >
                 <button
-                  v-if="Object.keys(couponNum).length && !couponPrice"
+                  v-if="Object.keys(couponNum).length && !discount.status"
                   type="button"
                   class="
                     input-group-text
@@ -187,17 +179,16 @@
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                   @click="couponModal"
-                  :disabled="couponPrice !== ''"
                 >
                   選擇折扣優惠券
                 </button>
                 <p class="fw-bold">
                   總價：<span
                     :class="{
-                      'text-decoration-line-through': couponPrice,
-                      'text-gray': couponPrice,
+                      'text-decoration-line-through': discount.status,
+                      'text-gray': discount.status,
                     }"
-                    >NT${{ cart.total?.toLocaleString() }}</span
+                    >NT${{ total.toLocaleString() }}</span
                   >
                 </p>
               </div>
@@ -251,7 +242,7 @@
                               position-relative
                               d-inline-block
                               me-sm-5
-                              mb-1 mb-sm-0
+                              mb-1 mb-sm-0s
                               px-4
                               py-4
                             "
@@ -310,8 +301,10 @@
               </div>
             </div>
             <div class="mt-2">
-              <p class="text-end text-danger fw-bold" v-if="couponPrice">
-                折扣總價：NT${{ Math.floor(couponPrice).toLocaleString() }}
+              <p class="text-end text-danger fw-bold" v-if="discount.status">
+                {{ discount.num }}折優惠總價：NT${{
+                  Math.floor(totalDiscount)?.toLocaleString()
+                }}
               </p>
             </div>
           </div>
@@ -333,7 +326,7 @@
         </div>
       </div>
     </div>
-    <Subscription v-if="$store.getters.cart.carts?.length" />
+    <Subscription v-if="Object.keys($store.getters.storageCart)?.length" />
   </section>
 </template>
 
@@ -348,10 +341,13 @@ import Tooltip from 'bootstrap/js/dist/tooltip';
 export default {
   data() {
     return {
+      total: '',
+      totalDiscount: '',
       couponPrice: '',
       couponTarget: '',
       tooltip: '',
       modal: '',
+      products: [],
     };
   },
   components: {
@@ -360,88 +356,30 @@ export default {
     Process,
   },
   methods: {
-    ...mapActions(['getCart', 'removeCoupon']),
-    deleteAllCarts() {
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/carts`;
-      this.$store.dispatch('updateLoading', true);
-      this.axios.delete(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.$swal({ title: res.data.message, icon: 'success' });
-            this.getCart();
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.$store.dispatch('updateLoading', false);
-        })
-        .catch(() => {
-          this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
-          this.$store.dispatch('updateLoading', false);
-        });
-    },
-    removeCartItem(id) {
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart/${id}`;
-      this.$store.dispatch('updateLoading', true);
-      this.axios.delete(url)
-        .then((res) => {
-          if (res.data.success) {
-            this.$swal({ title: res.data.message, icon: 'success' });
-            this.getCart();
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.$store.dispatch('updateLoading', false);
-        })
-        .catch(() => {
-          this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
-          this.$store.dispatch('updateLoading', false);
-        });
-    },
+    ...mapActions(['getAllProducts', 'removeCoupon', 'updateDiscount', 'deleteCart', 'deleteAllCart']),
     updateCart(id, qty) {
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/cart/${id}`;
-      this.$store.dispatch('updateLoading', true);
-      const cart = {
-        product_id: id,
-        qty,
-      };
-      this.axios.put(url, { data: cart })
-        .then((res) => {
-          if (res.data.success) {
-            this.$swal({ title: res.data.message, icon: 'success' });
-            this.getCart();
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.$store.dispatch('updateLoading', false);
-        })
-        .catch(() => {
-          this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
-          this.$store.dispatch('updateLoading', false);
-        });
+      this.$store.dispatch('updateCart', { id, qty });
+      this.totalPrice();
+      if (this.discount.status) {
+        this.calculate(this.discount.num);
+      }
+    },
+    totalPrice() {
+      const price = this.products.map((item) => item.price * item.newNum);
+      this.total = price.reduce((a, b) => a + b);
+      if (this.discount.status) {
+        this.calculate(this.discount.num);
+      }
+    },
+    calculate(num) {
+      this.totalDiscount = this.total * Number(`0.${num}`);
     },
     coupon(num) {
       if (!this.couponTarget) return;
-      const url = `${process.env.VUE_APP_APIURL}/api/${process.env.VUE_APP_APIPATH}/coupon`;
-      this.$store.dispatch('updateLoading', true);
-      this.axios.post(url, { data: { code: num } })
-        .then((res) => {
-          if (res.data.success) {
-            this.couponPrice = res.data.data.final_total;
-            this.$swal({
-              title: `成功套用${num}折優惠折扣券
-            `,
-              icon: 'success',
-            });
-            this.removeCoupon(num);
-          } else {
-            this.$swal({ title: res.data.message, icon: 'error' });
-          }
-          this.$store.dispatch('updateLoading', false);
-        })
-        .catch(() => {
-          this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
-          this.$store.dispatch('updateLoading', false);
-        });
+      this.calculate(num);
+      this.$swal({ title: `成功套用${num}折優惠折扣券`, icon: 'success' });
+      this.removeCoupon(num);
+      this.updateDiscount({ status: 1, num });
     },
     couponModal() {
       if (this.couponTarget) {
@@ -450,17 +388,54 @@ export default {
       this.couponTarget = '';
       this.tooltip = new Tooltip(this.$refs.tooltip);
     },
+    getPrcducts() {
+      this.products = [];
+      Object.entries(this.storageCart).forEach((cartItem) => {
+        this.allProducts.forEach((productsItem) => {
+          if (cartItem[0] === productsItem.id) {
+            this.products.push({ ...productsItem, newNum: cartItem[1] });
+          }
+        });
+      });
+    },
+    deleteOne(id) {
+      this.deleteCart(id);
+      if (Object.values(this.storageCart).length === 0) {
+        this.updateDiscount({ status: 0 });
+      }
+    },
+    deleteAll() {
+      this.deleteAllCart();
+      this.updateDiscount({ status: 0 });
+    },
   },
   computed: {
-    ...mapGetters(['cart', 'couponNum']),
+    ...mapGetters(['couponNum', 'storageCart', 'allProducts', 'discount']),
+    data() {
+      const { allProducts, storageCart } = this;
+      return {
+        allProducts,
+        storageCart,
+      };
+    },
   },
   watch: {
     couponTarget() {
       this.modal = this.couponTarget ? 'modal' : '';
     },
+    data: {
+      handler(val) {
+        if (val.allProducts.length && Object.values(val.storageCart).length) {
+          this.getPrcducts();
+          this.totalPrice();
+        }
+      },
+      deep: true,
+    },
   },
   mounted() {
-    this.getCart();
+    this.getAllProducts();
+    this.getPrcducts();
   },
 };
 </script>

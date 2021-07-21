@@ -1,6 +1,7 @@
 export default {
   state: {
     couponNum: JSON.parse(localStorage.getItem('couponNum')) || {},
+    discount: JSON.parse(localStorage.getItem('discount')) || { status: 0 },
   },
   actions: {
     updateCoupon({ commit }, num) {
@@ -8,6 +9,9 @@ export default {
     },
     removeCoupon({ commit }, num) {
       commit('removeCoupon', num);
+    },
+    updateDiscount({ commit }, status) {
+      commit('updateDiscount', status);
     },
   },
   mutations: {
@@ -22,10 +26,17 @@ export default {
       }
       localStorage.setItem('couponNum', JSON.stringify(state.couponNum));
     },
+    updateDiscount(state, status) {
+      state.discount = status;
+      localStorage.setItem('discount', JSON.stringify(state.discount));
+    },
   },
   getters: {
     couponNum(state) {
       return state.couponNum;
+    },
+    discount(state) {
+      return state.discount;
     },
   },
 };
