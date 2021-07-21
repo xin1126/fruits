@@ -1,7 +1,6 @@
 import { createStore } from 'vuex';
 import allProductsModules from './allProducts';
 import bookmarkModules from './bookmark';
-import cartModules from './cart';
 import offsetWidthModules from './offsetWidth';
 import couponModules from './coupon';
 import viewModule from './view';
@@ -46,7 +45,6 @@ export default createStore({
   modules: {
     allProductsModules,
     bookmarkModules,
-    cartModules,
     offsetWidthModules,
     couponModules,
     viewModule,

@@ -285,15 +285,14 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allProducts', 'cart', 'offsetWidth', 'offsetWidthData']),
+    ...mapGetters(['allProducts', 'offsetWidth', 'offsetWidthData']),
     relatedProducts() {
       return this.allProducts.filter((item) => item.category === this.product.category && item.id !== this.product.id);
     },
     data() {
-      const { allProducts, cart, product } = this;
+      const { allProducts, product } = this;
       return {
         allProducts,
-        cart,
         product,
       };
     },
@@ -301,8 +300,7 @@ export default {
   watch: {
     data: {
       handler(val) {
-        const data = val.allProducts.length && Object.values(val.cart).length;
-        if (data && Object.values(val.product).length) {
+        if (val.allProducts.length && Object.values(val.product).length) {
           this.view = true;
           this.$store.dispatch('data');
           this.singleProduct();

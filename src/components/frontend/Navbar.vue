@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 <template>
   <section
     class="transition position-fixed z-index w-100"

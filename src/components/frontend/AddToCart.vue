@@ -43,7 +43,7 @@
 
 <script>
 import Tooltip from 'bootstrap/js/dist/tooltip';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -61,6 +61,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['data', 'updateCollectionData']),
     addToCart(id, qty, title) {
       this.tempNum = 1;
       this.addCart = true;
@@ -72,6 +73,9 @@ export default {
           this.$swal({ title: `${title}加入購物車`, icon: 'success' });
         } else {
           this.$swal({ title: `${title}加購成功`, icon: 'success' });
+        }
+        if (this.$route.path === '/favorites') {
+          this.$store.dispatch('updateCollectionData');
         }
         this.$store.dispatch('data');
       }, 1000);

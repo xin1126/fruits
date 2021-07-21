@@ -32,9 +32,6 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
-    if (this.$route.path !== '/checkout') {
-      this.$store.dispatch('getCart', false);
-    }
   },
 };
 </script>

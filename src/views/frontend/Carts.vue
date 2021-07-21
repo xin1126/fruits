@@ -363,12 +363,15 @@ export default {
       if (this.discount.status) {
         this.calculate(this.discount.num);
       }
+      this.getPrcducts();
     },
     totalPrice() {
-      const price = this.products.map((item) => item.price * item.newNum);
-      this.total = price.reduce((a, b) => a + b);
-      if (this.discount.status) {
-        this.calculate(this.discount.num);
+      if (this.products.length) {
+        const price = this.products.map((item) => item.price * item.newNum);
+        this.total = price.reduce((a, b) => a + b);
+        if (this.discount.status) {
+          this.calculate(this.discount.num);
+        }
       }
     },
     calculate(num) {
@@ -403,6 +406,8 @@ export default {
       if (Object.values(this.storageCart).length === 0) {
         this.updateDiscount({ status: 0 });
       }
+      this.getPrcducts();
+      this.totalPrice();
     },
     deleteAll() {
       this.deleteAllCart();
@@ -411,26 +416,14 @@ export default {
   },
   computed: {
     ...mapGetters(['couponNum', 'storageCart', 'allProducts', 'discount']),
-    data() {
-      const { allProducts, storageCart } = this;
-      return {
-        allProducts,
-        storageCart,
-      };
-    },
   },
   watch: {
     couponTarget() {
       this.modal = this.couponTarget ? 'modal' : '';
     },
-    data: {
-      handler(val) {
-        if (val.allProducts.length && Object.values(val.storageCart).length) {
-          this.getPrcducts();
-          this.totalPrice();
-        }
-      },
-      deep: true,
+    allProducts() {
+      this.getPrcducts();
+      this.totalPrice();
     },
   },
   mounted() {

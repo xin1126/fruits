@@ -213,7 +213,7 @@ export default {
                 setTimeout(() => this.coupon(), 100);
               }
             } else {
-              this.$swal({ title: res.data.message, icon: 'error' });
+              setTimeout(() => this.coupon(), 100);
             }
           })
           .catch(() => {
@@ -251,7 +251,6 @@ export default {
       this.axios.post(url, { data: order })
         .then((res) => {
           if (res.data.success) {
-            this.getCart();
             this.$router.push('/checkout');
             this.$swal({ title: res.data.message, icon: 'success' });
             this.$refs.form.resetForm();
@@ -265,9 +264,6 @@ export default {
           this.$swal({ title: '發生錯誤，請嘗試重新整理此頁面', icon: 'error' });
           this.$store.dispatch('updateLoading', false);
         });
-    },
-    getCart() {
-      this.$store.dispatch('getCart');
     },
   },
   computed: {

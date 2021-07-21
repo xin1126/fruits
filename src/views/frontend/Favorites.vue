@@ -84,7 +84,7 @@
 import ProductImg from '@/components/frontend/ProductImg.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
 import Subscription from '@/components/frontend/Subscription.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -100,45 +100,28 @@ export default {
     Subscription,
   },
   methods: {
-    ...mapActions(['getAllProducts', 'getCart']),
+    ...mapActions(['data', 'getAllProducts', 'updateCollectionData']),
     removeFavorites(id) {
       this.id[id] = false;
       this.view = Object.values(this.id).some((item) => item === true);
     },
   },
   computed: {
-    ...mapGetters(['allProducts', 'cart']),
-    data() {
-      const { allProducts, cart } = this;
-      return {
-        allProducts,
-        cart,
-      };
+    allProducts() {
+      return this.$store.getters.allProducts;
     },
   },
   watch: {
-    data: {
-      handler(val) {
-        if (val.allProducts.length && Object.values(val.cart).length) {
-          this.$store.dispatch('data');
-        } else if (this.collectionData.length) {
-          this.$store.dispatch('updateLoading', true);
-        }
-      },
-      deep: true,
-    },
     allProducts() {
+      this.data();
+      this.updateCollectionData();
       this.collectionData.forEach((item) => {
         this.id[item.id] = true;
       });
     },
-    cart() {
-      this.$store.dispatch('updateCollectionData');
-    },
   },
   mounted() {
     if (this.collectionData.length) {
-      this.getCart();
       this.getAllProducts();
     }
   },

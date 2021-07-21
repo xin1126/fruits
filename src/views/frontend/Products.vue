@@ -122,7 +122,6 @@ import ProductImg from '@/components/frontend/ProductImg.vue';
 import ProductList from '@/components/frontend/ProductList.vue';
 import AddToCart from '@/components/frontend/AddToCart.vue';
 import Pagination from '@/components/Pagination.vue';
-import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -204,27 +203,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allProducts', 'cart']),
-    data() {
-      const { allProducts, cart } = this;
-      return {
-        allProducts,
-        cart,
-      };
+    allProducts() {
+      return this.$store.getters.allProducts;
     },
   },
   watch: {
-    data: {
-      handler(val) {
-        if (val.allProducts.length && Object.values(val.cart).length) {
-          this.$store.dispatch('data');
-        } else {
-          this.$store.dispatch('updateLoading', true);
-        }
-      },
-      deep: true,
-    },
     allProducts() {
+      this.$store.dispatch('data');
       this.productsPage();
       this.pagination = {
         total_pages: Math.ceil(this.allProducts.length / 9),

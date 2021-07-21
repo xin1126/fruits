@@ -44,13 +44,13 @@ export default {
       localStorage.setItem('listData', JSON.stringify(state.collectionData));
     },
     updateCollection(state) {
-      const { cart } = this.state.cartModules;
+      const { storageCart } = this.state.storageCartModules;
       state.collectionData.forEach((item, index) => {
         state.collectionData[index].joined = false;
       });
-      cart.carts.forEach((cartsItem) => {
+      Object.entries(storageCart).forEach((cartsItem) => {
         state.collectionData.forEach((collectionDItem, index) => {
-          if (cartsItem.product.id === collectionDItem.id) {
+          if (cartsItem[0] === collectionDItem.id) {
             state.collectionData[index].joined = true;
           }
         });
