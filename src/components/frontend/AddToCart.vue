@@ -6,7 +6,7 @@
         class="input-group-text bg-light text-gray fs-8 border-end-0"
         :class="[tempNum !== 1 ? ['btn-hover'] : 'cursor-allowed']"
         :disabled="tempNum === 1"
-        @click="$store.dispatch('updateCart', [products.id, --tempNum])"
+        @click="--tempNum"
       >
         <i class="bi bi-dash-lg"></i>
       </button>
@@ -14,7 +14,7 @@
       <button
         type="button"
         class="input-group-text bg-light btn-hover text-gray fs-8"
-        @click="$store.dispatch('updateCart', [products.id, ++tempNum])"
+        @click="++tempNum"
       >
         <i class="bi bi-plus-lg"></i>
       </button>
