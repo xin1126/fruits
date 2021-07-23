@@ -69,11 +69,7 @@
             <tbody>
               <tr v-for="item in products" :key="item.id">
                 <td class="d-md-none">
-                  <a
-                    href="#"
-                    class="fs-4"
-                    @click.prevent="removeCartItem(item.id)"
-                  >
+                  <a href="#" class="fs-4" @click.prevent="deleteOne(item.id)">
                     <i class="bi bi-trash text-gray icon"></i>
                   </a>
                 </td>

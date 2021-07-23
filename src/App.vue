@@ -26,7 +26,7 @@ export default {
   watch: {
     $route() {
       const status = this.$route.path.indexOf('backstage') > 0 ? 'add' : 'remove';
-      document.body.classList[status]('bg');
+      document.body.classList[status]('bg-backstage');
     },
   },
 };
@@ -36,5 +36,13 @@ export default {
 @import './assets/scss/all';
 body {
   overflow-x: hidden;
+}
+
+.bg-backstage {
+  margin: 0px;
+  padding: 0px;
+  background: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%) center center
+    fixed no-repeat;
+  background-size: cover;
 }
 </style>

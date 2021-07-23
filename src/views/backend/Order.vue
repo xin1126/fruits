@@ -31,7 +31,7 @@
               <button
                 class="btn btn-primary dropdown-toggle"
                 type="button"
-                :id="'dropdownUserButton' + (index + 1)"
+                :id="`dropdownUserButton${index + 1}`"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
@@ -39,7 +39,7 @@
               </button>
               <ul
                 class="dropdown-menu p-0"
-                :aria-labelledby="'dropdownUserButton' + (index + 1)"
+                :aria-labelledby="`dropdownUserButton${index + 1}`"
               >
                 <li
                   class="
@@ -104,7 +104,7 @@
               <button
                 class="btn btn-primary dropdown-toggle"
                 type="button"
-                :id="'dropdownMenuButton1' + (index + 1)"
+                :id="`dropdownMenuButton1${index + 1}`"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 @click="orderData(item.products, item.total)"
@@ -138,7 +138,7 @@
                 <button
                   class="btn btn-outline-gray btn-sm"
                   type="button"
-                  :id="'dropdownEditButton' + (index + 1)"
+                  :id="`dropdownEditButton${index + 1}`"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   @click="edit(item.total, item.is_paid)"
@@ -147,10 +147,10 @@
                 </button>
                 <form
                   class="dropdown-menu"
-                  :aria-labelledby="'dropdownEditButton' + (index + 1)"
+                  :aria-labelledby="`dropdownEditButton${index + 1}`"
                 >
                   <div class="form-group px-2">
-                    <label :for="'total' + (index + 1)" class="col-form-label"
+                    <label :for="`total${index + 1}`" class="col-form-label"
                       >總金額</label
                     ><span class="ms-2 text-danger" v-if="!verificationStart"
                       ><i class="bi bi-exclamation-triangle-fill me-1"></i
@@ -159,20 +159,20 @@
                     <input
                       type="number"
                       class="form-control"
-                      :id="'total' + (index + 1)"
+                      :id="`total${index + 1}`"
                       placeholder="請輸入總金額"
                       @input="verificationStart = editOrder.total"
                       v-model.number="editOrder.total"
                     />
                   </div>
                   <div class="form-group px-2 d-flex flex-column">
-                    <label :for="'paid' + (index + 1)" class="col-form-label"
+                    <label :for="`paid${index + 1}`" class="col-form-label"
                       >是否付款</label
                     >
                     <input
                       type="checkbox"
                       class="custom-control-input"
-                      :id="'paid' + (index + 1)"
+                      :id="`paid${index + 1}`"
                       v-model="editOrder.is_paid"
                     />
                   </div>
@@ -193,7 +193,7 @@
                 <button
                   type="button"
                   class="btn btn-outline-danger btn-sm"
-                  :id="'dropdownDeleteButton' + (index + 1)"
+                  :id="`dropdownDeleteButton${index + 1}`"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
@@ -201,7 +201,7 @@
                 </button>
                 <div
                   class="dropdown-menu px-2"
-                  :aria-labelledby="'dropdownDeleteButton' + (index + 1)"
+                  :aria-labelledby="`home-dropdownDeleteButton${index + 1}`"
                 >
                   <h6>確認要刪除此訂單?</h6>
                   <button type="button" class="btn btn-gray btn-sm me-1">

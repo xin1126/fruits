@@ -7,7 +7,7 @@
       :autoplay="autoplay"
     >
       <SwiperSlide v-for="(item, index) in 3" :key="item" class="w-100"
-        ><div :class="'home-banner' + (index + 1)" class="w-100">
+        ><div :class="`home-banner${index + 1}`" class="w-100">
           <div
             class="
               container-md
@@ -318,7 +318,7 @@
     </div>
     <Subscription />
   </main>
-  <Vue-easy-lightbox
+  <VueEasyLightbox
     scrollDisabled
     escDisabled
     moveDisabled
@@ -327,7 +327,7 @@
     :index="index"
     @hide="visible = !visible"
     v-if="index"
-  ></Vue-easy-lightbox>
+  ></VueEasyLightbox>
 </template>
 
 <script>
